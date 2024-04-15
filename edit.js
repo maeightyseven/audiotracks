@@ -80,19 +80,19 @@ function startGetLocation() {
             moving = 0;
         }
     });
-    
+    map.on('click', function (ev) {
+        // Get the text field
+        var copyText  = ev.latlng.lat + ", " + ev.latlng.lng;
+       
+        // Copy the text inside the text field
+        navigator.clipboard.writeText(copyText.value);
+        
+        // Alert the copied text
+        alert("Copied the text: " + copyText.value);
+       });
 }
 
-map.on('click', function (ev) {
-    // Get the text field
-    var copyText  = ev.latlng.lat + ", " + ev.latlng.lng;
-   
-    // Copy the text inside the text field
-    navigator.clipboard.writeText(copyText.value);
-    
-    // Alert the copied text
-    alert("Copied the text: " + copyText.value);
-   });
+
 
       
 
