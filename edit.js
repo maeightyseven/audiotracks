@@ -5,7 +5,7 @@ const wdots = document.getElementById("wdots");
 const playing = document.getElementById("playing");
 const mainTitle = document.getElementById("mainTitle");
 
-var decP = 15; //decimal precision
+var decP = 5; //decimal precision
 
 var initX = 0;
 var initY = 0;
@@ -28,12 +28,6 @@ for (var i = 0; i < audioObjs.length; ++i) {
     audioObjs[i].pause();
     audioObjs[i].volume = 0.0;
 }
-/*
-var a1 = document.getElementById("myAudio1");
-var a2 = document.getElementById("myAudio2");
-var a3 = document.getElementById("myAudio3");
-var a4 = document.getElementById("myAudio4");
-*/
 
 var shapes = [];
 
@@ -78,9 +72,7 @@ function startGetLocation() {
     nowX = 44.483334;
     nowY = 44.483334;
 
-
     map.on('mousemove', function (ev) {
-
         if (moving == 1) {
             nowX = ev.latlng.lat;
             nowY = ev.latlng.lng;
@@ -88,8 +80,21 @@ function startGetLocation() {
             moving = 0;
         }
     });
+    
 }
 
+map.on('click', function (ev) {
+    // Get the text field
+    var copyText  = ev.latlng.lat + ", " + ev.latlng.lng;
+   
+    // Copy the text inside the text field
+    navigator.clipboard.writeText(copyText.value);
+    
+    // Alert the copied text
+    alert("Copied the text: " + copyText.value);
+   });
+
+      
 
 function doAudioThings(nowX, nowY) {
     markerXY = L.latLng(nowX, nowY);
@@ -118,24 +123,7 @@ function doAudioThings(nowX, nowY) {
         var n = $(this).attr("id");
         playPolygon(polyCoord, a, n);
     });
-    /*
-        if (measure(nowX, nowY, 44.495389782872614, 11.349457843631866) < 500) {
-        playCircle(44.49529412089082, 11.348885862549388, 2, a1, "Biciclette");
-        playCircle(44.495431904565024, 11.348828594660992, 2, a2, "Papavero");
-        playCircle(44.495389782872614, 11.349457843631866, 50, a3, "Chiostro");
-        playCircle(44.49542082874493, 11.348778602401508, 15, a4, "Piazza Rossini");
-        }
-    
-        if (measure(nowX, nowY, 44.48584670323959, 11.366846005965819) < 500) {
-    
-        playCircle(44.48584670323959, 11.366846005965819, 15, a1, "Biciclette");
-        playCircle(44.48578201580465, 11.366551125150702, 15, a2, "Papavero");
-        }
-    
-        if (measure(nowX, nowY, 44.483334, 11.353757) < 900) {
-    
-        
-    }*/
+
 
 }
 
@@ -313,4 +301,5 @@ function dowdots() {
         }
     }, 500);
 }
+
 
