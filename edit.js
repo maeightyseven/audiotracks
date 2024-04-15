@@ -74,8 +74,8 @@ function startGetLocation() {
 
     map.on('mousemove', function (ev) {
         if (moving == 1) {
-            nowX = ev.latlng.lat;
-            nowY = ev.latlng.lng;
+            nowX = ev.latlng.lat.toFixed(decP);
+            nowY = ev.latlng.lng.toFixed(decP);
             doAudioThings(nowX, nowY);
             moving = 0;
         }
@@ -83,13 +83,13 @@ function startGetLocation() {
 
     map.on('click', function (ev) {
         // Get the text field
-        var copyText  = ev.latlng.lat + ", " + ev.latlng.lng;
+        var copyText  = ev.latlng.lat.toFixed(decP) + ", " + ev.latlng.lng.toFixed(decP);
        
         // Copy the text inside the text field
-        navigator.clipboard.writeText(copyText.value);
+        navigator.clipboard.writeText(copyText);
         
         // Alert the copied text
-        alert("Copied the text: " + copyText.value);
+        alert("Copied the text: " + copyText);
        });
 }   
 
@@ -259,11 +259,13 @@ function doCircleMap() {
         var y = $(this).attr("coord").split(",")[1];
         var r = $(this).attr("size");
         var a = $(this).children("audio")[0];
+        var name = $(this).attr("id");
+        var c = $(this).parents(".zone").attr("color");
         const n = circles.length;
         for (var i = 0; i < n; ++i) {
             cShapes[i] = L.circle([x, y], {
-                color: 'violet',
-                fillColor: 'violet',
+                color: c,
+                fillColor: c,
                 fillOpacity: 0.1,
                 radius: r
             }).addTo(map);
@@ -278,11 +280,12 @@ function doPolygonMap() {
         var a = $(this).children("audio")[0];
         var name = $(this).attr("id");
         const n = polygons.length;
+        var c = $(this).parents(".zone").attr("color");
         for (var i = 0; i < n; ++i) {
             var polyCoord = JSON.parse(pointList);
             pShapes[i] = L.polygon([polyCoord], {
-                color: 'violet',
-                fillColor: 'violet',
+                color: c,
+                fillColor: c,
                 fillOpacity: 0.1
             }).addTo(map);
         }
