@@ -179,19 +179,18 @@ function playCircle(x, y, r, a, n) {
         }
     }
 
-    if (distance > r && a.className == "snap") {
+    if (distance > r && !(a.paused)) {
         setTimeout(function () {
             distance = Number(measure(nowX, nowY, x, y));
             if (distance > r ) {
                 var list = a.classList;
-                list.remove("snap");
                 if (!(a.paused)) {
                     playing.innerHTML = n + " pause audio " + distance + " from " + a.id;
                     decVolume(a);
                     // Only fade if past the fade out point or not at zero already            
                 }
             }
-        }, 3000);
+        }, 2000);
     }
 }
 
