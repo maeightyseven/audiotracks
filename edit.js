@@ -171,8 +171,7 @@ function playCircle(x, y, r, a, n) {
     if (distance <= r) {
         if ((a.paused)) {
             a.play();
-            a.className = "snap";
-            playing.innerHTML = n + " playing audio " + distance + " from " + a.id;
+             playing.innerHTML = n + " playing audio " + distance + " from " + a.id;
         }
         if (a.volume < 1) {
             addVolume(a);
@@ -183,8 +182,7 @@ function playCircle(x, y, r, a, n) {
         setTimeout(function () {
             distance = Number(measure(nowX, nowY, x, y));
             if (distance > r ) {
-                var list = a.classList;
-                if (!(a.paused)) {
+                 if (!(a.paused)) {
                     playing.innerHTML = n + " pause audio " + distance + " from " + a.id;
                     decVolume(a);
                     // Only fade if past the fade out point or not at zero already            
@@ -193,22 +191,6 @@ function playCircle(x, y, r, a, n) {
         }, 2000);
     }
 }
-
-
-
-function measure(lat1, lon1, lat2, lon2) {  // generally used geo measurement function
-    var R = 6378.137; // Radius of earth in KM
-    var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
-    var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * c;
-    var dm = d * 1000; // meters
-    return dm.toFixed(2);
-}
-
 
 function playPolygon(pointList, a, n) {
     var point = [];
@@ -227,8 +209,13 @@ function playPolygon(pointList, a, n) {
         }
     }
 
-    else {
+    if (!(rayCasting(point, polyCoord)) && !(a.paused)) {
         setTimeout(function () {
+            var point = [];
+            // console.log(pointList);
+            var polyCoord = JSON.parse(pointList);
+            point.push(nowX);
+            point.push(nowY);
             if (!(rayCasting(point, polyCoord))) {
                 if (!(a.paused)) {
                     playing.innerHTML = n + " pause audio " + " from " + a.id;
@@ -236,9 +223,23 @@ function playPolygon(pointList, a, n) {
                     // Only fade if past the fade out point or not at zero already            
                 }
             }
-        }, 3000)
+        }, 1000)
 
     }
+}
+
+
+function measure(lat1, lon1, lat2, lon2) {  // generally used geo measurement function
+    var R = 6378.137; // Radius of earth in KM
+    var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
+    var dLon = lon2 * Math.PI / 180 - lon1 * Math.PI / 180;
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    var dm = d * 1000; // meters
+    return dm.toFixed(2);
 }
 
 function rayCasting(point, polygon) {
