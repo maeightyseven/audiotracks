@@ -80,7 +80,7 @@ function startGetLocation() {
             moving = 0;
         }
     });
-    
+
     map.on('click', function (ev) {
         // Get the text field
         var copyText  = ev.latlng.lat + ", " + ev.latlng.lng;
@@ -92,6 +92,7 @@ function startGetLocation() {
         alert("Copied the text: " + copyText.value);
        });
 }   
+
 
 function doAudioThings(nowX, nowY) {
     markerXY = L.latLng(nowX, nowY);
