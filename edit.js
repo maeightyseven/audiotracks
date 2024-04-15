@@ -93,6 +93,7 @@ function startGetLocation() {
        });
 }   
 
+
 function doAudioThings(nowX, nowY) {
     markerXY = L.latLng(nowX, nowY);
     marker.setLatLng(markerXY);
