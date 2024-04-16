@@ -89,7 +89,7 @@ function startGetLocation() {
         navigator.clipboard.writeText(copyText);
         
         // Alert the copied text
-        alert("Copied the text: " + copyText);
+        alert(copyText);
        });
 }   
 
@@ -210,7 +210,6 @@ function playPolygon(pointList, a, n) {
                 }
             }
         }, 1000)
-
     }
 }
 
