@@ -27,6 +27,7 @@ for (var i = 0; i < audioObjs.length; ++i) {
     audioObjs[i].id = "audio" + i;
     audioObjs[i].pause();
     audioObjs[i].volume = 0.0;
+    audioObjs[i].controls = true;
 }
 
 var shapes = [];
@@ -73,12 +74,10 @@ function startGetLocation() {
     nowY = 44.483334;
 
     map.on('mousemove', function (ev) {
-        if (moving == 1) {
             nowX = ev.latlng.lat.toFixed(decP);
             nowY = ev.latlng.lng.toFixed(decP);
             doAudioThings(nowX, nowY);
             moving = 0;
-        }
     });
 
     map.on('click', function (ev) {
@@ -126,40 +125,47 @@ function doAudioThings(nowX, nowY) {
 }
 
 function decVolume(a, t) {
-    var volume = a.volume;
-    setTimeout(function () {
-        a.volume = volume - 0.1;
-        if (a.volume > 0 + 0.1) {
-            decVolume(a);
-        } else {
-            a.volume = 0;
-            a.pause();
-            return;
+    if (a.classList[0] !== 'playing') {
+    var Vcent = Math.round(a.volume*100);
+        Vcent = Vcent - 1;
+        a.volume = (Math.round(Vcent) / 100).toFixed(2);
+            setTimeout(function () {
+                if (Vcent > 1) {
+                    decVolume(a);
+                } else {
+                    a.volume = 0;
+                    a.pause();
+                    a.currentTime = 0;
+                }
+            }, 10);
         }
-    }, 100);
 }
 // When volume at zero stop all the intervalling
 function addVolume(a, t) {
-    var volume = a.volume;
+    if (a.classList[0] == 'playing') {
+
+    var Vcent = Math.round(a.volume*100);
+    Vcent = Vcent + 1;
+    a.volume = (Math.round(Vcent) / 100).toFixed(2);
+    
     setTimeout(function () {
-        a.volume = volume + 0.1;
-        if (a.volume < 1 - 0.1) {
+        if (Vcent < 99) {
             addVolume(a);
-        } else {
-            a.volume = 1;
-            return;
         }
-    }, 100);
+    }, 10);
+}
 }
 
 function playCircle(x, y, r, a, n) {
     var distance = Number(measure(nowX, nowY, x, y));
     if (distance <= r) {
+        var list = a.classList;
         if ((a.paused)) {
             a.play();
              playing.innerHTML = n + " playing audio " + distance + " from " + a.id;
         }
-        if (a.volume < 1) {
+        if (a.volume < 1 && (a.classList[0] !== 'playing')) {
+            a.classList.add("playing");
             addVolume(a);
         }
     }
@@ -168,7 +174,9 @@ function playCircle(x, y, r, a, n) {
         setTimeout(function () {
             distance = Number(measure(nowX, nowY, x, y));
             if (distance > r ) {
-                 if (!(a.paused)) {
+                var list = a.classList;
+                if ((!(a.paused)) && (a.classList[0] == 'playing')) {
+                    a.classList.remove("playing");
                     playing.innerHTML = n + " pause audio " + distance + " from " + a.id;
                     decVolume(a);
                     // Only fade if past the fade out point or not at zero already            
@@ -187,29 +195,36 @@ function playPolygon(pointList, a, n) {
     //  console.log(rayCasting(point, polyCoord));
     if (rayCasting(point, polyCoord)) {
         if ((a.paused)) {
+            var list = a.classList;
             a.play();
             playing.innerHTML = n + " playing audio " + " from " + a.id;
         }
-        if (a.volume < 1) {
+        if (a.volume < 1 && (a.classList[0] !== 'playing')) {
+            a.classList.add("playing");
             addVolume(a);
         }
     }
 
     if (!(rayCasting(point, polyCoord)) && !(a.paused)) {
+        var XYmem = [];
         setTimeout(function () {
-            var point = [];
+
+            if (XYmem.length = 0) {
+                XYmem.push(nowX);
+                XYmem.push(nowY);
+            }
             // console.log(pointList);
             var polyCoord = JSON.parse(pointList);
-            point.push(nowX);
-            point.push(nowY);
-            if (!(rayCasting(point, polyCoord))) {
-                if (!(a.paused)) {
+            if (!(rayCasting(XYmem, polyCoord))) {
+                var list = a.classList;
+                 if ((!(a.paused)) && (a.classList[0] == 'playing')) {
+                    a.classList.remove("playing");
                     playing.innerHTML = n + " pause audio " + " from " + a.id;
                     decVolume(a);
                     // Only fade if past the fade out point or not at zero already            
                 }
             }
-        }, 1000)
+        }, 2000)
     }
 }
 
