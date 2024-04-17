@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title> Geolocation reactive Audio </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/maeightyseven/audiotracks@main/assets/style/main.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+
+<body class="w3-content w3-black" style="max-width:1500px;">
+
+  <!-- The App Section -->
+  <div class="w3-padding-64 w3-white">
+    <div class="w3-row-padding">
+      <div class="w3-col l8 m6">
+        <h1 id="mainTitle" coord="44.48370, 11.35366"> GPS Audio Tracking</h1>
+        <h2> <b id="dothings">Click the button to get your coordinates.</b><b id="wdots"></b> </h2>
+
+        <button onclick="startGetLocation()">Try It</button>
+
+        <p id="demo"></p>
+        <p id="playing"></p>
+
+        <!-- inizio zona -->
+        <div class="zone" name="PiazzaMario" color="purple">
+
+          <!-- inizio forme -->
+
+          <div class="circle" id="FH_Cerchio_1" coord="44.48206, 11.35520" size="35" fade="center">
+            <audio loop>
+              <source src="Suoni/FH_Cerchio_1.mp3" type="audio/mpeg">
+            </audio>
+          </div>
+          <div class="circle" id="FH_Cerchio_2" coord="44.48206, 11.35520" size="25" fade="center">
+            <audio loop>
+              <source src="Suoni/FH_Cerchio_2.mp3" type="audio/mpeg">
+            </audio>
+          </div>
+          <div class="circle" id="FH_Cerchio_3" coord="44.48206, 11.35520" size="20" fade="center">
+            <audio loop>
+              <source src="Suoni/FH_Cerchio_3.mp3" type="audio/mpeg">
+            </audio>
+          </div>
+          <div class="circle" id="FH_Cerchio_4" coord="44.48206, 11.35520" size="15" fade="center">
+            <audio loop>
+              <source src="Suoni/FH_Cerchio_4.mp3" type="audio/mpeg">
+            </audio>
+          </div>
+          <div class="circle" id="FH_Cerchio_5" coord="44.48206, 11.35520" size="5" fade="center">
+            <audio loop>
+              <source src="Suoni/FH_Cerchio_5.mp3" type="audio/mpeg">
+            </audio>
+          </div>
+          <div class="circle" id="FH_Cerchio_6" coord="44.48221, 11.35524" size="15" fade="center">
+            <audio loop>
+              <source src="Suoni/FH_Cerchio_6.mp3" type="audio/mpeg">
+            </audio>
+          </div>
+          <div class="circle" id="FH_Cerchio_7" coord="44.48189, 11.35515" size="15" fade="center">
+            <audio loop>
+              <source src="Suoni/FH_Cerchio_7.mp3" type="audio/mpeg">
+            </audio>
+          </div>
+
+          <!-- fine forme -->
+
+        </div>
+
+        <!-- fine zona -->
+
+        <!-- inizio zona -->
+        <div class="zone" name="MioNome" color="yellow">
+
+          <!-- inizio forme -->
+
+          <div class="circle" id="Ponte nord" coord="44.48585 , 11.36666" size="35" fade="center">
+            <audio loop>
+              <source src="https://cdn.freesound.org/previews/637/637835_612689-lq.mp3" type="audio/mpeg">
+            </audio>
+          </div>
+
+          <div class="circle" id="Ponte sud" coord="44.48571 , 11.36655" size="30" fadeIn="3000" fadeOut="5000">
+            <audio loop>
+              <source src="https://cdn.freesound.org/previews/730/730556_1391542-lq.mp3" type="audio/mpeg">
+            </audio>
+          </div>
+
+          <div class="polygon" id="poligonoSud" coord="[[44.48268, 11.35398],
+            [44.48332, 11.35376],
+            [44.48349, 11.35313],
+            [44.48308, 11.35288]]">
+            <audio loop>
+              <source src="https://cdn.freesound.org/previews/40/40883_205017-lq.mp3" type="audio/mpeg">
+            </audio>
+          </div>
+
+          <!-- fine forme -->
+
+        </div>
+
+        <!-- fine zona -->
+
+      </div>
+      <div class="w3-col l4 m6">
+        <!--   <img src="https://www.w3schools.com/w3images/img_app.jpg" class="w3-image w3-right w3-hide-small"
+                    width="335" height="471">
+                <div class="w3-center w3-hide-large w3-hide-medium">
+                    <img src="https://www.w3schools.com/w3images/img_app.jpg" class="w3-image w3-margin-top" width="335"
+                        height="471">
+                </div>-->
+        <div id="map"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <script src="assets//js/main.js"> </script>
+  </footer>
+</body>
+
+</html>
