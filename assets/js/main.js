@@ -185,23 +185,26 @@ function addVolume(a, t) {
 function playCircle(x, y, r, a, n) {
     var distance = Number(measure(nowX, nowY, x, y));
     if (distance <= r) {
-        var list = a.classList;
         if ((a.paused)) {
             a.play();
             playing.innerHTML = n + " playing audio " + distance + " from " + a.id;
         }
-        if (a.volume < 1 && (a.classList[0] !== 'playing')) {
+        if ($(a).parents(".circle").attr("fade") == "center") {
+            a.volume = 1 - distance/r;
+            a.classList.add("playing");
+        }
+        else if (a.volume < 1 && (a.classList[0] !== 'playing')) {
             a.classList.add("playing");
             addVolume(a);
         }
     }
 
     if (distance > r && !(a.paused)) {
-        setTimeout(function () {
+         setTimeout(function () {
             distance = Number(measure(nowX, nowY, x, y));
             if (distance > r) {
-                var list = a.classList;
-                if ((!(a.paused)) && (a.classList[0] == 'playing')) {
+
+                  if ((!(a.paused)) && (a.classList[0] == 'playing')) {
                     a.classList.remove("playing");
                     playing.innerHTML = n + " pause audio " + distance + " from " + a.id;
                     decVolume(a);
