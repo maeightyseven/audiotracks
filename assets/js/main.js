@@ -32,15 +32,49 @@ for (var i = 0; i < audioObjs.length; ++i) {
 
 var shapes = [];
 
+
+
+const gainNode = audioCtx.createGain();
+
+const volumeControl = 1;
+gainNode.gain.value = volumeControl;
+ 
+
+// instigate our audio context
+
+// for cross browser
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+
+// load some sound
+const audioElement = document.querySelector('audio');
+const track = audioCtx.createMediaElementSource(audioElement);
+
+const audioElt = document.querySelector("audio");
+const pre = document.querySelector("pre");
+const button = document.querySelector("button");
+ const source = new MediaElementAudioSourceNode(audioCtx, {
+      mediaElement: audioElt,
+    });
+
+
+
+
+
+
+
+
+
 setInterval(function () {
     moving = 1;
-    video.play();
+    
 }, 500)
 
 function startGetLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
             dowdots();
+            video.play();
 
             if (ixy == 0) {
                 initX = position.coords.latitude.toFixed(decP);
@@ -378,3 +412,67 @@ addSourceToVideo(video, 'mp4', base64('video/mp4', 'AAAAHGZ0eXBpc29tAAACAGlzb21p
 
 // Append the video to where ever you need
 document.body.appendChild(video);
+
+
+
+if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+    console.log("enumerateDevices() not supported.");
+  } else {
+    // List cameras and microphones.
+    navigator.mediaDevices
+      .enumerateDevices()
+      .then((devices) => {
+        devices.forEach((device) => {
+          console.log(`${device.kind}: ${device.label} id = ${device.deviceId}`);
+        });
+      })
+      .catch((err) => {
+        console.log(`${err.name}: ${err.message}`);
+      });
+  }
+
+
+audioElt.addEventListener("play", () => {
+     // Set up AudioContext
+ 
+    // Create a MediaElementAudioSourceNode
+    // Feed the HTMLMediaElement into it
+    
+     source.connect(audioCtx.destination);
+    console.log(AudioContext.sinkId);
+
+     console.log(AudioContext.sinkId);
+
+    // Create a compressor node
+    const compressor = new DynamicsCompressorNode(audioCtx, {
+      threshold: -80,
+      knee: 0,
+      ratio: 20,
+      attack: 110,
+      release: 0.25,
+    });
+
+    // connect the AudioBufferSourceNode to the destination
+    source.disconnect(audioCtx.destination);
+    source.connect(compressor);
+    compressor.connect(audioCtx.destination);
+
+    button.onclick = () => {
+      const active = button.getAttribute("data-active");
+      if (active === "false") {
+        button.setAttribute("data-active", "true");
+        button.textContent = "Remove compression";
+
+        source.disconnect(audioCtx.destination);
+        source.connect(compressor);
+        compressor.connect(audioCtx.destination);
+      } else if (active === "true") {
+        button.setAttribute("data-active", "false");
+        button.textContent = "Add compression";
+
+        source.disconnect(compressor);
+        compressor.disconnect(audioCtx.destination);
+        source.connect(audioCtx.destination);
+      }
+    };
+});
