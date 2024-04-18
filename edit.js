@@ -5,7 +5,7 @@ const wdots = document.getElementById("wdots");
 const playing = document.getElementById("playing");
 const mainTitle = document.getElementById("mainTitle");
 
-var decP = 5; //decimal precision
+var decP = 6; //decimal precision
 
 var initX = 0;
 var initY = 0;
@@ -31,66 +31,124 @@ for (var i = 0; i < audioObjs.length; ++i) {
 }
 
 var shapes = [];
-
 setInterval(function () {
     moving = 1;
-}, 100)
+}, 500)
 
 function startGetLocation() {
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
-    circles.each(function () {
-        var x = $(this).attr("coord").split(",")[0];
-        var y = $(this).attr("coord").split(",")[1];
-        var r = $(this).attr("size");
-        var a = $(this).children("audio")[0];
-        var n = $(this).attr("id");
-        playCircle(x, y, r, a, n)
-    });
+    var context = new AudioContext();
 
-    polygons.each(function () {
-        var polyCoord = $(this).attr("coord");
-        var a = $(this).children("audio")[0];
-        var n = $(this).attr("id");
-        playPolygon(polyCoord, a, n);
-    });
-    dowdots();
-
-    if (ixy == 0) {
-        initX = 44.483334;
-        initY = 11.35375;
-        map = L.map('map').setView([initX, initY], 18);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
-
-        marker = L.marker([initX, initY]).addTo(map);
-        doCircleMap();
-        doPolygonMap();
-        ixy = ixy + 1;
+    function playSound(arr) {
+        var buf = new Float32Array(arr.length)
+        for (var i = 0; i < arr.length; i++) buf[i] = arr[i]
+        var buffer = context.createBuffer(1, buf.length, context.sampleRate)
+        buffer.copyToChannel(buf, 0)
+        var source = context.createBufferSource();
+        source.buffer = buffer;
+        source.connect(context.destination);
+        source.start(0);
     }
 
-    nowX = 44.483334;
-    nowY = 44.483334;
+    function sineWaveAt(sampleNumber, tone) {
+        var sampleFreq = context.sampleRate / tone
+        return Math.sin(sampleNumber / (sampleFreq / (Math.PI * 2)))
+    }
 
-    map.on('mousemove', function (ev) {
-            nowX = ev.latlng.lat.toFixed(decP);
-            nowY = ev.latlng.lng.toFixed(decP);
-            doAudioThings(nowX, nowY);
-            moving = 0;
-    });
+    var arr = [],
+        volume = 0.0,
+        seconds = 10,
+        tone = 441
 
-    map.on('click', function (ev) {
-        // Get the text field
-        var copyText  = ev.latlng.lat.toFixed(decP) + ", " + ev.latlng.lng.toFixed(decP);
-       
-        // Copy the text inside the text field
-        navigator.clipboard.writeText(copyText);
-        
-        // Alert the copied text
-        alert(copyText);
-       });
-}   
+    for (var i = 0; i < context.sampleRate * seconds; i++) {
+        arr[i] = sineWaveAt(i, tone) * volume
+    }
+
+    setInterval(function () {
+        playSound(arr);
+    }, 5000)
+
+    if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(function getPosition(position) {
+            dowdots();
+
+            if (ixy == 0) {
+                initX = position.coords.latitude.toFixed(decP);
+                initY = position.coords.longitude.toFixed(decP);
+                map = L.map('map').setView([initX, initY], 18);
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+
+                marker = L.marker([initX, initY]).addTo(map);
+                doCircleMap();
+                doPolygonMap();
+                ixy = ixy + 1;
+            }
+
+            if (moving == 1) {
+                nowX = position.coords.latitude.toFixed(decP);
+                nowY = position.coords.longitude.toFixed(decP);
+                doAudioThings(nowX, nowY);
+                moving = 0;
+            }
+
+
+        },
+
+            function (error) {
+                if (error.code == error.PERMISSION_DENIED)
+                    if (ixy == 0) {
+                        if ($("#mainTitle").attr("coord") !== "") {
+                            initX = $("#mainTitle").attr("coord").split(",")[0];
+                            initY = $("#mainTitle").attr("coord").split(",")[1];
+                        }
+                        else {
+                            initX = 0;
+                            initY = 0;
+                        }
+
+                        map = L.map('map').setView([initX, initY], 18);
+                        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            maxZoom: 19,
+                            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                        }).addTo(map);
+
+                        marker = L.marker([initX, initY]).addTo(map);
+                        doCircleMap();
+                        doPolygonMap();
+                        ixy = ixy + 1;
+                    }
+
+
+                if (moving == 1) {
+                    map.on('mousemove', function (ev) {
+                        nowX = ev.latlng.lat.toFixed(decP);
+                        nowY = ev.latlng.lng.toFixed(decP);
+                        doAudioThings(nowX, nowY);
+                        moving = 0;
+                    });
+                }
+
+                map.on('click', function (ev) {
+                    // Get the text field
+                    var copyText = ev.latlng.lat.toFixed(decP) + ", " + ev.latlng.lng.toFixed(decP);
+
+                    // Copy the text inside the text field
+                    navigator.clipboard.writeText(copyText);
+
+                    // Alert the copied text
+                    alert(copyText);
+                });
+                textXY.innerHTML = "you denied me :-(";
+            });
+    } else {
+        textXY.innerHTML = "Geolocation is not supported by this browser.";
+    }
+
+}
 
 
 function doAudioThings(nowX, nowY) {
@@ -103,7 +161,7 @@ function doAudioThings(nowX, nowY) {
         "<br>distance from STARTING POINT: " + measure(initX, initY, nowX, nowY) + "m";
 
     dothings.innerHTML = "Now Walk Around And Listen";
-   
+
 
     circles.each(function () {
         var x = $(this).attr("coord").split(",")[0];
@@ -126,63 +184,72 @@ function doAudioThings(nowX, nowY) {
 
 function decVolume(a, t) {
     if (a.classList[0] !== 'playing') {
-    var Vcent = Math.round(a.volume*100);
+        var Vcent = Math.round(a.volume * 100);
         Vcent = Vcent - 1;
-        a.volume = (Math.round(Vcent) / 100).toFixed(2);
-            setTimeout(function () {
-                if (Vcent > 1) {
-                    decVolume(a);
-                } else {
-                    a.volume = 0;
-                    a.pause();
-                    a.currentTime = 0;
-                }
-            }, 10);
-        }
+        a.volume = (Math.round(Vcent) / 100).toFixed(6);
+        setTimeout(function () {
+            if (Vcent > 1) {
+                decVolume(a);
+            } else {
+                a.volume = 0;
+                a.pause();
+                a.currentTime = 0;
+            }
+        }, 10);
+    }
 }
 // When volume at zero stop all the intervalling
 function addVolume(a, t) {
     if (a.classList[0] == 'playing') {
 
-    var Vcent = Math.round(a.volume*100);
-    Vcent = Vcent + 1;
-    a.volume = (Math.round(Vcent) / 100).toFixed(2);
-    
-    setTimeout(function () {
-        if (Vcent < 99) {
-            addVolume(a);
-        }
-    }, 10);
-}
+        var Vcent = Math.round(a.volume * 100);
+        Vcent = Vcent + 1;
+        a.volume = (Math.round(Vcent) / 100).toFixed(6);
+        setTimeout(function () {
+            if (Vcent < 99) {
+                addVolume(a);
+            }
+        }, 10);
+    }
 }
 
 function playCircle(x, y, r, a, n) {
     var distance = Number(measure(nowX, nowY, x, y));
     if (distance <= r) {
-        var list = a.classList;
         if ((a.paused)) {
             a.play();
-             playing.innerHTML = n + " playing audio " + distance + " from " + a.id;
+            playing.innerHTML = n + " playing audio " + distance + " from " + a.id;
         }
-        if (a.volume < 1 && (a.classList[0] !== 'playing')) {
+        if ($(a).parents(".circle").attr("fade") == "center") {
+            a.volume = (1 - distance / r).toFixed(6);
+            //    console.log(a.volume);
+            a.classList.add("playing");
+        }
+        else if (a.volume < 1 && (a.classList[0] !== 'playing')) {
             a.classList.add("playing");
             addVolume(a);
         }
     }
 
     if (distance > r && !(a.paused)) {
-        setTimeout(function () {
-            distance = Number(measure(nowX, nowY, x, y));
-            if (distance > r ) {
-                var list = a.classList;
-                if ((!(a.paused)) && (a.classList[0] == 'playing')) {
-                    a.classList.remove("playing");
-                    playing.innerHTML = n + " pause audio " + distance + " from " + a.id;
-                    decVolume(a);
-                    // Only fade if past the fade out point or not at zero already            
+        if ($(a).parents(".circle").attr("fade") == "center") {
+            a.volume = 0.0;
+            a.classList.remove("playing");
+            a.pause();
+        }
+        else {
+            setTimeout(function () {
+                distance = Number(measure(nowX, nowY, x, y));
+                if (distance > r) {
+                    if ((!(a.paused)) && (a.classList[0] == 'playing')) {
+                        a.classList.remove("playing");
+                        playing.innerHTML = n + " pause audio " + distance + " from " + a.id;
+                        decVolume(a);
+                        // Only fade if past the fade out point or not at zero already            
+                    }
                 }
-            }
-        }, 2000);
+            }, 2000);
+        }
     }
 }
 
@@ -217,7 +284,7 @@ function playPolygon(pointList, a, n) {
             var polyCoord = JSON.parse(pointList);
             if (!(rayCasting(XYmem, polyCoord))) {
                 var list = a.classList;
-                 if ((!(a.paused)) && (a.classList[0] == 'playing')) {
+                if ((!(a.paused)) && (a.classList[0] == 'playing')) {
                     a.classList.remove("playing");
                     playing.innerHTML = n + " pause audio " + " from " + a.id;
                     decVolume(a);
@@ -239,7 +306,7 @@ function measure(lat1, lon1, lat2, lon2) {  // generally used geo measurement fu
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c;
     var dm = d * 1000; // meters
-    return dm.toFixed(2);
+    return dm.toFixed(decP);
 }
 
 function rayCasting(point, polygon) {
@@ -316,5 +383,4 @@ function dowdots() {
         }
     }, 500);
 }
-
 

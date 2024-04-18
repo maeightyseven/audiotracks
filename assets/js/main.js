@@ -33,11 +33,42 @@ for (var i = 0; i < audioObjs.length; ++i) {
 var shapes = [];
 setInterval(function () {
     moving = 1;
-
 }, 500)
 
 function startGetLocation() {
-    silenceConstAudio.play();
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+    var context = new AudioContext();
+
+    function playSound(arr) {
+        var buf = new Float32Array(arr.length)
+        for (var i = 0; i < arr.length; i++) buf[i] = arr[i]
+        var buffer = context.createBuffer(1, buf.length, context.sampleRate)
+        buffer.copyToChannel(buf, 0)
+        var source = context.createBufferSource();
+        source.buffer = buffer;
+        source.connect(context.destination);
+        source.start(0);
+    }
+
+    function sineWaveAt(sampleNumber, tone) {
+        var sampleFreq = context.sampleRate / tone
+        return Math.sin(sampleNumber / (sampleFreq / (Math.PI * 2)))
+    }
+
+    var arr = [],
+        volume = 0.0,
+        seconds = 10,
+        tone = 441
+
+    for (var i = 0; i < context.sampleRate * seconds; i++) {
+        arr[i] = sineWaveAt(i, tone) * volume
+    }
+
+    setInterval(function () {
+        playSound(arr);
+    }, 5000)
+
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
             dowdots();
@@ -191,7 +222,7 @@ function playCircle(x, y, r, a, n) {
         }
         if ($(a).parents(".circle").attr("fade") == "center") {
             a.volume = (1 - distance / r).toFixed(6);
-        //    console.log(a.volume);
+            //    console.log(a.volume);
             a.classList.add("playing");
         }
         else if (a.volume < 1 && (a.classList[0] !== 'playing')) {
@@ -353,14 +384,3 @@ function dowdots() {
     }, 500);
 }
 
-// Create the root video element
-var silenceConstAudio = document.createElement('audio');
-silenceConstAudio.setAttribute('loop', '');
-document.body.appendChild(silenceConstAudio);
-
-// Add some styles if needed
-// A helper to add sources to audio
-    var sourceSilence = document.createElement('source');
-    sourceSilence.src = 'Suoni/silence.mp3';
-    sourceSilence.setAttribute('type', 'audio/mp3');
-    silenceConstAudio.appendChild(sourceSilence);
