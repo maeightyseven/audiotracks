@@ -21,9 +21,10 @@ var moving = 1;
 var circles = $(".circle");
 var polygons = $(".polygon");
 
+var snapTime = 3000;
+
 var audioObjs = $("audio");
 for (var i = 0; i < audioObjs.length; ++i) {
-    // audioObjs[i].loop = true;
     audioObjs[i].id = "audio" + i;
     audioObjs[i].pause();
     audioObjs[i].volume = 0.0;
@@ -88,12 +89,12 @@ function startGetLocation() {
                 ixy = ixy + 1;
             }
 
-            if (moving == 1) {
                 nowX = position.coords.latitude.toFixed(decP);
                 nowY = position.coords.longitude.toFixed(decP);
+                nowXbis = position.coords.latitude.toFixed(decP);
+                nowYbis = position.coords.longitude.toFixed(decP);
                 doAudioThings(nowX, nowY);
                 moving = 0;
-            }
 
 
         },
@@ -122,15 +123,15 @@ function startGetLocation() {
                         ixy = ixy + 1;
                     }
 
-
-                if (moving == 1) {
-                    map.on('mousemove', function (ev) {
+                map.on('mousemove', function (ev) {
                         nowX = ev.latlng.lat.toFixed(decP);
                         nowY = ev.latlng.lng.toFixed(decP);
+                        nowXbis = ev.latlng.lat.toFixed(decP);
+                        nowYbis = ev.latlng.lng.toFixed(decP);
                         doAudioThings(nowX, nowY);
                         moving = 0;
-                    });
-                }
+                });
+
 
                 map.on('click', function (ev) {
                     // Get the text field
@@ -182,38 +183,61 @@ function doAudioThings(nowX, nowY) {
 
 }
 
-function decVolume(a, t) {
+function decVolume(a) {
     if (a.classList[0] !== 'playing') {
-        var Vcent = Math.round(a.volume * 100);
-        Vcent = Vcent - 1;
-        a.volume = (Math.round(Vcent) / 100).toFixed(6);
-        setTimeout(function () {
-            if (Vcent > 1) {
-                decVolume(a);
-            } else {
-                a.volume = 0;
-                a.pause();
+        var t = 0;
+        if (a.parentElement.hasAttribute("fadeout")) {
+            t = Number(a.parentElement.attributes.fadeout.value);
+
+            var decT = t / 100;
+            var Vcent = Math.round(a.volume * 100);
+            Vcent = Vcent - 1;
+            a.volume = (Math.round(Vcent) / 100).toFixed(6);
+            setTimeout(function () {
+                if (Vcent > 1) {
+                    decVolume(a);
+                } else {
+                    a.volume = 0;
+                    a.pause();
+                    a.currentTime = 0;
+                }
+            }, decT);
+        }
+        else {
+            a.pause();
+            a.volume = 0;
+            if (!(a.hasAttribute("loop"))) {
                 a.currentTime = 0;
             }
-        }, 10);
+        }
     }
 }
 // When volume at zero stop all the intervalling
-function addVolume(a, t) {
-    if (a.classList[0] == 'playing') {
+function addVolume(a) {
 
-        var Vcent = Math.round(a.volume * 100);
-        Vcent = Vcent + 1;
-        a.volume = (Math.round(Vcent) / 100).toFixed(6);
-        setTimeout(function () {
-            if (Vcent < 99) {
-                addVolume(a);
-            }
-        }, 10);
+    if (a.classList[0] == 'playing') {
+        var t = 0;
+        if (a.parentElement.hasAttribute("fadein")) {
+            t = Number(a.parentElement.attributes.fadein.value);
+
+            var addT = t / 100;
+            var Vcent = Math.round(a.volume * 100);
+            Vcent = Vcent + 1;
+            a.volume = (Math.round(Vcent) / 100).toFixed(6);
+            setTimeout(function () {
+                if (Vcent < 99) {
+                    addVolume(a);
+                }
+            }, addT);
+        }
+        else {
+            a.volume = 1;
+        }
     }
 }
 
 function playCircle(x, y, r, a, n) {
+    var t = 10
     var distance = Number(measure(nowX, nowY, x, y));
     if (distance <= r) {
         if ((a.paused)) {
@@ -226,6 +250,7 @@ function playCircle(x, y, r, a, n) {
             a.classList.add("playing");
         }
         else if (a.volume < 1 && (a.classList[0] !== 'playing')) {
+
             a.classList.add("playing");
             addVolume(a);
         }
@@ -238,6 +263,7 @@ function playCircle(x, y, r, a, n) {
             a.pause();
         }
         else {
+
             setTimeout(function () {
                 distance = Number(measure(nowX, nowY, x, y));
                 if (distance > r) {
@@ -248,13 +274,14 @@ function playCircle(x, y, r, a, n) {
                         // Only fade if past the fade out point or not at zero already            
                     }
                 }
-            }, 2000);
+            }, snapTime);
         }
     }
 }
 
 function playPolygon(pointList, a, n) {
     var point = [];
+    var t = 10;
     // console.log(pointList);
     var polyCoord = JSON.parse(pointList);
     point.push(nowX);
@@ -262,7 +289,6 @@ function playPolygon(pointList, a, n) {
     //  console.log(rayCasting(point, polyCoord));
     if (rayCasting(point, polyCoord)) {
         if ((a.paused)) {
-            var list = a.classList;
             a.play();
             playing.innerHTML = n + " playing audio " + " from " + a.id;
         }
@@ -273,17 +299,11 @@ function playPolygon(pointList, a, n) {
     }
 
     if (!(rayCasting(point, polyCoord)) && !(a.paused)) {
-        var XYmem = [];
         setTimeout(function () {
-
-            if (XYmem.length = 0) {
-                XYmem.push(nowX);
-                XYmem.push(nowY);
-            }
-            // console.log(pointList);
-            var polyCoord = JSON.parse(pointList);
-            if (!(rayCasting(XYmem, polyCoord))) {
-                var list = a.classList;
+            var newXY = [];
+            newXY.push(nowXbis);
+            newXY.push(nowYbis);
+            if (!(rayCasting(newXY, polyCoord))) {
                 if ((!(a.paused)) && (a.classList[0] == 'playing')) {
                     a.classList.remove("playing");
                     playing.innerHTML = n + " pause audio " + " from " + a.id;
@@ -291,7 +311,7 @@ function playPolygon(pointList, a, n) {
                     // Only fade if past the fade out point or not at zero already            
                 }
             }
-        }, 2000)
+        }, snapTime)
     }
 }
 
