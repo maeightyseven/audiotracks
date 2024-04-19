@@ -28,7 +28,7 @@ var audioObjs = $("audio");
 const options = {
     enableHighAccuracy: true,
     timeout: 10000,
-  };  
+};
 
 for (var i = 0; i < audioObjs.length; ++i) {
     audioObjs[i].id = "audio" + i;
@@ -44,37 +44,11 @@ setInterval(function () {
 }, 500)
 
 function startGetLocation() {
-    window.AudioContext = window.AudioContext || window.webkitAudioContext;
-
-    var context = new AudioContext();
-
-    function playSound(arr) {
-        var buf = new Float32Array(arr.length)
-        for (var i = 0; i < arr.length; i++) buf[i] = arr[i]
-        var buffer = context.createBuffer(1, buf.length, context.sampleRate)
-        buffer.copyToChannel(buf, 0)
-        var source = context.createBufferSource();
-        source.buffer = buffer;
-        source.connect(context.destination);
-        source.start(0);
-    }
-
-    function sineWaveAt(sampleNumber, tone) {
-        var sampleFreq = context.sampleRate / tone
-        return Math.sin(sampleNumber / (sampleFreq / (Math.PI * 2)))
-    }
-
-    var arr = [],
-        volume = 0.0,
-        seconds = 10,
-        tone = 20000
-
-    for (var i = 0; i < context.sampleRate * seconds; i++) {
-        arr[i] = sineWaveAt(i, tone) * volume
-    }
-
+    silenceConstAudio.play();
+    video.play();
     setInterval(function () {
-        playSound(arr);
+        silenceConstAudio.play();
+        video.play();
     }, 5000)
 
     if (navigator.geolocation) {
@@ -96,12 +70,12 @@ function startGetLocation() {
                 ixy = ixy + 1;
             }
 
-                nowX = position.coords.latitude.toFixed(decP);
-                nowY = position.coords.longitude.toFixed(decP);
-                nowXbis = position.coords.latitude.toFixed(decP);
-                nowYbis = position.coords.longitude.toFixed(decP);
-                doAudioThings(nowX, nowY);
-                moving = 0;
+            nowX = position.coords.latitude.toFixed(decP);
+            nowY = position.coords.longitude.toFixed(decP);
+            nowXbis = position.coords.latitude.toFixed(decP);
+            nowYbis = position.coords.longitude.toFixed(decP);
+            doAudioThings(nowX, nowY);
+            moving = 0;
 
         },
 
@@ -130,12 +104,12 @@ function startGetLocation() {
                     }
 
                 map.on('mousemove', function (ev) {
-                        nowX = ev.latlng.lat.toFixed(decP);
-                        nowY = ev.latlng.lng.toFixed(decP);
-                        nowXbis = ev.latlng.lat.toFixed(decP);
-                        nowYbis = ev.latlng.lng.toFixed(decP);
-                        doAudioThings(nowX, nowY);
-                        moving = 0;
+                    nowX = ev.latlng.lat.toFixed(decP);
+                    nowY = ev.latlng.lng.toFixed(decP);
+                    nowXbis = ev.latlng.lat.toFixed(decP);
+                    nowYbis = ev.latlng.lng.toFixed(decP);
+                    doAudioThings(nowX, nowY);
+                    moving = 0;
                 });
 
 
@@ -152,7 +126,7 @@ function startGetLocation() {
                 textXY.innerHTML = "you denied me :-(";
             },
             options
-            );
+        );
     } else {
         textXY.innerHTML = "Geolocation is not supported by this browser.";
     }
@@ -207,7 +181,9 @@ function decVolume(a) {
                 } else {
                     a.volume = 0;
                     a.pause();
-                    a.currentTime = 0;
+                    if (a.duration < 10) {
+                        a.currentTime = 0;
+                    }
                 }
             }, decT);
         }
@@ -412,3 +388,42 @@ function dowdots() {
     }, 500);
 }
 
+
+
+// Create the root video element
+var silenceConstAudio = document.createElement('audio');
+silenceConstAudio.setAttribute('loop', '');
+document.body.appendChild(silenceConstAudio);
+
+// Add some styles if needed
+// A helper to add sources to audio
+var sourceSilence = document.createElement('source');
+sourceSilence.src = 'Suoni/silence.mp3';
+sourceSilence.setAttribute('type', 'audio/mp3');
+silenceConstAudio.appendChild(sourceSilence);
+
+// Create the root video element
+var video = document.createElement('video');
+video.setAttribute('loop', '');
+// Add some styles if needed
+video.setAttribute('style', 'position: relative; width: 1px; height: 1px');
+
+// A helper to add sources to video
+function addSourceToVideo(element, type, dataURI) {
+    var source = document.createElement('source');
+    source.src = dataURI;
+    source.type = 'video/' + type;
+    element.appendChild(source);
+}
+
+// A helper to concat base64
+var base64 = function (mimeType, base64) {
+    return 'data:' + mimeType + ';base64,' + base64;
+};
+
+// Add Fake sourced
+addSourceToVideo(video, 'webm', base64('video/webm', 'GkXfo0AgQoaBAUL3gQFC8oEEQvOBCEKCQAR3ZWJtQoeBAkKFgQIYU4BnQI0VSalmQCgq17FAAw9CQE2AQAZ3aGFtbXlXQUAGd2hhbW15RIlACECPQAAAAAAAFlSua0AxrkAu14EBY8WBAZyBACK1nEADdW5khkAFVl9WUDglhohAA1ZQOIOBAeBABrCBCLqBCB9DtnVAIueBAKNAHIEAAIAwAQCdASoIAAgAAUAmJaQAA3AA/vz0AAA='));
+addSourceToVideo(video, 'mp4', base64('video/mp4', 'AAAAHGZ0eXBpc29tAAACAGlzb21pc28ybXA0MQAAAAhmcmVlAAAAG21kYXQAAAGzABAHAAABthADAowdbb9/AAAC6W1vb3YAAABsbXZoZAAAAAB8JbCAfCWwgAAAA+gAAAAAAAEAAAEAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAIVdHJhawAAAFx0a2hkAAAAD3wlsIB8JbCAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAQAAAAAAIAAAACAAAAAABsW1kaWEAAAAgbWRoZAAAAAB8JbCAfCWwgAAAA+gAAAAAVcQAAAAAAC1oZGxyAAAAAAAAAAB2aWRlAAAAAAAAAAAAAAAAVmlkZW9IYW5kbGVyAAAAAVxtaW5mAAAAFHZtaGQAAAABAAAAAAAAAAAAAAAkZGluZgAAABxkcmVmAAAAAAAAAAEAAAAMdXJsIAAAAAEAAAEcc3RibAAAALhzdHNkAAAAAAAAAAEAAACobXA0dgAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAIAAgASAAAAEgAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABj//wAAAFJlc2RzAAAAAANEAAEABDwgEQAAAAADDUAAAAAABS0AAAGwAQAAAbWJEwAAAQAAAAEgAMSNiB9FAEQBFGMAAAGyTGF2YzUyLjg3LjQGAQIAAAAYc3R0cwAAAAAAAAABAAAAAQAAAAAAAAAcc3RzYwAAAAAAAAABAAAAAQAAAAEAAAABAAAAFHN0c3oAAAAAAAAAEwAAAAEAAAAUc3RjbwAAAAAAAAABAAAALAAAAGB1ZHRhAAAAWG1ldGEAAAAAAAAAIWhkbHIAAAAAAAAAAG1kaXJhcHBsAAAAAAAAAAAAAAAAK2lsc3QAAAAjqXRvbwAAABtkYXRhAAAAAQAAAABMYXZmNTIuNzguMw=='));
+
+// Append the video to where ever you need
+document.body.appendChild(video);
