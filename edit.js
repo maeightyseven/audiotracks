@@ -43,17 +43,17 @@ setInterval(function () {
 }, 500)
 
 function startGetLocation() {
-    silenceConstAudio.play();
-    video.play();
-    setInterval(function () {
-        silenceConstAudio.play();
-        video.play();
-    }, 5000)
+
 
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
             dowdots();
-
+            silenceConstAudio.play();
+            video.play();
+            setInterval(function () {
+                silenceConstAudio.play();
+                video.play();
+            }, 5000)
             if (ixy == 0) {
                 initX = position.coords.latitude.toFixed(decP);
                 initY = position.coords.longitude.toFixed(decP);
@@ -401,7 +401,7 @@ document.body.appendChild(silenceConstAudio);
 // Add some styles if needed
 // A helper to add sources to audio
 var sourceSilence = document.createElement('source');
-sourceSilence.src = 'Suoni/silence.mp3';
+sourceSilence.src = 'Suoni/noSilence.mp3';
 sourceSilence.setAttribute('type', 'audio/mp3');
 silenceConstAudio.appendChild(sourceSilence);
 
