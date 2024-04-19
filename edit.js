@@ -34,7 +34,6 @@ for (var i = 0; i < audioObjs.length; ++i) {
     audioObjs[i].id = "audio" + i;
     audioObjs[i].pause();
     audioObjs[i].volume = 0.0;
-    audioObjs[i].controls = true;
 }
 
 var shapes = [];
@@ -82,6 +81,10 @@ function startGetLocation() {
             function (error) {
                 if (error.code == error.PERMISSION_DENIED)
                     if (ixy == 0) {
+
+                        for (var i = 0; i < audioObjs.length; ++i) {
+                            audioObjs[i].controls = true;
+                        }
                         if ($("#mainTitle").attr("coord") !== "") {
                             initX = $("#mainTitle").attr("coord").split(",")[0];
                             initY = $("#mainTitle").attr("coord").split(",")[1];
