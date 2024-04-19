@@ -43,17 +43,18 @@ setInterval(function () {
 }, 500)
 
 function startGetLocation() {
+
     silenceConstAudio.play();
     video.play();
     setInterval(function () {
         silenceConstAudio.play();
         video.play();
     }, 5000)
-
+    
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
             dowdots();
-           
+            
             if (ixy == 0) {
                 initX = position.coords.latitude.toFixed(decP);
                 initY = position.coords.longitude.toFixed(decP);
