@@ -24,6 +24,12 @@ var polygons = $(".polygon");
 var snapTime = 3000;
 
 var audioObjs = $("audio");
+
+const options = {
+    enableHighAccuracy: true,
+    timeout: 10000,
+  };  
+
 for (var i = 0; i < audioObjs.length; ++i) {
     audioObjs[i].id = "audio" + i;
     audioObjs[i].pause();
@@ -32,6 +38,7 @@ for (var i = 0; i < audioObjs.length; ++i) {
 }
 
 var shapes = [];
+
 setInterval(function () {
     moving = 1;
 }, 500)
@@ -60,7 +67,7 @@ function startGetLocation() {
     var arr = [],
         volume = 0.0,
         seconds = 10,
-        tone = 441
+        tone = 20000
 
     for (var i = 0; i < context.sampleRate * seconds; i++) {
         arr[i] = sineWaveAt(i, tone) * volume
@@ -95,7 +102,6 @@ function startGetLocation() {
                 nowYbis = position.coords.longitude.toFixed(decP);
                 doAudioThings(nowX, nowY);
                 moving = 0;
-
 
         },
 
@@ -144,7 +150,9 @@ function startGetLocation() {
                     alert(copyText);
                 });
                 textXY.innerHTML = "you denied me :-(";
-            });
+            },
+            options
+            );
     } else {
         textXY.innerHTML = "Geolocation is not supported by this browser.";
     }
@@ -206,7 +214,7 @@ function decVolume(a) {
         else {
             a.pause();
             a.volume = 0;
-            if (!(a.hasAttribute("loop"))) {
+            if (a.duration < 10) {
                 a.currentTime = 0;
             }
         }
