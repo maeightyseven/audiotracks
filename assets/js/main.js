@@ -431,3 +431,49 @@ addSourceToVideo(video, 'mp4', base64('video/mp4', 'AAAAHGZ0eXBpc29tAAACAGlzb21p
 
 // Append the video to where ever you need
 document.body.appendChild(video);
+
+
+const compassCircle = document.querySelector(".compass-circle");
+const startBtn = document.querySelector(".start-btn");
+const myPoint = document.querySelector(".my-point");
+let compass;
+const isIOS = !(
+  navigator.userAgent.match(/(iPod|iPhone|iPad)/) &&
+  navigator.userAgent.match(/AppleWebKit/)
+);
+
+function init() {
+  startBtn.addEventListener("click", startCompass);
+}
+
+function startCompass() {
+  if (isIOS) {
+    DeviceOrientationEvent.requestPermission()
+      .then((response) => {
+        if (response === "granted") {
+          window.addEventListener("deviceorientation", handler, true);
+        } else {
+          alert("has to be allowed!");
+        }
+      })
+      .catch(() => alert("not supported"));
+  } else {
+    window.addEventListener("deviceorientationabsolute", handler, true);
+  }
+}
+
+function handler(e) {
+  compass = e.webkitCompassHeading || Math.abs(e.alpha - 360);
+  compassCircle.style.transform = `translate(-50%, -50%) rotate(${-compass}deg)`;
+}
+
+// init();
+
+
+window.addEventListener("deviceorientation", handleOrientation);
+
+function handleOrientation(event) {
+    let x = event.beta; // In degree in the range [-180,180)
+    let y = event.gamma; // In degree in the range [-90,90)
+    textXY.innerHTML = "orientation: " + event.beta;
+}  
