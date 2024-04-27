@@ -475,5 +475,5 @@ window.addEventListener("deviceorientation", handleOrientation);
 function handleOrientation(event) {
     let x = event.beta; // In degree in the range [-180,180)
     let y = event.gamma; // In degree in the range [-90,90)
-    textXY.innerHTML = "orientation: " + event.beta;
+    textXY.innerHTML = "orientation: " + event.alpha;
 }  
