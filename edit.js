@@ -51,7 +51,6 @@ setInterval(function () {
 
 function startGetLocation() {
 
-    videoPixel.play();
     setInterval(function () {
         if (videoPixel) {
         videoPixel.play();
@@ -443,7 +442,6 @@ function doPolygonMap() {
         }
     });
 }
-
 
 function dowdots() {
     var tdots = "";
