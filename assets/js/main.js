@@ -17,14 +17,19 @@ var marker;
 var map;
 
 var moving = 1;
+var clk = 1;
+
+var audioCtx;
 
 var circles = $(".circle");
 var polygons = $(".polygon");
+var points = $(".point");
+
 
 var snapTime = 3000;
+var alphaDir = 0;
 
 var audioObjs = $("audio");
-
 const options = {
     enableHighAccuracy: true,
     timeout: 10000,
@@ -50,11 +55,11 @@ function startGetLocation() {
         silenceConstAudio.play();
         video.play();
     }, 5000)
-    
+
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
             dowdots();
-            
+
             if (ixy == 0) {
                 initX = position.coords.latitude.toFixed(decP);
                 initY = position.coords.longitude.toFixed(decP);
@@ -64,9 +69,11 @@ function startGetLocation() {
                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(map);
 
-                marker = L.marker([initX, initY]).addTo(map);
-                doCircleMap();
+                 marker = L.marker([initX, initY]).addTo(map);
+                 doCircleMap();
                 doPolygonMap();
+                doPointMap();
+
                 ixy = ixy + 1;
             }
 
@@ -104,6 +111,7 @@ function startGetLocation() {
                         marker = L.marker([initX, initY]).addTo(map);
                         doCircleMap();
                         doPolygonMap();
+                        doPointMap();
                         ixy = ixy + 1;
                     }
 
@@ -157,6 +165,15 @@ function doAudioThings(nowX, nowY) {
         var a = $(this).children("audio")[0];
         var n = $(this).attr("id");
         playCircle(x, y, r, a, n)
+    });
+
+    points.each(function () {
+        var x = $(this).attr("coord").split(",")[0];
+        var y = $(this).attr("coord").split(",")[1];
+        var r = $(this).attr("size");
+        var a = $(this).children("audio")[0];
+        var n = $(this).attr("id");
+        playPoint(x, y, r, a, n)
     });
 
     polygons.each(function () {
@@ -222,6 +239,65 @@ function addVolume(a) {
             a.volume = 1;
         }
     }
+}
+function playPoint(x, y, r, a, n) {
+    // var distance = Number(measure(nowX, nowY, x, y));
+    // if (distance <= r) {
+    //     if ((a.paused)) {
+    //         a.play();
+    //         playing.innerHTML = n + " playing audio " + distance + " from " + a.id;
+    //     }
+    //         a.volume = (1 - distance / r).toFixed(6);
+    //         //    console.log(a.volume);
+    
+
+    //     var source;
+    //     a.volume = 1;
+    //     audioCtx = new AudioContext();
+    //     if (!audioCtx) {
+    //         audioCtx = new AudioContext();
+
+    //     }
+    //     if (!source) {
+
+    //         source = audioCtx.createMediaElementSource(a);
+    //     }
+
+    //     // Create a MediaElementAudioSourceNode
+    //     // Feed the HTMLMediaElement into it
+
+
+    //     var panNode = new StereoPannerNode(audioCtx);
+    //     var gainNode = audioCtx.createGain();
+    //     a.classList.add("playing");
+
+    //     if ((a.classList[0] == 'playing')) {
+    //         var dy = nowY - y;
+    //         var dx = nowX - x;
+    //         var theta = Math.atan2(dy, dx); // range (-PI, PI]
+    //         theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
+            
+    //     var vAngle = theta.toFixed(2);
+
+    //     var  panValue = Math.sin(vAngle).toFixed(2);
+    //     // Create audio context if it doesn't already exist
+    //     // We can do this as their has been some user interaction
+    //     gainNode.gain.value = (1 - distance / r).toFixed(6);
+    //     // Event handler function to increase panning to the right and left
+    //     // when the slider is moved
+
+
+    //     // connect the AudioBufferSourceNode to the gainNode
+    //     // and the gainNode to the destination, so we can play the
+    //     // music and adjust the panning using the controls
+
+
+    //     panNode.pan.value = panValue;
+    //     console.log(panValue);
+    //     console.log(panNode.pan.value);
+    //     source.connect(gainNode).connect(panNode).connect(audioCtx.destination);
+    //     }
+    // }
 }
 
 function playCircle(x, y, r, a, n) {
@@ -381,6 +457,27 @@ function doPolygonMap() {
     });
 }
 
+function doPointMap() {
+    // var cShapes = [];
+    // points.each(function () {
+    //     var x = $(this).attr("coord").split(",")[0];
+    //     var y = $(this).attr("coord").split(",")[1];
+    //     var r = $(this).attr("size");
+    //     var a = $(this).children("audio")[0];
+    //     var name = $(this).attr("id");
+    //     var c = $(this).parents(".zone").attr("color");
+    //     const n = points.length;
+    //     for (var i = 0; i < n; ++i) {
+    //         cShapes[i] = L.circle([x, y], {
+    //             color: c,
+    //             fillColor: c,
+    //             fillOpacity: 0.1,
+    //             radius: r
+    //         }).addTo(map);
+    //     }
+    // });
+}
+
 function dowdots() {
     var tdots = "";
     setInterval(function () {
@@ -438,43 +535,45 @@ const startBtn = document.querySelector(".start-btn");
 const myPoint = document.querySelector(".my-point");
 let compass;
 const isIOS = !(
-  navigator.userAgent.match(/(iPod|iPhone|iPad)/) &&
-  navigator.userAgent.match(/AppleWebKit/)
+    navigator.userAgent.match(/(iPod|iPhone|iPad)/) &&
+    navigator.userAgent.match(/AppleWebKit/)
 );
 
 function init() {
-  startBtn.addEventListener("click", startCompass);
+    startBtn.addEventListener("click", startCompass);
 }
 
 function startCompass() {
-  if (isIOS) {
-    DeviceOrientationEvent.requestPermission()
-      .then((response) => {
-        if (response === "granted") {
-          window.addEventListener("deviceorientation", handler, true);
-        } else {
-          alert("has to be allowed!");
-        }
-      })
-      .catch(() => alert("not supported"));
-  } else {
-    window.addEventListener("deviceorientationabsolute", handler, true);
-  }
+    if (isIOS) {
+        DeviceOrientationEvent.requestPermission()
+            .then((response) => {
+                if (response === "granted") {
+                    window.addEventListener("deviceorientation", handler, true);
+                } else {
+                    alert("has to be allowed!");
+                }
+            })
+            .catch(() => alert("not supported"));
+    } else {
+        window.addEventListener("deviceorientationabsolute", handler, true);
+    }
 }
 
 function handler(e) {
-  compass = e.webkitCompassHeading || Math.abs(e.alpha - 360);
-  compassCircle.style.transform = `translate(-50%, -50%) rotate(${-compass}deg)`;
+    compass = e.webkitCompassHeading || Math.abs(e.alpha - 360);
+    compassCircle.style.transform = `translate(-50%, -50%) rotate(${-compass}deg)`;
 }
 
 // init();
 
 
-window.addEventListener("deviceorientation", handleOrientation);
+// window.addEventListener("deviceorientation", handleOrientation);
 
-function handleOrientation(event) {
-    let x = event.beta; // In degree in the range [-180,180)
-    let y = event.gamma; // In degree in the range [-90,90)
-    textXY.innerHTML = "orientation: alpha " + event.alpha;
+// function handleOrientation(event) {
+//     if (clk == 1) {
+//         clk = 0;
+//         alphaDir = event.alpha; // In degree in the range [0,360)
+//         textXY.innerHTML = "orientation: alpha " + event.alpha;
+//     }
+// }
 
-}  
