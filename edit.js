@@ -90,9 +90,9 @@ function startGetLocation() {
                 if (error.code == error.PERMISSION_DENIED) {
                     if (ixy == 0) {
 
-                        if ($("#mainTitle").hasAttribute("coord")) {
-                            initX = $("#mainTitle").attr("coord").split(",")[0];
-                            initY = $("#mainTitle").attr("coord").split(",")[1];
+                        if (document.querySelector("#mainTitle").hasAttribute("coord")) {
+                            initX = document.querySelector("#mainTitle").attr("coord").split(",")[0];
+                            initY = document.querySelector("#mainTitle").attr("coord").split(",")[1];
                         }
                         else {
                             initX = 44.483273 ;
