@@ -69,8 +69,8 @@ function startGetLocation() {
                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(map);
 
-                 marker = L.marker([initX, initY]).addTo(map);
-                 doCircleMap();
+                marker = L.marker([initX, initY]).addTo(map);
+                doCircleMap();
                 doPolygonMap();
                 doPointMap();
 
@@ -249,7 +249,7 @@ function playPoint(x, y, r, a, n) {
     //     }
     //         a.volume = (1 - distance / r).toFixed(6);
     //         //    console.log(a.volume);
-    
+
 
     //     var source;
     //     a.volume = 1;
@@ -276,7 +276,7 @@ function playPoint(x, y, r, a, n) {
     //         var dx = nowX - x;
     //         var theta = Math.atan2(dy, dx); // range (-PI, PI]
     //         theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
-            
+
     //     var vAngle = theta.toFixed(2);
 
     //     var  panValue = Math.sin(vAngle).toFixed(2);
@@ -300,13 +300,28 @@ function playPoint(x, y, r, a, n) {
     // }
 }
 
+function playAudio(a) {
+    a.play();
+}
+
+function pauseAudio(a) {
+    a.pause();
+}
+
 function playCircle(x, y, r, a, n) {
-    var t = 10
     var distance = Number(measure(nowX, nowY, x, y));
     if (distance <= r) {
         if ((a.paused)) {
-            a.play();
-            playing.innerHTML = n + " playing audio " + distance + " from " + a.id;
+            if (a.parentElement.parentElement.hasAttribute("group")) {
+                var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
+                for (var i = 0; i < groupAudio; i++) {
+                    playAudio(a.parentElement.parentElement.querySelectorAll('audio')[i]);
+                }
+            }
+            else {
+                a.play();
+                playing.innerHTML = n + " playing audio " + distance + " from " + a.id;
+            }
         }
         if ($(a).parents(".circle").attr("fade") == "center") {
             a.volume = (1 - distance / r).toFixed(6);
@@ -314,7 +329,6 @@ function playCircle(x, y, r, a, n) {
             a.classList.add("playing");
         }
         else if (a.volume < 1 && (a.classList[0] !== 'playing')) {
-
             a.classList.add("playing");
             addVolume(a);
         }
@@ -324,7 +338,17 @@ function playCircle(x, y, r, a, n) {
         if ($(a).parents(".circle").attr("fade") == "center") {
             a.volume = 0.0;
             a.classList.remove("playing");
-            a.pause();
+            if (!(a.parentElement.parentElement.hasAttribute("group"))) {
+                a.pause();
+            }
+            else {
+                var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
+                var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
+                if (groupPlayingAudio == 0)
+                    for (var i = 0; i < groupAudio; i++) {
+                        pauseAudio(a.parentElement.parentElement.querySelectorAll('audio')[i]);
+                    }
+            }
         }
         else {
 
@@ -335,7 +359,15 @@ function playCircle(x, y, r, a, n) {
                         a.classList.remove("playing");
                         playing.innerHTML = n + " pause audio " + distance + " from " + a.id;
                         decVolume(a);
-                        // Only fade if past the fade out point or not at zero already            
+                        // Only fade if past the fade out point or not at zero already  
+                        if (a.parentElement.parentElement.hasAttribute("group")) {
+                            var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
+                            var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
+                            if (groupPlayingAudio == 0)
+                                for (var i = 0; i < groupAudio; i++) {
+                                    decVolume(a.parentElement.parentElement.querySelectorAll('audio')[i]);
+                                }
+                        }          
                     }
                 }
             }, snapTime);
@@ -345,7 +377,7 @@ function playCircle(x, y, r, a, n) {
 
 function playPolygon(pointList, a, n) {
     var point = [];
-    var t = 10;
+    var t = 1;
     // console.log(pointList);
     var polyCoord = JSON.parse(pointList);
     point.push(nowX);
@@ -353,8 +385,16 @@ function playPolygon(pointList, a, n) {
     //  console.log(rayCasting(point, polyCoord));
     if (rayCasting(point, polyCoord)) {
         if ((a.paused)) {
-            a.play();
-            playing.innerHTML = n + " playing audio " + " from " + a.id;
+            if (a.parentElement.parentElement.hasAttribute("group")) {
+                var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
+                for (var i = 0; i < groupAudio; i++) {
+                    playAudio(a.parentElement.parentElement.querySelectorAll('audio')[i]);
+                }
+            }
+            else {
+                a.play();
+                playing.innerHTML = n + " playing audio " + " from " + a.id;
+            }
         }
         if (a.volume < 1 && (a.classList[0] !== 'playing')) {
             a.classList.add("playing");
@@ -374,11 +414,19 @@ function playPolygon(pointList, a, n) {
                     decVolume(a);
                     // Only fade if past the fade out point or not at zero already            
                 }
+             
+                if (a.parentElement.parentElement.hasAttribute("group")) {
+                    var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
+                    var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
+                    if (groupPlayingAudio == 0)
+                        for (var i = 0; i < groupAudio; i++) {
+                            decVolume(a.parentElement.parentElement.querySelectorAll('audio')[i]);
+                        }
+                }
             }
         }, snapTime)
     }
 }
-
 
 function measure(lat1, lon1, lat2, lon2) {  // generally used geo measurement function
     var R = 6378.137; // Radius of earth in KM
