@@ -90,7 +90,7 @@ function startGetLocation() {
                 if (error.code == error.PERMISSION_DENIED) {
                     if (ixy == 0) {
 
-                        if ($("#mainTitle").attr("coord") !== "") {
+                        if ($("#mainTitle").hasAttribute("coord")) {
                             initX = $("#mainTitle").attr("coord").split(",")[0];
                             initY = $("#mainTitle").attr("coord").split(",")[1];
                         }
