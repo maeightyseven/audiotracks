@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Web Audio API examples: StereoPannerNode</title>
+  </head>
+
+  <body>
+    <h1>Web Audio API examples: StereoPannerNode</h1>
+    <audio controls>
+      <source src="viper.ogg" type="audio/ogg" />
+      <source src="viper.mp3" type="audio/mp3" />
+      <p>This demo needs a browser supporting the &lt;audio&gt; element.</p>
+    </audio>
+    <h2>Set stereo panning</h2>
+    <input
+      class="panning-control"
+      type="range"
+      min="-1"
+      max="1"
+      step="0.1"
+      value="0"
+    />
+    <span class="panning-value">0</span>
+<br>
+<br>
+    <audio controls>
+      <source src="viper.ogg" type="audio/ogg" />
+      <source src="viper.mp3" type="audio/mp3" />
+      <p>This demo needs a browser supporting the &lt;audio&gt; element.</p>
+    </audio>
+    <h2>Set stereo panning</h2>
+    <input
+      class="panning-control"
+      type="range"
+      min="-1"
+      max="1"
+      step="0.1"
+      value="0"
+    />
+    <span class="panning-value">0</span>
+    <script>
+      // We cannot initialize it now, we need to do it after some user
+      // interaction.
+      let audioCtx;
+
+      // Useful UI elements
+      const audioObjs = document.querySelectorAll("audio");
+      const audioElt2 = document.getElementsByTagName("audio")[1];
+
+      const pre = document.getElementsByTagName("pre")[0];
+      const pre2 = document.getElementsByTagName("pre")[1];
+
+
+      const panControl = document.getElementsByClassName("panning-control")[0];
+      const panControl2 = document.getElementsByClassName("panning-control")[1];
+
+      const panValue = document.getElementsByClassName("panning-value")[0];
+      const panValue2 = document.getElementsByClassName("panning-value")[1];
+   
+      for (var i = 0; i < audioObjs.length; ++i) {
+        var a = audioObjs[i];
+    audioObjs[i].id = "audio" + i;
+    audioObjs[i].pause();
+    audioObjs[i].volume = 0.0;
+    playtrack(a)
+      }
+    function playtrack(a) {
+    audioObjs[i].addEventListener("play", () => {
+        // Create audio context if it doesn't already exist
+        // We can do this as their has been some user interaction
+        if (!audioCtx) {
+          audioCtx = new AudioContext();
+        }
+
+        // Create a MediaElementAudioSourceNode
+        // Feed the HTMLMediaElement into it
+        let source = new MediaElementAudioSourceNode(audioCtx, {
+          mediaElement: a,
+        });
+        
+
+        // Create a stereo panner
+        let panNode = new StereoPannerNode(audioCtx);
+
+        // Event handler function to increase panning to the right and left
+        // when the slider is moved
+
+        panControl.onchange = () => {
+          panNode.pan.value = panControl.value;
+          panValue.textContent = panControl.value;
+        };
+
+        // connect the AudioBufferSourceNode to the gainNode
+        // and the gainNode to the destination, so we can play the
+        // music and adjust the panning using the controls
+        source.connect(panNode);
+        panNode.connect(audioCtx.destination);
+      });
+    
+}
+
+     
+
+    </script>
+  </body>
+</html>
