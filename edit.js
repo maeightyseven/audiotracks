@@ -98,8 +98,8 @@ function startGetLocation() {
                             initY = $("#mainTitle").attr("coord").split(",")[1];
                         }
                         else {
-                            initX = 0;
-                            initY = 0;
+                            initX = 44.483273 ;
+                            initY = 11.353775;
                         }
 
                         map = L.map('map').setView([initX, initY], 18);
