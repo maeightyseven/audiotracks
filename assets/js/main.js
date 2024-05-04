@@ -91,8 +91,8 @@ function startGetLocation() {
                     if (ixy == 0) {
 
                         if (document.querySelector("#mainTitle").hasAttribute("coord")) {
-                            initX = document.querySelector("#mainTitle").attr("coord").split(",")[0];
-                            initY = document.querySelector("#mainTitle").attr("coord").split(",")[1];
+                            initX = document.querySelector("#mainTitle").getAttribute("coord").split(",")[0];
+                            initY = document.querySelector("#mainTitle").getAttribute("coord").split(",")[1];
                         }
                         else {
                             initX = 0;
