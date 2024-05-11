@@ -192,7 +192,7 @@ function decVolume(a) {
                 } else {
                     a.volume = 0;
                     a.pause();
-                    if (a.duration < 10) {
+                    if ((a.duration < 10) || a.parentElement.hasAttribute("rewind")) {
                         a.currentTime = 0;
                     }
                 }
@@ -201,7 +201,7 @@ function decVolume(a) {
         else {
             a.pause();
             a.volume = 0;
-            if (a.duration < 10) {
+            if ((a.duration < 10) || a.parentElement.hasAttribute("rewind")) {
                 a.currentTime = 0;
             }
         }
