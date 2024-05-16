@@ -39,8 +39,9 @@ button {
         }
 
         #map {
-            width: 600px;
+            width: 1200px;
             height: 600px;
+            max-width: 100vw;
         }
 
        .live #map {
