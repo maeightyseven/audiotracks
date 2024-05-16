@@ -36,9 +36,9 @@ body,
             display: block;
         }
 
-        #map {
+       .live #map {
         position: absolute;
-  width: 100%;
+  width: 100vw;
   height: 80vh;
   bottom: 0;
   left: 0;
