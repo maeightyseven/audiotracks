@@ -12,16 +12,16 @@
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-    <style>
-                   #map {
-        position: relative;
-  width: 100%;
-  height: 80vh;
-  bottom: 0;
-  left: 0;
-  z-index: 0;
-        }
-    </style>
+  <style>
+    #map {
+      position: relative;
+      width: 100%;
+      height: 80vh;
+      bottom: 0;
+      left: 0;
+      z-index: 0;
+    }
+  </style>
 </head>
 
 <body class="w3-content w3-black" style="max-width:1500px;">
@@ -39,7 +39,181 @@
         <p id="playing"></p>
         <video id="videoPixel" width="1" height="1" loop controls>
           <source src="assets/pixel.mp4" type="video/mp4">
-        </video> 
+        </video>
+
+
+
+                <!-- inizio zona -->
+                <div class="zone" name="Ciccio" color="orange">
+
+                  <!-- inizio forme -->
+        
+                  <div class="circle" id="Top_circle" coord="44.482916, 11.350867" size="30" fade="center">
+                    <audio loop>
+                      <source src="Suoni/Ciccio_P_2.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Top_top_center" coord="44.483094, 11.350854" size="10">
+                    <audio>
+                      <source src="Suoni/Ciccio_OS_1.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Top_top_left" coord="44.482976, 11.350682" size="10">
+                    <audio>
+                      <source src="Suoni/Ciccio_OS_2.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Top_bot_left" coord="44.482817, 11.350725" size="10">
+                    <audio>
+                      <source src="Suoni/Ciccio_OS_3.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Top_bot_center" coord="44.482773, 11.350923" size="10">
+                    <audio>
+                      <source src="Suoni/Ciccio_OS_4.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Top_bot_right" coord="44.482859, 11.351092" size="10">
+                    <audio>
+                      <source src="Suoni/Ciccio_OS_5.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Top_top_right" coord="44.483023, 11.351044" size="10">
+                    <audio>
+                      <source src="Suoni/Ciccio_OS_6.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Top_inner_circle" coord="44.482922, 11.350891" size="25" fade="center">
+                    <audio loop>
+                      <source src="Suoni/Ciccio_SD_bg.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Bottom_circle" coord="44.481431, 11.351902" size="33" fade="center">
+                    <audio>
+                      <source src="Suoni/Ciccio_P_3.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Bot_top_center" coord="44.481626, 11.351806" size="10">
+                    <audio>
+                      <source src="Suoni/Ciccio_OS_7.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Bot_top_left" coord="44.481460, 11.351632" size="10">
+                    <audio>
+                      <source src="Suoni/Ciccio_OS_8.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Bot_bot_left" coord="44.481278, 11.351720" size="10">
+                    <audio >
+                      <source src="Suoni/Ciccio_OS_9.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Bot_bot_center" coord="44.481217, 11.351988" size="10">
+                    <audio>
+                      <source src="Suoni/Ciccio_OS_10.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Bot_bot_right" coord="44.481364, 11.352157" size="10">
+                    <audio>
+                      <source src="Suoni/Ciccio_OS_11.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Bot_top_right" coord="44.481554, 11.352085" size="10">
+                    <audio>
+                      <source src="Suoni/Ciccio_OS_12.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Bot_inner_circle" coord="44.481414, 11.351911" size="30" fade="center">
+                    <audio loop>
+                      <source src="Suoni/Ciccio_SD_track.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Center_circle" coord="44.482243, 11.351280" size="25" fade="center">
+                    <audio>
+                      <source src="Suoni/Ciccio_P_3.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="circle" id="Center_inner_circle" coord="44.482243, 11.351280" size="17" fade="center">
+                    <audio>
+                      <source src="Suoni/Ciccio_SD_add.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="polygon" id="Poly_big" coord="[[44.483463, 11.350400],
+                  [44.483295, 11.350341],
+                  [44.483023, 11.350454],
+                  [44.481278, 11.351516],
+                  [44.480995, 11.351935],
+                  [44.481006, 11.352230],
+                  [44.481523, 11.352326],
+                  [44.482005, 11.351811],
+                  [44.482618, 11.351296],
+                  [44.483540, 11.350985]]">
+                    <audio loop>
+                      <source src="Suoni/Ciccio_M.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="polygon" id="Poly_mid" coord="[[44.483108, 11.351109],
+                    [44.481263, 11.351532],
+                    [44.481129, 11.352047],
+                    [44.481535, 11.352321],
+                    [44.482832, 11.350529],
+                    [44.483173, 11.350781]]">
+                    <audio loop>
+                      <source src="Suoni/Ciccio_P_1.mp3" type="audio/mpeg">
+                    </audio>
+                  </div>
+        
+                  <div class="polygon" id="Poly_street_left" coord="[[44.482080, 11.349775],
+                  [44.482141, 11.350435],
+                  [44.482040, 11.351165],
+                  [44.481975, 11.351213],
+                  [44.482024, 11.350446],
+                  [44.482000, 11.349950]]">
+                  <audio loop>
+                    <source src="Suoni/Ciccio_M.mp3" type="audio/mpeg">
+                  </audio>
+                </div>
+        
+                <div class="polygon" id="Poly_street_right" coord="[[44.481632, 11.352181],
+                [44.481802, 11.352294],
+                [44.482212, 11.353053],
+                [44.482095, 11.353193],
+                [44.481757, 11.352450],
+                [44.481479, 11.352297]]">
+                <audio loop>
+                  <source src="Suoni/Ciccio_M.mp3" type="audio/mpeg">
+                </audio>
+              </div>
+        
+        
+                
+        
+                  <!-- fine forme -->
+        
+                </div>
+        
+                <!-- fine zona -->
+
+
         <!-- inizio zona -->
         <div class="zone" name="PiazzaMario" color="purple">
 
@@ -125,40 +299,40 @@
           [44.484232, 11.353409],
           [44.484087, 11.353275],
           [44.48421,11.35299]]">
-          <audio loop>
-            <source src="Suoni/PT_LoopZona1.mp3" type="audio/mpeg">
-          </audio>
-        </div>
+            <audio loop>
+              <source src="Suoni/PT_LoopZona1.mp3" type="audio/mpeg">
+            </audio>
+          </div>
 
-         <div class="polygon" id="PT_MeliconiInterno1" fadein="2000" fadeout="1000" coord="[[44.48445,11.35446],
+          <div class="polygon" id="PT_MeliconiInterno1" fadein="2000" fadeout="1000" coord="[[44.48445,11.35446],
           [44.48434,11.35546],
           [44.48409,11.35580],
           [44.48399,11.35568],
           [44.48414,11.35544],
           [44.48416,11.35448]]">
-          <audio loop>
-            <source src="Suoni/PT_Drone.mp3" type="audio/mpeg">
-          </audio>
-        </div>
+            <audio loop>
+              <source src="Suoni/PT_Drone.mp3" type="audio/mpeg">
+            </audio>
+          </div>
 
-         <div class="polygon" id="PT_MeliconiInterno2" fadein="2000" fadeout="1000" coord="[[44.484539, 11.353805],
+          <div class="polygon" id="PT_MeliconiInterno2" fadein="2000" fadeout="1000" coord="[[44.484539, 11.353805],
           [44.484433, 11.354570],
           [44.484154, 11.354629],
           [44.484158, 11.354481],
           [44.484340, 11.353749]]">
-          <audio loop>
-            <source src="Suoni/PT_Ambience.mp3" type="audio/mpeg">
-          </audio>
-        </div>
+            <audio loop>
+              <source src="Suoni/PT_Ambience.mp3" type="audio/mpeg">
+            </audio>
+          </div>
 
-         <div class="polygon" id="PT_MeliconiInterno3" fadein="2000" fadeout="1000" coord="[[44.484653, 11.353130],
+          <div class="polygon" id="PT_MeliconiInterno3" fadein="2000" fadeout="1000" coord="[[44.484653, 11.353130],
           [44.484542, 11.353872],
           [44.484315, 11.353902],
           [44.484441, 11.353097]]">
-          <audio loop>
-            <source src="Suoni/PT_Drone.mp3" type="audio/mpeg">
-          </audio>
-        </div>
+            <audio loop>
+              <source src="Suoni/PT_Drone.mp3" type="audio/mpeg">
+            </audio>
+          </div>
 
           <div class="polygon" id="PT_Sentiero1" fadein="2000" fadeout="1000" coord="[[44.483842, 11.353576],
           [44.483915, 11.353610],
@@ -166,32 +340,32 @@
           [44.483978, 11.353964],
           [44.483852, 11.353672],
           [44.483792, 11.353637]]">
-          <audio loop>
-            <source src="Suoni/PT_Voci.mp3" type="audio/mpeg">
-          </audio>
-        </div>
-<div group>
-         <div class="polygon" id="PT_Sentiero2" fadein="2000" fadeout="1000" coord="[[44.484043, 11.353219],
+            <audio loop>
+              <source src="Suoni/PT_Voci.mp3" type="audio/mpeg">
+            </audio>
+          </div>
+          <div group>
+            <div class="polygon" id="PT_Sentiero2" fadein="2000" fadeout="1000" coord="[[44.484043, 11.353219],
           [44.484253, 11.353417],
           [44.484221, 11.353471],
           [44.483989, 11.353297],
           [44.483832, 11.353576],
           [44.483796, 11.353551],
           [44.483953, 11.353230]]">
-          <audio loop>
-            <source src="Suoni/PT_Voci.mp3" type="audio/mpeg">
-          </audio>
-        </div>
+              <audio loop>
+                <source src="Suoni/PT_Voci.mp3" type="audio/mpeg">
+              </audio>
+            </div>
 
-         <div class="polygon" id="PT_Ponte" fadein="2000" fadeout="1000" coord="[[44.483819, 11.353534],
+            <div class="polygon" id="PT_Ponte" fadein="2000" fadeout="1000" coord="[[44.483819, 11.353534],
           [44.483844, 11.353615],
           [44.483578, 11.353766],
           [44.483561, 11.353664]]">
-          <audio loop>
-            <source src="Suoni/PT_LoopPonte.mp3" type="audio/mpeg">
-          </audio>
-        </div>
-        </div>
+              <audio loop>
+                <source src="Suoni/PT_LoopPonte.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+          </div>
 
           <div class="circle" id="PT_Congiunzione1" coord="44.484012, 11.355519" size="15" fade="center">
             <audio loop>
@@ -217,25 +391,25 @@
             </audio>
           </div>
 
-            <div class="circle" id="PT_Panchine1" coord="44.483949, 11.354817" size="5" fade="center">
+          <div class="circle" id="PT_Panchine1" coord="44.483949, 11.354817" size="5" fade="center">
             <audio loop>
               <source src="https://cdn.freesound.org/previews/637/637835_612689-lq.mp3" type="audio/mpeg">
             </audio>
           </div>
 
-            <div class="circle" id="PT_Panchine2" coord="44.483940, 11.354455" size="5" fade="center">
+          <div class="circle" id="PT_Panchine2" coord="44.483940, 11.354455" size="5" fade="center">
             <audio loop>
               <source src="https://cdn.freesound.org/previews/637/637835_612689-lq.mp3" type="audio/mpeg">
             </audio>
           </div>
 
-            <div class="circle" id="PT_Panchine3" coord="44.483974, 11.354048" size="5" fade="center">
+          <div class="circle" id="PT_Panchine3" coord="44.483974, 11.354048" size="5" fade="center">
             <audio loop>
               <source src="https://cdn.freesound.org/previews/637/637835_612689-lq.mp3" type="audio/mpeg">
             </audio>
           </div>
 
-            <div class="circle" id="PT_Panchine4" coord="44.484085, 11.353683" size="5" fade="center">
+          <div class="circle" id="PT_Panchine4" coord="44.484085, 11.353683" size="5" fade="center">
             <audio loop>
               <source src="Suoni/PT_LoopPanchina1.mp3" type="audio/mpeg">
             </audio>
@@ -287,36 +461,76 @@
         </div>
 
 
-           <!-- inizio zona -->
-           <div class="zone" name="Gille" color="blue">
+        <!-- inizio zona -->
+        <div class="zone" name="Gille" color="blue">
 
-            <!-- inizio forme -->
+          <!-- inizio forme -->
           <div group>
             <div class="circle" id="JG_c1" coord="44.483295, 11.349405" size="20" fade="center">
               <audio loop>
                 <source src="Suoni/Zone c1.mp3" type="audio/mpeg">
               </audio>
             </div>
-  
+
             <div class="circle" id="JG_c2" coord="44.483367, 11.349749" size="20" fade="center">
               <audio loop>
                 <source src="Suoni/Zone c2.mp3" type="audio/mpeg">
               </audio>
             </div>
-  
+
             <div class="circle" id="JG_c3" coord="44.483452, 11.350068" size="20" fade="center">
               <audio loop>
                 <source src="Suoni/Zone c1.mp3" type="audio/mpeg">
               </audio>
             </div>
           </div>
-            <!-- fine forme -->
-  
+          <!-- fine forme -->
+
+        </div>
+
+        <!-- fine zona -->
+
+        <!-- inizio zona -->
+        <div class="zone" name="Lombardi" color="black">
+
+          <!-- inizio forme -->
+
+          <div class="polygon" id="ML_GGBordone" coord="[[44.480639, 11.351742],
+            [44.480834, 11.352133],
+            [44.480352, 11.353109],
+            [44.480268, 11.353791],
+            [44.479846, 11.354290],
+            [44.479659, 11.353340],
+            [44.479842, 11.352353]]" fadeIn="5000" fadeOut="5000">
+            <audio loop>
+              <source src="Suoni/ml-bordone.mp3" type="audio/mpeg">
+            </audio>
           </div>
-  
-          <!-- fine zona -->
-          
-                  <!-- inizio zona -->
+
+          <div class="circle" id="1c_tictic" coord="44.480547, 11.352187" size="26" fadeIn="1000" fadeOut="5000">
+            <audio loop>
+              <source src="Suoni/ml-1c_tictic.mp3" type="audio/mp3">
+            </audio>
+          </div>
+
+          <div class="circle" id="ml-2c_city" coord="44.480141, 11.352756" size="40" fadeIn="1000" fadeOut="5000">
+            <audio loop>
+              <source src="Suoni/ml-2c_city.mp3" type="audio/mp3">
+            </audio>
+          </div>
+
+          <div class="circle" id="ml-3c_voom" coord="44.479965, 11.353539" size="35" fadeIn="1000" fadeOut="5000">
+            <audio loop>
+              <source src="Suoni/ml-3c_voom.mp3" type="audio/mp3">
+            </audio>
+          </div>
+
+          <!-- fine forme -->
+
+        </div>
+
+        <!-- fine zona -->
+        <!-- inizio zona -->
 
         <div class="zone" name="MioNome" color="yellow">
 
@@ -339,14 +553,14 @@
               <source src="https://cdn.freesound.org/previews/637/637835_612689-lq.mp3" type="audio/mpeg">
             </audio>
           </div>
-         
+
 
           <!-- fine forme -->
 
         </div>
 
         <!-- fine zona -->
-        
+
         <!-- inizio zona -->
         <div class="zone" name="VialeLiberoLossati" color="blue">
 

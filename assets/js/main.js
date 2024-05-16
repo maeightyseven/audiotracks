@@ -192,7 +192,7 @@ function decVolume(a) {
                 } else {
                     a.volume = 0;
                     a.pause();
-                    if (a.duration < 10) {
+                    if ((a.duration < 10) || a.parentElement.hasAttribute("rewind")) {
                         a.currentTime = 0;
                     }
                 }
@@ -201,7 +201,7 @@ function decVolume(a) {
         else {
             a.pause();
             a.volume = 0;
-            if (a.duration < 10) {
+            if ((a.duration < 10) || a.parentElement.hasAttribute("rewind")) {
                 a.currentTime = 0;
             }
         }
@@ -240,6 +240,10 @@ function pauseAudio(a) {
 function playCircle(x, y, r, a, n) {
     var distance = Number(measure(nowX, nowY, x, y));
     if (distance <= r) {
+        if (a.parentElement.hasAttribute("random")) {
+            var rri = Math.floor(Math.random() * a.parentElement.querySelectorAll('audio').length); 
+            a = a.parentElement.querySelectorAll('audio')[rri];
+        }
         if ((a.paused)) {
             a.setAttribute("controls", "")
             if (a.parentElement.parentElement.hasAttribute("group")) {
