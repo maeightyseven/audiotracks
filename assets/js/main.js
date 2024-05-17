@@ -265,7 +265,7 @@ function playCircle(x, y, r, a, n) {
                     playAudio(a.parentElement.parentElement.querySelectorAll('audio')[i]);
                 }
             }
-            else {
+            else if ((!(a.ended) && !(a.parentElement.hasAttribute("loop"))) || (a.ended && a.parentElement.hasAttribute("loop"))) {
                 a.play();
             }
         }
@@ -344,9 +344,8 @@ function playPolygon(pointList, a, n) {
                     playAudio(a.parentElement.parentElement.querySelectorAll('audio')[i]);
                 }
             }
-            else {
+            else if ((!(a.ended) && !(a.parentElement.hasAttribute("loop"))) || (a.ended && a.parentElement.hasAttribute("loop"))) {
                 a.play();
-                playing.innerHTML = n + " playing audio " + " from " + a.id;
             }
         }
         if (a.volume < 1 && (a.classList[0] !== 'playing')) {
