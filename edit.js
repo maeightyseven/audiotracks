@@ -90,18 +90,19 @@ function startGetLocation() {
                 if (error.code == error.PERMISSION_DENIED) {
                     if (ixy == 0) {
 
+                        document.querySelector("body").classList.add("edit");
                         if (document.querySelector("#mainTitle").hasAttribute("coord")) {
                             initX = document.querySelector("#mainTitle").getAttribute("coord").split(",")[0];
                             initY = document.querySelector("#mainTitle").getAttribute("coord").split(",")[1];
                         }
                         else {
-                            initX = 44.483273 ;
-                            initY = 11.353775;
+                            initX = 44.483132
+                            initY = 11.349113;
                         }
 
                         map = L.map('map').setView([initX, initY], 18);
                         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            maxZoom: 19,
+                            maxZoom: 18,
                             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                         }).addTo(map);
 
@@ -197,7 +198,7 @@ function decVolume(a) {
                 } else {
                     a.volume = 0;
                     a.pause();
-                    if ((a.duration < 10) || a.parentElement.hasAttribute("rewind")) {
+                    if ((a.duration < 10) || a.parentElement.hasAttribute("rewind") || a.duration == a.currentTime) {
                         a.currentTime = 0;
                     }
                 }
@@ -206,7 +207,7 @@ function decVolume(a) {
         else {
             a.pause();
             a.volume = 0;
-            if ((a.duration < 10) || a.parentElement.hasAttribute("rewind")) {
+            if ((a.duration < 10) || a.parentElement.hasAttribute("rewind") ||  a.duration == a.currentTime) {
                 a.currentTime = 0;
             }
         }
@@ -253,19 +254,21 @@ function playCircle(x, y, r, a, n) {
     }
     var distance = Number(measure(nowX, nowY, x, y));
     if (distance <= r) {
+        if (!(a.hasAttribute("controls"))) {
+        a.setAttribute("controls", "")
+        }
         if (a.parentElement.hasAttribute("random")) {
             var rri = Math.floor(Math.random() * a.parentElement.querySelectorAll('audio').length);
             a = a.parentElement.querySelectorAll('audio')[rri];
         } else {rri = 0}
         if ((a.paused)) {
-            a.setAttribute("controls", "")
             if (a.parentElement.parentElement.hasAttribute("group")) {
                 var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
                 for (var i = 0; i < groupAudio; i++) {
                     playAudio(a.parentElement.parentElement.querySelectorAll('audio')[i]);
                 }
             }
-            else if ((!(a.ended) && !(a.parentElement.hasAttribute("loop"))) || (a.ended && a.parentElement.hasAttribute("loop"))) {
+            else if ((!( a.duration == a.currentTime)) || (a.hasAttribute("loop"))) {
                 a.play();
             }
         }
@@ -282,14 +285,16 @@ function playCircle(x, y, r, a, n) {
         }
     }
 
-    if (distance > r && !(a.paused)) {
+    if (distance > r && (!(a.paused) || (a.ended))) {
         if ($(a).parents(".circle").attr("fade") == "center") {
             a.volume = 0.0;
             a.classList.remove("playing");
+            if (( a.duration == a.currentTime) && !(a.hasAttribute("loop")) || a.parentElement.hasAttribute('rewind')) {
+                a.currentTime = 0;
+            }
             if (!(a.parentElement.parentElement.hasAttribute("group"))) {
                 a.pause();
                 a.removeAttribute("controls")
-
             }
             else {
                 var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
@@ -344,7 +349,7 @@ function playPolygon(pointList, a, n) {
                     playAudio(a.parentElement.parentElement.querySelectorAll('audio')[i]);
                 }
             }
-            else if ((!(a.ended) && !(a.parentElement.hasAttribute("loop"))) || (a.ended && a.parentElement.hasAttribute("loop"))) {
+            else if ((!( a.duration == a.currentTime)) || ( a.duration == a.currentTime && a.hasAttribute("loop"))) {
                 a.play();
             }
         }
