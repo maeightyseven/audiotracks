@@ -96,7 +96,7 @@ function startGetLocation() {
                             initY = document.querySelector("#mainTitle").getAttribute("coord").split(",")[1];
                         }
                         else {
-                            initX = 44.483132;
+                            initX = 44.483132
                             initY = 11.349113;
                         }
 
