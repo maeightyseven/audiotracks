@@ -43,20 +43,12 @@ for (var i = 0; i < audioObjs.length; ++i) {
 }
 
 var shapes = [];
-var videoPixel = document.querySelector("#videoPixel");
-
+ 
 setInterval(function () {
     moving = 1;
 }, 500)
 
 function startGetLocation() {
-
-    setInterval(function () {
-        if (videoPixel) {
-            videoPixel.play();
-        }
-    }, 5000)
-
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
             dowdots();
