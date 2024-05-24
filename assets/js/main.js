@@ -1,7 +1,6 @@
 
 const textXY = document.getElementById("demo");
 const dothings = document.getElementById("dothings");
-const wdots = document.getElementById("wdots");
 const playing = document.getElementById("playing");
 const mainTitle = document.getElementById("mainTitle");
 
@@ -16,14 +15,8 @@ var nowY = 0;
 var marker;
 var map;
 
-var moving = 1;
-var clk = 1;
-
-var audioCtx;
-
 var circles = $(".circle");
 var polygons = $(".polygon");
-
 
 var snapTime = 3000;
 var alphaDir = 0;
@@ -43,15 +36,10 @@ for (var i = 0; i < audioObjs.length; ++i) {
 }
 
 var shapes = [];
- 
-setInterval(function () {
-    moving = 1;
-}, 500)
 
 function startGetLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
-            dowdots();
 
             if (ixy == 0) {
                 initX = position.coords.latitude.toFixed(decP);
@@ -74,7 +62,6 @@ function startGetLocation() {
             nowXbis = position.coords.latitude.toFixed(decP);
             nowYbis = position.coords.longitude.toFixed(decP);
             doAudioThings(nowX, nowY);
-            moving = 0;
 
         },
 
@@ -110,7 +97,6 @@ function startGetLocation() {
                         nowXbis = ev.latlng.lat.toFixed(decP);
                         nowYbis = ev.latlng.lng.toFixed(decP);
                         doAudioThings(nowX, nowY);
-                        moving = 0;
                     });
 
 
@@ -122,7 +108,7 @@ function startGetLocation() {
                         navigator.clipboard.writeText(copyText);
 
                         // Alert the copied text
-                        alert(copyText);
+                        dothings.innerHTML  = copyText;
                     });
                     textXY.innerHTML = "you denied me :-(";
                 }
@@ -135,6 +121,169 @@ function startGetLocation() {
 
 }
 
+function startGetLocationNoMap() {
+    if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(function getPosition(position) {
+
+            if (ixy == 0) {
+                initX = position.coords.latitude.toFixed(decP);
+                initY = position.coords.longitude.toFixed(decP);
+                // map = L.map('map').setView([initX, initY], 18);
+                // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                //     maxZoom: 19,
+                //     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                // }).addTo(map);
+
+                // marker = L.marker([initX, initY]).addTo(map);
+                // doCircleMap();
+                // doPolygonMap();
+
+                ixy = ixy + 1;
+            }
+
+            nowX = position.coords.latitude.toFixed(decP);
+            nowY = position.coords.longitude.toFixed(decP);
+            nowXbis = position.coords.latitude.toFixed(decP);
+            nowYbis = position.coords.longitude.toFixed(decP);
+            doAudioThings(nowX, nowY);
+
+        },
+
+            function (error) {
+                if (error.code == error.PERMISSION_DENIED) {
+                    if (ixy == 0) {
+
+                        document.querySelector("body").classList.add("edit");
+                        if (document.querySelector("#mainTitle").hasAttribute("coord")) {
+                            initX = document.querySelector("#mainTitle").getAttribute("coord").split(",")[0];
+                            initY = document.querySelector("#mainTitle").getAttribute("coord").split(",")[1];
+                        }
+                        else {
+                            initX = 44.483132;
+                            initY = 11.349113;
+                        }
+
+                        map = L.map('map').setView([initX, initY], 18);
+                        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            maxZoom: 18,
+                            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                        }).addTo(map);
+
+                        marker = L.marker([initX, initY]).addTo(map);
+                        ixy = ixy + 1;
+                    }
+
+                    map.on('mousemove', function (ev) {
+                        nowX = ev.latlng.lat.toFixed(decP);
+                        nowY = ev.latlng.lng.toFixed(decP);
+                        nowXbis = ev.latlng.lat.toFixed(decP);
+                        nowYbis = ev.latlng.lng.toFixed(decP);
+                        doAudioThings(nowX, nowY);
+                    });
+
+
+                    map.on('click', function (ev) {
+                        // Get the text field
+                        var copyText = ev.latlng.lat.toFixed(decP) + ", " + ev.latlng.lng.toFixed(decP);
+
+                        // Copy the text inside the text field
+                        navigator.clipboard.writeText(copyText);
+
+                        // Alert the copied text
+                        dothings.innerHTML = copyText;
+                    });
+                    textXY.innerHTML = "you denied me :-(";
+                }
+            },
+            options
+        );
+    } else {
+        textXY.innerHTML = "Geolocation is not supported by this browser.";
+    }
+
+}
+
+function startGetLocationNoShapes() {
+    if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(function getPosition(position) {
+
+            if (ixy == 0) {
+                initX = position.coords.latitude.toFixed(decP);
+                initY = position.coords.longitude.toFixed(decP);
+                map = L.map('map').setView([initX, initY], 18);
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+
+                marker = L.marker([initX, initY]).addTo(map);
+                // doCircleMap();
+                // doPolygonMap();
+
+                ixy = ixy + 1;
+            }
+
+            nowX = position.coords.latitude.toFixed(decP);
+            nowY = position.coords.longitude.toFixed(decP);
+            nowXbis = position.coords.latitude.toFixed(decP);
+            nowYbis = position.coords.longitude.toFixed(decP);
+            doAudioThings(nowX, nowY);
+
+        },
+
+            function (error) {
+                if (error.code == error.PERMISSION_DENIED) {
+                    if (ixy == 0) {
+
+                        document.querySelector("body").classList.add("edit");
+                        if (document.querySelector("#mainTitle").hasAttribute("coord")) {
+                            initX = document.querySelector("#mainTitle").getAttribute("coord").split(",")[0];
+                            initY = document.querySelector("#mainTitle").getAttribute("coord").split(",")[1];
+                        }
+                        else {
+                            initX = 44.483132;
+                            initY = 11.349113;
+                        }
+
+                        map = L.map('map').setView([initX, initY], 18);
+                        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            maxZoom: 18,
+                            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                        }).addTo(map);
+
+                        marker = L.marker([initX, initY]).addTo(map);
+                        ixy = ixy + 1;
+                    }
+
+                    map.on('mousemove', function (ev) {
+                        nowX = ev.latlng.lat.toFixed(decP);
+                        nowY = ev.latlng.lng.toFixed(decP);
+                        nowXbis = ev.latlng.lat.toFixed(decP);
+                        nowYbis = ev.latlng.lng.toFixed(decP);
+                        doAudioThings(nowX, nowY);
+                    });
+
+
+                    map.on('click', function (ev) {
+                        // Get the text field
+                        var copyText = ev.latlng.lat.toFixed(decP) + ", " + ev.latlng.lng.toFixed(decP);
+
+                        // Copy the text inside the text field
+                        navigator.clipboard.writeText(copyText);
+
+                        // Alert the copied text
+                        dothings.innerHTML = copyText;
+                    });
+                    textXY.innerHTML = "you denied me :-(";
+                }
+            },
+            options
+        );
+    } else {
+        textXY.innerHTML = "Geolocation is not supported by this browser.";
+    }
+
+}
 
 function doAudioThings(nowX, nowY) {
     markerXY = L.latLng(nowX, nowY);
@@ -456,15 +605,4 @@ function doPolygonMap() {
             }).addTo(map);
         }
     });
-}
-
-function dowdots() {
-    var tdots = "";
-    setInterval(function () {
-        wdots.innerHTML = tdots;
-        tdots += "."
-        if (tdots.length > 3) {
-            tdots = "";
-        }
-    }, 500);
 }
