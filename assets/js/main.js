@@ -580,8 +580,6 @@ function doCircleMap() {
         for (var i = 0; i < n; ++i) {
             cShapes[i] = L.circle([x, y], {
                 color: c,
-                fillColor: c,
-                fillOpacity: 0.1,
                 radius: r
             }).addTo(map);
         }
@@ -600,8 +598,6 @@ function doPolygonMap() {
             var polyCoord = JSON.parse(pointList);
             pShapes[i] = L.polygon([polyCoord], {
                 color: c,
-                fillColor: c,
-                fillOpacity: 0.1
             }).addTo(map);
         }
     });

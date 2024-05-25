@@ -1,4 +1,3 @@
-
 /* Place your CSS styles in this file */
 
 h1 {
@@ -8,54 +7,64 @@ h1 {
 }
 
 body,
-        h1,
-        h2,
-        h3,
-        h4,
-        h5 {
-            font-family: "Poppins", sans-serif
-        }
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: "Poppins", sans-serif
+}
+
 button {
     z-index: 5;
 }
-        body {
-            font-size: 16px;
-        }
 
-        img {
-            margin-bottom: -8px;
-        }
+body {
+    font-size: 16px;
+}
 
-        .mySlides {
-            display: none;
-        }
-        audio {display: block !important;}
-        button {
-            background: transparent;
-            border-radius: 10px;
-            padding: 1rem 3rem;
-            margin: auto;
-            display: block;
-        }
+img {
+    margin-bottom: -8px;
+}
 
-        #map {
-            width: 1200px;
-            height: 600px;
-            max-width: 100vw;
-        }
+.mySlides {
+    display: none;
+}
 
-       .live #map {
-        position: absolute;
-  width: 100vw;
-  height: 80vh;
-  bottom: 0;
-  left: 0;
-  z-index: 0;
-       }
-  .edit audio {
+audio {
+    display: block !important;
+}
+
+button {
+    background: transparent;
+    border-radius: 10px;
+    padding: 1rem 3rem;
+    margin: auto;
+    display: block;
+}
+
+#map {
+    width: 1200px;
+    height: 600px;
+    max-width: 100vw;
+}
+
+.live #map {
+    position: absolute;
+    width: 100vw;
+    height: 80vh;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.edit audio {
     position: absolute;
     left: 0;
     bottom: 0;
-  }
-        }
+}
 
+.leaflet-overlay-pane svg g path {
+    fill: none;
+    stroke-width: 2;
+}
