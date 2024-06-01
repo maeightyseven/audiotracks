@@ -91,6 +91,9 @@ function startGetLocation() {
                         ixy = ixy + 1;
                     }
 
+                    dothings.innerHTML = "Now Walk Around And Listen";
+
+
                     map.on('mousemove', function (ev) {
                         nowX = ev.latlng.lat.toFixed(decP);
                         nowY = ev.latlng.lng.toFixed(decP);
@@ -294,7 +297,6 @@ function doAudioThings(nowX, nowY) {
         "<br>STARTING POINT: " + initX + " , " + initY +
         "<br>distance from STARTING POINT: " + measure(initX, initY, nowX, nowY) + "m";
 
-    dothings.innerHTML = "Now Walk Around And Listen";
 
 
     circles.each(function () {
