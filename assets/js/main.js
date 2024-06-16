@@ -460,11 +460,12 @@ function playCircle(x, y, r, a, n) {
             else {
                 var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
                 var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
-                if (groupPlayingAudio = 0)
+                if (groupPlayingAudio = 0) {
                     for (var i = 0; i < groupAudio; i++) {
                         decVolume(a.parentElement.parentElement.querySelectorAll('audio')[i]);
                         a.parentElement.parentElement.querySelectorAll('audio')[i].removeAttribute("controls")
                     }
+                }
             }
         }
         else {
@@ -478,13 +479,14 @@ function playCircle(x, y, r, a, n) {
                         if (a.parentElement.parentElement.hasAttribute("group")) {
                             var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
                             var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
-                            if (groupPlayingAudio == 0)
+                            if (groupPlayingAudio == 0) {
                                 for (var i = 0; i < groupAudio; i++) {
                                     decVolume(a.parentElement.parentElement.querySelectorAll('audio')[i]);
                                     a.parentElement.parentElement.querySelectorAll('audio')[i].removeAttribute("controls")
 
                                 }
                         }
+                    }
                     }
                     a.removeAttribute("controls")
                 }
@@ -532,12 +534,13 @@ function playPolygon(pointList, a, n) {
                     if (a.parentElement.parentElement.hasAttribute("group")) {
                         var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
                         var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
-                        if (groupPlayingAudio == 0)
+                        if (groupPlayingAudio == 0) {
                             for (var i = 0; i < groupAudio; i++) {
                                 decVolume(a.parentElement.parentElement.querySelectorAll('audio')[i]);
                                 a.parentElement.parentElement.querySelectorAll('audio')[i].removeAttribute("controls")
 
                             }
+                        }
                     }
                     a.removeAttribute("controls")
                     // Only fade if past the fade out point or not at zero already            
