@@ -432,7 +432,7 @@ function playCircle(x, y, r, a, n) {
             playing.innerHTML = n + " audio " + distance + " from " + a.parentElement.id;
 
         }
-        if ($(a).parents(".circle").attr("fade") == "center") {
+        if (a.parentElement.hasAttribute("fade")) {
             if (distance < r) {
                 var idist = Math.cos(distance / r * 90 * Math.PI / 180);
                 a.volume = (1 - distance / r) * (idist);
