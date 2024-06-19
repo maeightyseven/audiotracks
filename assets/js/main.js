@@ -82,9 +82,9 @@ async function startGetLocation() {
                             initY = 11.349113;
                         }
 
-                        map = L.map('map').setView([initX, initY], 18);
+                        map = L.map('map').setView([initX, initY], 16);
                         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            maxZoom: 18,
+                            maxZoom: 20,
                             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                         }).addTo(map);
 

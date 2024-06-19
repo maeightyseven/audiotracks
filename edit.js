@@ -82,9 +82,9 @@ async function startGetLocation() {
                             initY = 11.349113;
                         }
 
-                        map = L.map('map').setView([initX, initY], 18);
+                        map = L.map('map').setView([initX, initY], 16);
                         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            maxZoom: 18,
+                            maxZoom: 20,
                             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                         }).addTo(map);
 
@@ -328,16 +328,16 @@ function decVolume(a) {
     } else {
         maxvol = 1;
     }
-    if (a.volume.toFixed(2) > 0) {
+    if (a.volume.toFixed(4) > 0) {
         if (a.classList[0] !== 'playing') {
             var t = 0;
             if (a.parentElement.hasAttribute("fadeout")) {
                 t = Number(a.parentElement.attributes.fadeout.value);
                 var decT = t * maxvol / 100;
-                a.volume = a.volume.toFixed(2);
-                a.volume -= 0.01;
+                a.volume = a.volume.toFixed(4);
+                a.volume -= 0.01*maxvol;
                 setTimeout(function () {
-                    if (a.volume.toFixed(2) > 0) {
+                    if (a.volume.toFixed(4) > 0) {
                         decVolume(a);
                     } else {
                         a.volume = 0;
@@ -378,7 +378,7 @@ function addVolume(a) {
     if (a.parentElement.hasAttribute("volume")) {
         maxvol = Number(a.parentElement.attributes.volume.value) / 100;
     }
-    if (a.volume.toFixed(2) < maxvol) {
+    if (a.volume.toFixed(4) < maxvol) {
         if (a.classList[0] == 'playing') {
             var t = 0;
             if (a.parentElement.hasAttribute("fadein")) {
@@ -386,10 +386,10 @@ function addVolume(a) {
                 var addT = t * maxvol / 100;
                 var Vcent = a.volume * 100;
                 Vcent = Vcent + maxvol;
-                a.volume = a.volume.toFixed(2);
-                a.volume = a.volume += 0.01;
+                a.volume = a.volume.toFixed(4);
+                a.volume += 0.01*maxvol;
                 setTimeout(function () {
-                    if (a.volume.toFixed(2) < maxvol * 100 - 1) {
+                    if (a.volume.toFixed(4) < maxvol * 100 - 1) {
                         addVolume(a);
                     }
                 }, addT);
@@ -432,7 +432,7 @@ function playCircle(x, y, r, a, n) {
             playing.innerHTML = n + " audio " + distance + " from " + a.parentElement.id;
 
         }
-        if ($(a).parents(".circle").attr("fade") == "center") {
+        if (a.parentElement.hasAttribute("fade")) {
             if (distance < r) {
                 var idist = Math.cos(distance / r * 90 * Math.PI / 180);
                 a.volume = (1 - distance / r) * (idist);
