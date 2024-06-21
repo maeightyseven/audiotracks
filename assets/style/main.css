@@ -79,6 +79,9 @@ button {
     opacity: 0;
     transition: opacity 2s;
     transition-delay: 1s;
+    position: absolute;
+    z-index: -99;
+    bottom: 0;
   }
   
   .mainContainer {
