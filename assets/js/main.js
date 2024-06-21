@@ -306,9 +306,8 @@ function decVolume(a) {
             if (a.parentElement.hasAttribute("fadeout")) {
                 t = Number(a.parentElement.attributes.fadeout.value);
                 var decT = t * maxvol / 20;
-                roundVol = a.volume - (0.05*maxvol);
-                a.volume = roundVol.toFixed(3);
-                setTimeout(function () {
+                a.volume = a.volume - (0.05*maxvol);
+                 setTimeout(function () {
                     if (a.volume.toFixed(3) > 0) {
                         decVolume(a);
                     } else {
@@ -357,9 +356,8 @@ function addVolume(a) {
             if (a.parentElement.hasAttribute("fadein")) {
                 t = Number(a.parentElement.attributes.fadein.value);
                 var addT = t * maxvol / 20;
-                roundVol = a.volume + (0.05*maxvol);
-                a.volume = roundVol.toFixed(3);
-                setTimeout(function () {
+                a.volume = a.volume + (0.05*maxvol);
+                 setTimeout(function () {
                     if (a.volume.toFixed(3) < maxvol * 100 - 1) {
                         addVolume(a);
                     }
