@@ -75,15 +75,19 @@ button {
     stroke-width: 2;
 }
 
-div.text {
-    display: none;
+.zone:not(:has(.playing)) + div.text {
+    opacity: 0;
+    transition: opacity 2s;
+    transition-delay: 1s;
   }
   
   .mainContainer {
     position: relative;
     display: block;
   }
+
   .zone:has(.playing) + div.text {
+    visibility: visible;
     background: white;
     display: block;
     position: absolute;
@@ -93,6 +97,16 @@ div.text {
     left: 0;
     z-index: 99;
     overflow-y: auto;
+    opacity: 1;
+    transition: opacity 2s;
+    transition-delay: 0s;
+  }
+
+  .zone:has(.playing) + div.text ~ div.text {
+    display: block;
+    opacity: 0 !important;
+    transition: opacity 2s;
+    transition-delay: 1s
   }
 
   .imgGiardini {
