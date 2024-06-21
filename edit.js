@@ -12,8 +12,8 @@ var ixy = 0; //progressivo geolocalizzazione -> 0 -> prima geolocalizzazione = c
 var nowX = 0;
 var nowY = 0;
 
-var marker;
-var map;
+var marker = 0;
+var map = 0;
 
 var circles = $(".circle");
 var polygons = $(".polygon");
@@ -82,9 +82,9 @@ async function startGetLocation() {
                             initY = 11.349113;
                         }
 
-                        map = L.map('map').setView([initX, initY], 18);
+                        map = L.map('map').setView([initX, initY], 16);
                         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            maxZoom: 18,
+                            maxZoom: 20,
                             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                         }).addTo(map);
 
@@ -165,39 +165,9 @@ async function startGetLocationNoMap() {
                             initY = document.querySelector("#mainTitle").getAttribute("coord").split(",")[1];
                         }
                         else {
-                            initX = 44.483132;
-                            initY = 11.349113;
+                          alert('ERRORE')
                         }
-
-                        map = L.map('map').setView([initX, initY], 18);
-                        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                            maxZoom: 18,
-                            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                        }).addTo(map);
-
-                        marker = L.marker([initX, initY]).addTo(map);
-                        ixy = ixy + 1;
                     }
-
-                    map.on('mousemove', function (ev) {
-                        nowX = ev.latlng.lat.toFixed(decP);
-                        nowY = ev.latlng.lng.toFixed(decP);
-                        nowXbis = ev.latlng.lat.toFixed(decP);
-                        nowYbis = ev.latlng.lng.toFixed(decP);
-                        doAudioThings(nowX, nowY);
-                    });
-
-
-                    map.on('click', function (ev) {
-                        // Get the text field
-                        var copyText = ev.latlng.lat.toFixed(decP) + ", " + ev.latlng.lng.toFixed(decP);
-
-                        // Copy the text inside the text field
-                        navigator.clipboard.writeText(copyText);
-
-                        // Alert the copied text
-                        dothings.innerHTML = copyText;
-                    });
                     textXY.innerHTML = "you denied me :-(";
                 }
             },
@@ -292,6 +262,7 @@ async function startGetLocationNoShapes() {
 }
 
 function doAudioThings(nowX, nowY) {
+    if (map != 0) {
     markerXY = L.latLng(nowX, nowY);
     marker.setLatLng(markerXY);
     // console.log(nowX);
@@ -299,7 +270,7 @@ function doAudioThings(nowX, nowY) {
     textXY.innerHTML = "ACTUAL POSITION: " + nowX + " , " + nowY +
         "<br>STARTING POINT: " + initX + " , " + initY +
         "<br>distance from STARTING POINT: " + measure(initX, initY, nowX, nowY) + "m";
-
+    }
 
 
     circles.each(function () {
@@ -323,21 +294,22 @@ function doAudioThings(nowX, nowY) {
 
 function decVolume(a) {
     var maxvol;
+    var roundVol;
     if (a.parentElement.hasAttribute("volume")) {
         maxvol = Number(a.parentElement.attributes.volume.value) / 100;
     } else {
         maxvol = 1;
     }
-    if (a.volume.toFixed(2) > 0) {
+    if (a.volume.toFixed(3) > 0) {
         if (a.classList[0] !== 'playing') {
             var t = 0;
             if (a.parentElement.hasAttribute("fadeout")) {
                 t = Number(a.parentElement.attributes.fadeout.value);
-                var decT = t * maxvol / 100;
-                a.volume = a.volume.toFixed(2);
-                a.volume -= 0.01;
+                var decT = t * maxvol / 20;
+                roundVol = a.volume - (0.05*maxvol);
+                a.volume = roundVol.toFixed(3);
                 setTimeout(function () {
-                    if (a.volume.toFixed(2) > 0) {
+                    if (a.volume.toFixed(3) > 0) {
                         decVolume(a);
                     } else {
                         a.volume = 0;
@@ -375,21 +347,20 @@ function decVolume(a) {
 // When volume at zero stop all the intervalling
 function addVolume(a) {
     var maxvol = 1;
+    var roundVol;
     if (a.parentElement.hasAttribute("volume")) {
         maxvol = Number(a.parentElement.attributes.volume.value) / 100;
     }
-    if (a.volume.toFixed(2) < maxvol) {
+    if (a.volume.toFixed(3) < maxvol) {
         if (a.classList[0] == 'playing') {
             var t = 0;
             if (a.parentElement.hasAttribute("fadein")) {
                 t = Number(a.parentElement.attributes.fadein.value);
-                var addT = t * maxvol / 100;
-                var Vcent = a.volume * 100;
-                Vcent = Vcent + maxvol;
-                a.volume = a.volume.toFixed(2);
-                a.volume = a.volume += 0.01;
+                var addT = t * maxvol / 20;
+                roundVol = a.volume + (0.05*maxvol);
+                a.volume = roundVol.toFixed(3);
                 setTimeout(function () {
-                    if (a.volume.toFixed(2) < maxvol * 100 - 1) {
+                    if (a.volume.toFixed(3) < maxvol * 100 - 1) {
                         addVolume(a);
                     }
                 }, addT);
@@ -410,9 +381,11 @@ function pauseAudio(a) {
 }
 
 function playCircle(x, y, r, a, n) {
-    var maxvol = 100;
+    var maxvol = 1;
+    var roundVol;
+    var idist;
     if (a.parentElement.hasAttribute("volume")) {
-        maxvol = Number(a.parentElement.attributes.volume.value);
+        maxvol = Number(a.parentElement.attributes.volume.value)/100;
     }
     var distance = Number(measure(nowX, nowY, x, y));
     if (distance <= r) {
@@ -424,18 +397,30 @@ function playCircle(x, y, r, a, n) {
                 var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
                 for (var i = 0; i < groupAudio; i++) {
                     playAudio(a.parentElement.parentElement.querySelectorAll('audio')[i]);
+                    playing.innerHTML = n + " audio " + distance + " from " + a.parentElement.id;
                 }
             }
             else if ((!(a.duration.toFixed(2) == a.currentTime.toFixed(2))) || (a.hasAttribute("loop"))) {
                 a.play();
+                playing.innerHTML = n + " audio " + distance + " from " + a.parentElement.id;
             }
-            playing.innerHTML = n + " audio " + distance + " from " + a.parentElement.id;
 
         }
-        if ($(a).parents(".circle").attr("fade") == "center") {
+        if (a.parentElement.hasAttribute("fade")) {
             if (distance < r) {
-                var idist = Math.cos(distance / r * 90 * Math.PI / 180);
-                a.volume = (1 - distance / r) * (idist);
+                idist = Math.cos(distance / r * 90 * Math.PI / 180);
+                if (maxvol == 1) {
+                roundVol = (1 - distance / r).toFixed(2)*idist.toFixed(2);
+                a.volume = roundVol.toFixed(3);
+                }
+                else {
+                    roundVol = (1 - distance / r).toFixed(2)*idist.toFixed(2)*maxvol;
+                    a.volume = roundVol.toFixed(3);
+                    if (roundVol.toFixed(2) <= maxvol) {
+                        a.volume = roundVol.toFixed(2);
+                    }
+                }
+                
                 //console.log(a.volume);
                 a.classList.add("playing");
             }
