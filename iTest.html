@@ -120,10 +120,9 @@ const options = {
 var source = [];
 
 function initAudio() {
-    for (var i = 0; i < audioObjs.length; i++) {
-        var copyurl = audioObjs[i].children[0].src;
-        audioObjs[i].volume = 0;
+        var copyurl = audioObjs[source.length].children[0].src;
         source.push(copyurl);
+        var i = source.length - 1;
         audioObjs[i].setAttribute("style", "position:absolute;");
         audioObjs[i].children[0].src = "Suoni/system-silence.mp3";
         setTimeout(function () {
@@ -131,17 +130,18 @@ function initAudio() {
             setTimeout(function () {
                     document.querySelectorAll("audio")[source.length - 1].pause();
                     document.querySelectorAll("audio")[source.length - 1].currentTime = 0;
+                    audioObjs[i].volume = 0;
                     if (source.length == audioObjs.length) {
                         for( var j = 0; j < source.length; j++) {
                             audioObjs[j].id = "audio" + (j);
                             audioObjs[j].children[0].src = source[j];
                         }
                         document.getElementsByTagName("body")[0].classList.add("ready");
-                        return;
-                    } 
+                    } else {
+                      initAudio();
+                    }
                 }, 50);
             }, 50)
-        }
 }
 
 
