@@ -119,3 +119,7 @@ button {
   div:has(.leaflet-container) .imgGiardini {
     display: none;
 }
+
+body.ready button {
+    visibility: hidden;
+} 
