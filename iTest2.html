@@ -92,15 +92,15 @@
     <footer>
     </footer>
 </body>
-<script> 
+<script>
 
     const textXY = document.getElementById("demo");
     const dothings = document.getElementById("dothings");
     const playing = document.getElementById("playing");
     const mainTitle = document.getElementById("mainTitle");
-
+    
     var decP = 9; //decimal precision
-
+    
     var initX = 0;
     var initY = 0;
     var ixy = 0; //progressivo geolocalizzazione -> 0 -> prima geolocalizzazione = coordinate di partenza
@@ -109,69 +109,69 @@
     var nowXbis;
     var nowYbis;
     var markerXY;
-
+    
     var marker = 0;
     var map = 0;
-
+    
     var circles = $(".circle");
     var polygons = $(".polygon");
-
+    
     var snapTime = 3000;
     var alphaDir = 0;
-
-    var audioObjs = document.querySelectorAll("audio");
+    
+    var audioObjs = $("audio");
     const options = {
         enableHighAccuracy: true,
         timeout: 10000,
     };
-
+    
     var source = [];
-
-    for (var i = 0; i < audioObjs.length; i++) {
-       
-    }
-
-    function initAudio() {
-        for (var i = 0; i < audioObjs.length - 1; i++) {
+    
+    window.onload = function(){
+        for (var i = 0; i < audioObjs.length ; i++) {
             var copyurl = audioObjs[source.length].children[0].src;
-                source.push(copyurl);
-                audioObjs[i].children[0].src = "Suoni/system-silence.mp3";
-                audioObjs[i].id = "audio" + (i);
-                audioObjs[i].setAttribute("style", "position:absolute;");
-                audioObjs[i].volume = 0;
-            setTimeout(function () {
-                audioObjs[i].play();
-                setTimeout(function () {
-                   audioObjs[i].pause();
-                    if (i == audioObjs.length) {
-                        for (var j = 0; j < audioObjs.length - 1; j++); {
-                            setTimeout(function () {
+                    source.push(copyurl);
+                    audioObjs[i].children[0].src = "Suoni/system-silence.mp3";
+                    audioObjs[i].id = "audio" + (i);
+                    audioObjs[i].setAttribute("style", "position:absolute;");
+                    audioObjs[i].volume = 0;
+            }
+            console.log(source);
+    }; 
+    
+    
+    function initAudio() {
+        var countA = 0;
+        for ( countA = 0; countA < audioObjs.length; countA++) {
+                audioObjs[countA].play();
+                setTimeout(function(countA) {
+                    for (var j = 0; j < audioObjs.length - 1; j++); {
+                     audioObjs[j].pause();
+                    if (countA == audioObjs.length - 1) {
                                 document.querySelectorAll("audio")[j].currentTime = 0;
                                 audioObjs[j].children[0].src = source[j];
-                            }, 1);
                             document.getElementsByTagName("body")[0].classList.add("ready");
                         }
                     }
                 }, 50);
-            }, 50)
         }
     }
-
+    
     function initAudioDo(i) {
-
-
+    
+    
     }
-
-
+    
+    
     var shapes = [];
-
+    
     /*DOMContentLoaded*/
-
+    
     async function startGetLocation() {
         initAudio();
         if (navigator.geolocation) {
             navigator.geolocation.watchPosition(function getPosition(position) {
-
+    
                 if (ixy == 0) {
                     initX = position.coords.latitude.toFixed(decP);
                     initY = position.coords.longitude.toFixed(decP);
@@ -180,26 +180,26 @@
                         maxZoom: 19,
                         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     }).addTo(map);
-
+    
                     marker = L.marker([initX, initY]).addTo(map);
                     doCircleMap();
                     doPolygonMap();
-
+    
                     ixy = ixy + 1;
                 }
-
+    
                 nowX = position.coords.latitude.toFixed(decP);
                 nowY = position.coords.longitude.toFixed(decP);
                 nowXbis = position.coords.latitude.toFixed(decP);
                 nowYbis = position.coords.longitude.toFixed(decP);
                 doAudioThings(nowX, nowY);
-
+    
             },
-
+    
                 function (error) {
                     if (error.code == error.PERMISSION_DENIED) {
                         if (ixy == 0) {
-
+    
                             document.querySelector("body").classList.add("edit");
                             if (document.querySelector("#mainTitle").hasAttribute("coord")) {
                                 initX = document.querySelector("#mainTitle").getAttribute("coord").split(",")[0];
@@ -209,22 +209,22 @@
                                 initX = 44.483132;
                                 initY = 11.349113;
                             }
-
+    
                             map = L.map('map').setView([initX, initY], 16);
                             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                                 maxZoom: 20,
                                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                             }).addTo(map);
-
+    
                             marker = L.marker([initX, initY]).addTo(map);
                             doCircleMap();
                             doPolygonMap();
                             ixy = ixy + 1;
                         }
-
+    
                         dothings.innerHTML = "Now Walk Around And Listen";
-
-
+    
+    
                         map.on('mousemove', function (ev) {
                             nowX = ev.latlng.lat.toFixed(decP);
                             nowY = ev.latlng.lng.toFixed(decP);
@@ -232,15 +232,15 @@
                             nowYbis = ev.latlng.lng.toFixed(decP);
                             doAudioThings(nowX, nowY);
                         });
-
-
+    
+    
                         map.on('click', function (ev) {
                             // Get the text field
                             var copyText = ev.latlng.lat.toFixed(decP) + ", " + ev.latlng.lng.toFixed(decP);
-
+    
                             // Copy the text inside the text field
                             navigator.clipboard.writeText(copyText);
-
+    
                             // Alert the copied text
                             dothings.innerHTML = copyText;
                         });
@@ -252,14 +252,14 @@
         } else {
             textXY.innerHTML = "Geolocation is not supported by this browser.";
         }
-
+    
     }
-
+    
     async function startGetLocationNoMap() {
         initAudio();
         if (navigator.geolocation) {
             navigator.geolocation.watchPosition(function getPosition(position) {
-
+    
                 if (ixy == 0) {
                     initX = position.coords.latitude.toFixed(decP);
                     initY = position.coords.longitude.toFixed(decP);
@@ -268,26 +268,26 @@
                     //     maxZoom: 19,
                     //     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     // }).addTo(map);
-
+    
                     // marker = L.marker([initX, initY]).addTo(map);
                     // doCircleMap();
                     // doPolygonMap();
-
+    
                     ixy = ixy + 1;
                 }
-
+    
                 nowX = position.coords.latitude.toFixed(decP);
                 nowY = position.coords.longitude.toFixed(decP);
                 nowXbis = position.coords.latitude.toFixed(decP);
                 nowYbis = position.coords.longitude.toFixed(decP);
                 doAudioThings(nowX, nowY);
-
+    
             },
-
+    
                 function (error) {
                     if (error.code == error.PERMISSION_DENIED) {
                         if (ixy == 0) {
-
+    
                             document.querySelector("body").classList.add("edit");
                             if (document.querySelector("#mainTitle").hasAttribute("coord")) {
                                 initX = document.querySelector("#mainTitle").getAttribute("coord").split(",")[0];
@@ -305,14 +305,14 @@
         } else {
             textXY.innerHTML = "Geolocation is not supported by this browser.";
         }
-
+    
     }
-
+    
     async function startGetLocationNoShapes() {
         initAudio();
         if (navigator.geolocation) {
             navigator.geolocation.watchPosition(function getPosition(position) {
-
+    
                 if (ixy == 0) {
                     initX = position.coords.latitude.toFixed(decP);
                     initY = position.coords.longitude.toFixed(decP);
@@ -321,26 +321,26 @@
                         maxZoom: 19,
                         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     }).addTo(map);
-
+    
                     marker = L.marker([initX, initY]).addTo(map);
                     // doCircleMap();
                     // doPolygonMap();
-
+    
                     ixy = ixy + 1;
                 }
-
+    
                 nowX = position.coords.latitude.toFixed(decP);
                 nowY = position.coords.longitude.toFixed(decP);
                 nowXbis = position.coords.latitude.toFixed(decP);
                 nowYbis = position.coords.longitude.toFixed(decP);
                 doAudioThings(nowX, nowY);
-
+    
             },
-
+    
                 function (error) {
                     if (error.code == error.PERMISSION_DENIED) {
                         if (ixy == 0) {
-
+    
                             document.querySelector("body").classList.add("edit");
                             if (document.querySelector("#mainTitle").hasAttribute("coord")) {
                                 initX = document.querySelector("#mainTitle").getAttribute("coord").split(",")[0];
@@ -350,17 +350,17 @@
                                 initX = 44.483132;
                                 initY = 11.349113;
                             }
-
+    
                             map = L.map('map').setView([initX, initY], 18);
                             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                                 maxZoom: 18,
                                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                             }).addTo(map);
-
+    
                             marker = L.marker([initX, initY]).addTo(map);
                             ixy = ixy + 1;
                         }
-
+    
                         map.on('mousemove', function (ev) {
                             nowX = ev.latlng.lat.toFixed(decP);
                             nowY = ev.latlng.lng.toFixed(decP);
@@ -368,15 +368,15 @@
                             nowYbis = ev.latlng.lng.toFixed(decP);
                             doAudioThings(nowX, nowY);
                         });
-
-
+    
+    
                         map.on('click', function (ev) {
                             // Get the text field
                             var copyText = ev.latlng.lat.toFixed(decP) + ", " + ev.latlng.lng.toFixed(decP);
-
+    
                             // Copy the text inside the text field
                             navigator.clipboard.writeText(copyText);
-
+    
                             // Alert the copied text
                             dothings.innerHTML = copyText;
                         });
@@ -388,9 +388,9 @@
         } else {
             textXY.innerHTML = "Geolocation is not supported by this browser.";
         }
-
+    
     }
-
+    
     function doAudioThings(nowX, nowY) {
         if (map != 0) {
             markerXY = L.latLng(nowX, nowY);
@@ -401,7 +401,7 @@
                 "<br>STARTING POINT: " + initX + " , " + initY +
                 "<br>distance from STARTING POINT: " + measure(initX, initY, nowX, nowY) + "m";
         }
-
+    
         circles.each(function () {
             var x = $(this).attr("coord").split(",")[0];
             var y = $(this).attr("coord").split(",")[1];
@@ -410,17 +410,17 @@
             var n = $(this).attr("id");
             playCircle(x, y, r, a, n)
         });
-
+    
         polygons.each(function () {
             var polyCoord = $(this).attr("coord");
             var a = $(this).children("audio")[0];
             var n = $(this).attr("id");
             playPolygon(polyCoord, a, n);
         });
-
-
+    
+    
     }
-
+    
     function decVolume(a) {
         var maxvol;
         var roundVol;
@@ -434,11 +434,10 @@
                 var t = 0;
                 if (a.parentElement.hasAttribute("fadeout")) {
                     t = Number(a.parentElement.attributes.fadeout.value);
-                    var decT = t * maxvol / 20;
-                    roundVol = a.volume - (0.05 * maxvol);
-                    a.volume = roundVol.toFixed(4);
+                    var decT = t * maxvol / 50;
+                    a.volume = (a.volume - 0.02*maxvol).toFixed(4);
                     setTimeout(function () {
-                        if (a.volume.toFixed(4) > (0.05 * maxvol).toFixed(4)) {
+                        if (a.volume.toFixed(4) > (0.02 * maxvol).toFixed(4)) {
                             decVolume(a);
                         } else {
                             a.volume = 0;
@@ -485,30 +484,29 @@
                 var t = 0;
                 if (a.parentElement.hasAttribute("fadein")) {
                     t = Number(a.parentElement.attributes.fadein.value);
-                    var addT = t * maxvol / 20;
-                    roundVol = a.volume + (0.05 * maxvol);
-                    a.volume = roundVol.toFixed(4);
+                    var addT = t * maxvol / 50;
+                    a.volume = (a.volume + 0.02*maxvol).toFixed(4);
                     setTimeout(function () {
-                        if (a.volume.toFixed(4) < maxvol * 100 - 1) {
+                        if (a.volume.toFixed(4) < maxvol) {
                             addVolume(a);
                         }
                     }, addT);
                 }
                 else {
-                    a.volume = Number(maxvol);
+                    a.volume = maxvol;
                 }
             }
         }
     }
-
+    
     function playAudio(a) {
         a.play();
     }
-
+    
     function pauseAudio(a) {
         a.pause();
     }
-
+    
     function playCircle(x, y, r, a, n) {
         var maxvol = 1;
         var roundVol;
@@ -522,15 +520,16 @@
                 a.setAttribute("controls", "")
             }
             if ((a.paused)) {
-                
                 if (a.parentElement.parentElement.hasAttribute("group")) {
                     var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
-                    for (var i = 0; i < groupAudio - 1; i++) {
-                        playAudio(a.parentElement.parentElement.querySelectorAll('audio')[i]);
+                    for (var i = 0; i < groupAudio; i++) {
+                        if (!(groupAudio[i].parentElementparentElement.hasAttribute('rewind'))) {
+                        playAudio(groupAudio[i]);
+                        }
                     }
                 }
-                else if ((!(a.duration.toFixed(2) == a.currentTime.toFixed(2))) || (a.hasAttribute("loop"))) {
-                    playAudio(a);
+                else if ((!(a.duration.toFixed(2) == a.currentTime.toFixed(2)) && !(a.parentElement.hasAttribute('rewind'))) || (a.hasAttribute("loop"))) {
+                    a.play();
                 }
             }
             if (a.parentElement.hasAttribute("fade")) {
@@ -556,7 +555,7 @@
                 addVolume(a);
             }
         }
-
+    
         else if (distance > r && (!(a.paused) || (a.ended))) {
             if ($(a).parents(".circle").attr("fade") == "center") {
                 a.volume = 0.0;
@@ -571,7 +570,7 @@
                 else {
                     var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
                     var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
-
+    
                     if (groupPlayingAudio == 0) {
                         a.pause();
                         a.removeAttribute("controls");
@@ -582,7 +581,7 @@
                 setTimeout(function () {
                     distance = Number(measure(nowX, nowY, x, y));
                     if (distance > r) {
-                        if ((!(a.paused))) {
+                        if ((!(a.paused)) && (a.classList[0] == 'playing')) {
                             a.classList.remove("playing");
                             decVolume(a);
                             // Only fade if past the fade out point or not at zero already  
@@ -593,7 +592,7 @@
                                     for (var i = 0; i < groupAudio; i++) {
                                         decVolume(a.parentElement.parentElement.querySelectorAll('audio')[i]);
                                         a.parentElement.parentElement.querySelectorAll('audio')[i].removeAttribute("controls")
-
+    
                                     }
                                 }
                             }
@@ -604,7 +603,7 @@
             }
         }
     }
-
+    
     function playPolygon(pointList, a, n) {
         var point = [];
         // console.log(pointList);
@@ -614,7 +613,6 @@
         //  console.log(rayCasting(point, polyCoord));
         if (rayCasting(point, polyCoord)) {
             if ((a.paused)) {
-                a.classList.add("playing");
                 a.setAttribute("controls", "");
                 if (a.parentElement.parentElement.hasAttribute("group")) {
                     var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
@@ -627,10 +625,11 @@
                 }
             }
             if (a.volume < 1 && (a.classList[0] !== 'playing')) {
+                a.classList.add("playing");
                 addVolume(a);
             }
         }
-
+    
         if (!(rayCasting(point, polyCoord))) {
             setTimeout(function () {
                 var newXY = [];
@@ -648,20 +647,20 @@
                                 for (var i = 0; i < groupAudio; i++) {
                                     decVolume(a.parentElement.parentElement.querySelectorAll('audio')[i]);
                                     a.parentElement.parentElement.querySelectorAll('audio')[i].removeAttribute("controls")
-
+    
                                 }
                             }
                         }
                         a.removeAttribute("controls")
                         // Only fade if past the fade out point or not at zero already            
                     }
-
-
+    
+    
                 }
             }, snapTime)
         }
     }
-
+    
     function measure(lat1, lon1, lat2, lon2) {  // generally used geo measurement function
         var R = 6378.137; // Radius of earth in KM
         var dLat = lat2 * Math.PI / 180 - lat1 * Math.PI / 180;
@@ -674,31 +673,31 @@
         var dm = d * 1000; // meters
         return dm.toFixed(decP);
     }
-
+    
     function rayCasting(point, polygon) {
         const n = polygon.length
         let isIn = false
         const x = point[0]
         const y = point[1]
         let x1, x2, y1, y2
-
+    
         x1 = polygon[n - 1][0]
         y1 = polygon[n - 1][1]
-
+    
         for (var i = 0; i < n; ++i) {
             x2 = polygon[i][0];
             y2 = polygon[i][1];
-
+    
             if (y < y1 !== y < y2 && x < (x2 - x1) * (y - y1) / (y2 - y1) + x1) {
                 isIn = !isIn;
             }
             x1 = x2
             y1 = y2
         }
-
+    
         return isIn;
     }
-
+    
     function doCircleMap() {
         var cShapes = [];
         circles.each(function () {
@@ -717,7 +716,7 @@
             }
         });
     }
-
+    
     function doPolygonMap() {
         var pShapes = [];
         polygons.each(function () {
@@ -734,6 +733,6 @@
             }
         });
     }
-</script>
+     </script>
 
 </html>
