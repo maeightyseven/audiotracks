@@ -74,7 +74,7 @@
                                     type="audio/mpeg">
                             </audio>
                         </div>
-                        <div class="circle" id="Top_1" coord="44.495399076, 11.358903775" size="35">
+                        <div class="circle" id="east_1" coord="44.495399076, 11.358903775" size="35">
                             <audio preload="none" loop>
                                 <source src="https://cdn.freesound.org/previews/739/739918_16065630-lq.mp3"
                                     type="audio/mpeg">
@@ -133,11 +133,12 @@
                     source.push(copyurl);
                     audioObjs[i].children[0].src = "Suoni/system-silence.mp3";
                     audioObjs[i].id = "audio" + (i);
+                    audioObjs[i].parentElement.id = "Shape" + (i);
                     audioObjs[i].setAttribute("style", "position:absolute;");
                     audioObjs[i].volume = 0;
             }
-            console.log(source);
-    }; 
+    
+        }; 
     
     
     function initAudio() {
