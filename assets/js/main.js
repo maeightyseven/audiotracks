@@ -1,4 +1,5 @@
 
+
 const textXY = document.getElementById("demo");
 const dothings = document.getElementById("dothings");
 const playing = document.getElementById("playing");
@@ -11,6 +12,9 @@ var initY = 0;
 var ixy = 0; //progressivo geolocalizzazione -> 0 -> prima geolocalizzazione = coordinate di partenza
 var nowX = 0;
 var nowY = 0;
+var nowXbis;
+var nowYbis;
+var markerXY;
 
 var marker = 0;
 var map = 0;
@@ -27,20 +31,50 @@ const options = {
     timeout: 10000,
 };
 
-for (var i = 0; i < audioObjs.length; ++i) {
-    audioObjs[i].id = "audio" + i;
-    audioObjs[i].pause();
-    audioObjs[i].volume = 0.0;
-    audioObjs[i].setAttribute("style", "position:absolute;")
+var source = [];
+
+window.onload = function(){
+    for (var i = 0; i < audioObjs.length ; i++) {
+        var copyurl = audioObjs[source.length].children[0].src;
+                source.push(copyurl);
+                audioObjs[i].children[0].src = "Suoni/system-silence.mp3";
+                audioObjs[i].id = "audio" + (i);
+                audioObjs[i].setAttribute("style", "position:absolute;");
+                audioObjs[i].volume = 0;
+        }
+        console.log(source);
+}; 
+
+
+function initAudio() {
+    var countA = 0;
+    for ( countA = 0; countA < audioObjs.length; countA++) {
+            audioObjs[countA].play();
+            setTimeout(function(countA) {
+                for (var j = 0; j < audioObjs.length - 1; j++); {
+                 audioObjs[j].pause();
+                if (countA == audioObjs.length - 1) {
+                            document.querySelectorAll("audio")[j].currentTime = 0;
+                            audioObjs[j].children[0].src = source[j];
+                        document.getElementsByTagName("body")[0].classList.add("ready");
+                    }
+                }
+            }, 50);
+    }
 }
 
-var shapes = [];
+function initAudioDo(i) {
 
+
+}
+
+
+var shapes = [];
 
 /*DOMContentLoaded*/
 
 async function startGetLocation() {
-
+    initAudio();
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
 
@@ -128,6 +162,7 @@ async function startGetLocation() {
 }
 
 async function startGetLocationNoMap() {
+    initAudio();
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
 
@@ -165,7 +200,7 @@ async function startGetLocationNoMap() {
                             initY = document.querySelector("#mainTitle").getAttribute("coord").split(",")[1];
                         }
                         else {
-                          alert('ERRORE')
+                            alert('ERRORE')
                         }
                     }
                     textXY.innerHTML = "you denied me :-(";
@@ -180,6 +215,7 @@ async function startGetLocationNoMap() {
 }
 
 async function startGetLocationNoShapes() {
+    initAudio();
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
 
@@ -263,15 +299,14 @@ async function startGetLocationNoShapes() {
 
 function doAudioThings(nowX, nowY) {
     if (map != 0) {
-    markerXY = L.latLng(nowX, nowY);
-    marker.setLatLng(markerXY);
-    // console.log(nowX);
-    // console.log(nowY);
-    textXY.innerHTML = "ACTUAL POSITION: " + nowX + " , " + nowY +
-        "<br>STARTING POINT: " + initX + " , " + initY +
-        "<br>distance from STARTING POINT: " + measure(initX, initY, nowX, nowY) + "m";
+        markerXY = L.latLng(nowX, nowY);
+        marker.setLatLng(markerXY);
+        // console.log(nowX);
+        // console.log(nowY);
+        textXY.innerHTML = "ACTUAL POSITION: " + nowX + " , " + nowY +
+            "<br>STARTING POINT: " + initX + " , " + initY +
+            "<br>distance from STARTING POINT: " + measure(initX, initY, nowX, nowY) + "m";
     }
-
 
     circles.each(function () {
         var x = $(this).attr("coord").split(",")[0];
@@ -300,16 +335,15 @@ function decVolume(a) {
     } else {
         maxvol = 1;
     }
-    if (a.volume.toFixed(3) > 0) {
+    if (a.volume.toFixed(4) > 0) {
         if (a.classList[0] !== 'playing') {
             var t = 0;
             if (a.parentElement.hasAttribute("fadeout")) {
                 t = Number(a.parentElement.attributes.fadeout.value);
-                var decT = t * maxvol / 20;
-                roundVol = a.volume - (0.05*maxvol);
-                a.volume = roundVol.toFixed(3);
+                var decT = t * maxvol / 50;
+                a.volume = (a.volume - 0.02*maxvol).toFixed(4);
                 setTimeout(function () {
-                    if (a.volume.toFixed(3) > 0) {
+                    if (a.volume.toFixed(4) > (0.02 * maxvol).toFixed(4)) {
                         decVolume(a);
                     } else {
                         a.volume = 0;
@@ -351,22 +385,21 @@ function addVolume(a) {
     if (a.parentElement.hasAttribute("volume")) {
         maxvol = Number(a.parentElement.attributes.volume.value) / 100;
     }
-    if (a.volume.toFixed(3) < maxvol) {
+    if (a.volume.toFixed(4) < maxvol) {
         if (a.classList[0] == 'playing') {
             var t = 0;
             if (a.parentElement.hasAttribute("fadein")) {
                 t = Number(a.parentElement.attributes.fadein.value);
-                var addT = t * maxvol / 20;
-                roundVol = a.volume + (0.05*maxvol);
-                a.volume = roundVol.toFixed(3);
+                var addT = t * maxvol / 50;
+                a.volume = (a.volume + 0.02*maxvol).toFixed(4);
                 setTimeout(function () {
-                    if (a.volume.toFixed(3) < maxvol * 100 - 1) {
+                    if (a.volume.toFixed(4) < maxvol) {
                         addVolume(a);
                     }
                 }, addT);
             }
             else {
-                a.volume = Number(maxvol);
+                a.volume = maxvol;
             }
         }
     }
@@ -385,7 +418,7 @@ function playCircle(x, y, r, a, n) {
     var roundVol;
     var idist;
     if (a.parentElement.hasAttribute("volume")) {
-        maxvol = Number(a.parentElement.attributes.volume.value)/100;
+        maxvol = Number(a.parentElement.attributes.volume.value) / 100;
     }
     var distance = Number(measure(nowX, nowY, x, y));
     if (distance <= r) {
@@ -396,31 +429,29 @@ function playCircle(x, y, r, a, n) {
             if (a.parentElement.parentElement.hasAttribute("group")) {
                 var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
                 for (var i = 0; i < groupAudio; i++) {
-                    playAudio(a.parentElement.parentElement.querySelectorAll('audio')[i]);
-                    playing.innerHTML = n + " audio " + distance + " from " + a.parentElement.id;
+                    if (!(groupAudio[i].parentElementparentElement.hasAttribute('rewind'))) {
+                    playAudio(groupAudio[i]);
+                    }
                 }
             }
-            else if ((!(a.duration.toFixed(2) == a.currentTime.toFixed(2))) || (a.hasAttribute("loop"))) {
+            else if ((!(a.duration.toFixed(2) == a.currentTime.toFixed(2)) && !(a.parentElement.hasAttribute('rewind'))) || (a.hasAttribute("loop"))) {
                 a.play();
-                playing.innerHTML = n + " audio " + distance + " from " + a.parentElement.id;
             }
-
         }
         if (a.parentElement.hasAttribute("fade")) {
             if (distance < r) {
                 idist = Math.cos(distance / r * 90 * Math.PI / 180);
                 if (maxvol == 1) {
-                roundVol = (1 - distance / r).toFixed(2)*idist.toFixed(2);
-                a.volume = roundVol.toFixed(3);
+                    roundVol = (1 - distance / r).toFixed(4) * idist.toFixed(2);
+                    a.volume = roundVol.toFixed(4);
                 }
                 else {
-                    roundVol = (1 - distance / r).toFixed(2)*idist.toFixed(2)*maxvol;
-                    a.volume = roundVol.toFixed(3);
+                    roundVol = (1 - distance / r).toFixed(4) * idist.toFixed(2) * maxvol;
+                    a.volume = roundVol.toFixed(4);
                     if (roundVol.toFixed(2) <= maxvol) {
                         a.volume = roundVol.toFixed(2);
                     }
                 }
-                
                 //console.log(a.volume);
                 a.classList.add("playing");
             }
@@ -431,7 +462,7 @@ function playCircle(x, y, r, a, n) {
         }
     }
 
-    if (distance > r && (!(a.paused) || (a.ended))) {
+    else if (distance > r && (!(a.paused) || (a.ended))) {
         if ($(a).parents(".circle").attr("fade") == "center") {
             a.volume = 0.0;
             a.classList.remove("playing");
@@ -440,16 +471,15 @@ function playCircle(x, y, r, a, n) {
             }
             if (!(a.parentElement.parentElement.hasAttribute("group"))) {
                 a.pause();
-                a.removeAttribute("controls")
+                a.removeAttribute("controls");
             }
             else {
                 var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
                 var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
-                if (groupPlayingAudio = 0) {
-                    for (var i = 0; i < groupAudio; i++) {
-                        decVolume(a.parentElement.parentElement.querySelectorAll('audio')[i]);
-                        a.parentElement.parentElement.querySelectorAll('audio')[i].removeAttribute("controls")
-                    }
+
+                if (groupPlayingAudio == 0) {
+                    a.pause();
+                    a.removeAttribute("controls");
                 }
             }
         }
@@ -470,8 +500,8 @@ function playCircle(x, y, r, a, n) {
                                     a.parentElement.parentElement.querySelectorAll('audio')[i].removeAttribute("controls")
 
                                 }
+                            }
                         }
-                    }
                     }
                     a.removeAttribute("controls")
                 }
@@ -489,7 +519,7 @@ function playPolygon(pointList, a, n) {
     //  console.log(rayCasting(point, polyCoord));
     if (rayCasting(point, polyCoord)) {
         if ((a.paused)) {
-            a.setAttribute("controls", "")
+            a.setAttribute("controls", "");
             if (a.parentElement.parentElement.hasAttribute("group")) {
                 var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
                 for (var i = 0; i < groupAudio; i++) {
@@ -506,15 +536,15 @@ function playPolygon(pointList, a, n) {
         }
     }
 
-    if (!(rayCasting(point, polyCoord)) && !(a.paused)) {
+    if (!(rayCasting(point, polyCoord))) {
         setTimeout(function () {
             var newXY = [];
             newXY.push(nowXbis);
             newXY.push(nowYbis);
             if (!(rayCasting(newXY, polyCoord))) {
+                newXY = [];
                 if ((!(a.paused)) && (a.classList[0] == 'playing')) {
                     a.classList.remove("playing");
-                    playing.innerHTML = n + " pause audio " + " from " + a.id;
                     decVolume(a);
                     if (a.parentElement.parentElement.hasAttribute("group")) {
                         var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
