@@ -85,7 +85,7 @@
   </footer>
 </body>
 <script>
-
+  
  const textXY = document.getElementById("demo");
 const dothings = document.getElementById("dothings");
 const playing = document.getElementById("playing");
@@ -514,6 +514,7 @@ function initAudioDo(i) {
                     }
                 }
                 else if ((!(a.duration.toFixed(2) == a.currentTime.toFixed(2))) || (a.hasAttribute("loop"))) {
+                    a.classList.add("playing");
                     a.play();
                 }
             }
@@ -531,9 +532,8 @@ function initAudioDo(i) {
                             a.volume = roundVol.toFixed(2);
                         }
                     }
-
-                    //console.log(a.volume);
-                    a.classList.add("playing");
+//console.log(a.volume);
+a.classList.add("playing");
                 }
             }
             else if (a.volume < 1 && (a.classList[0] !== 'playing')) {
@@ -542,7 +542,7 @@ function initAudioDo(i) {
             }
         }
 
-        if (distance > r && (!(a.paused) || (a.ended))) {
+        else if (distance > r && (!(a.paused) || (a.ended))) {
             if ($(a).parents(".circle").attr("fade") == "center") { 
                 a.volume = 0.0;
                 a.classList.remove("playing");
