@@ -85,7 +85,7 @@
   </footer>
 </body>
 <script>
-   
+
  const textXY = document.getElementById("demo");
 const dothings = document.getElementById("dothings");
 const playing = document.getElementById("playing");
@@ -120,28 +120,30 @@ const options = {
 var source = [];
 
 function initAudio() {
-        var copyurl = audioObjs[source.length].children[0].src;
+    var i = 0
+    for ( i = 0; i < audioObjs.length - 1; i++); {
+        initAudioDo(i);
+    }
+}
+function initAudioDo(i) {
+        var copyurl = audioObjs[i].children[0].src;
         source.push(copyurl);
-        var i = source.length - 1;
         audioObjs[i].setAttribute("style", "position:absolute;");
         audioObjs[i].children[0].src = "Suoni/system-silence.mp3";
         setTimeout(function () {
-            document.querySelectorAll("audio")[source.length - 1].play();
+            document.querySelectorAll("audio")[i].play();
             setTimeout(function () {
-                    document.querySelectorAll("audio")[source.length - 1].pause();
-                    document.querySelectorAll("audio")[source.length - 1].currentTime = 0;
+                    document.querySelectorAll("audio")[i].pause();
+                    document.querySelectorAll("audio")[i].currentTime = 0;
                     audioObjs[i].volume = 0;
-                    if (source.length == audioObjs.length) {
-                        for( var j = 0; j < source.length; j++) {
-                            audioObjs[j].id = "audio" + (j);
-                            audioObjs[j].children[0].src = source[j];
-                        }
+                    audioObjs[i].id = "audio" + (i);
+                    audioObjs[i].children[0].src = source[i];
+                    if ( i == audioObjs.length) {
                         document.getElementsByTagName("body")[0].classList.add("ready");
-                    } else {
-                      initAudio();
-                    }
+                    } 
                 }, 50);
-            }, 50)
+        }, 50)
+        
 }
 
 
@@ -412,16 +414,16 @@ function initAudio() {
         } else {
             maxvol = 1;
         }
-        if (a.volume.toFixed(3) > 0) {
+        if (a.volume.toFixed(4) > 0) {
             if (a.classList[0] !== 'playing') {
                 var t = 0;
                 if (a.parentElement.hasAttribute("fadeout")) {
                     t = Number(a.parentElement.attributes.fadeout.value);
                     var decT = t * maxvol / 20;
                     roundVol = a.volume - (0.05 * maxvol);
-                    a.volume = roundVol.toFixed(3);
+                    a.volume = roundVol.toFixed(4);
                     setTimeout(function () {
-                        if (a.volume.toFixed(3) > (0.05 * maxvol)) {
+                        if (a.volume.toFixed(4) > (0.05 * maxvol).toFixed(4)) {
                             decVolume(a);
                         } else {
                             a.volume = 0;
@@ -463,16 +465,16 @@ function initAudio() {
         if (a.parentElement.hasAttribute("volume")) {
             maxvol = Number(a.parentElement.attributes.volume.value) / 100;
         }
-        if (a.volume.toFixed(3) < maxvol) {
+        if (a.volume.toFixed(4) < maxvol) {
             if (a.classList[0] == 'playing') {
                 var t = 0;
                 if (a.parentElement.hasAttribute("fadein")) {
                     t = Number(a.parentElement.attributes.fadein.value);
                     var addT = t * maxvol / 20;
                     roundVol = a.volume + (0.05 * maxvol);
-                    a.volume = roundVol.toFixed(3);
+                    a.volume = roundVol.toFixed(4);
                     setTimeout(function () {
-                        if (a.volume.toFixed(3) < maxvol * 100 - 1) {
+                        if (a.volume.toFixed(4) < maxvol * 100 - 1) {
                             addVolume(a);
                         }
                     }, addT);
@@ -507,27 +509,24 @@ function initAudio() {
             if ((a.paused)) {
                 if (a.parentElement.parentElement.hasAttribute("group")) {
                     var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
-                    for (var i = 0; i < groupAudio; i++) {
+                    for (var i = 0; i < groupAudio - 1; i++) {
                         playAudio(a.parentElement.parentElement.querySelectorAll('audio')[i]);
-                        playing.innerHTML = n + " audio " + distance + " from " + a.parentElement.id;
                     }
                 }
                 else if ((!(a.duration.toFixed(2) == a.currentTime.toFixed(2))) || (a.hasAttribute("loop"))) {
                     a.play();
-                    playing.innerHTML = n + " audio " + distance + " from " + a.parentElement.id;
                 }
-
             }
             if (a.parentElement.hasAttribute("fade")) {
                 if (distance < r) {
                     idist = Math.cos(distance / r * 90 * Math.PI / 180);
                     if (maxvol == 1) {
-                        roundVol = (1 - distance / r).toFixed(3) * idist.toFixed(2);
-                        a.volume = roundVol.toFixed(3);
+                        roundVol = (1 - distance / r).toFixed(4) * idist.toFixed(2);
+                        a.volume = roundVol.toFixed(4);
                     }
                     else {
-                        roundVol = (1 - distance / r).toFixed(3) * idist.toFixed(2) * maxvol;
-                        a.volume = roundVol.toFixed(3);
+                        roundVol = (1 - distance / r).toFixed(4) * idist.toFixed(2) * maxvol;
+                        a.volume = roundVol.toFixed(4);
                         if (roundVol.toFixed(2) <= maxvol) {
                             a.volume = roundVol.toFixed(2);
                         }
@@ -544,7 +543,8 @@ function initAudio() {
         }
 
         if (distance > r && (!(a.paused) || (a.ended))) {
-            if ($(a).parents(".circle").attr("fade") == "center") {                a.volume = 0.0;
+            if ($(a).parents(".circle").attr("fade") == "center") { 
+                a.volume = 0.0;
                 a.classList.remove("playing");
                 if ((a.duration.toFixed(2) == a.currentTime.toFixed(2)) && !(a.hasAttribute("loop")) || a.parentElement.hasAttribute('rewind')) {
                     a.currentTime = 0;
@@ -599,7 +599,8 @@ function initAudio() {
         //  console.log(rayCasting(point, polyCoord));
         if (rayCasting(point, polyCoord)) {
             if ((a.paused)) {
-                a.setAttribute("controls", "")
+                a.classList.add("playing");
+                a.setAttribute("controls", "");
                 if (a.parentElement.parentElement.hasAttribute("group")) {
                     var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
                     for (var i = 0; i < groupAudio; i++) {
@@ -611,20 +612,19 @@ function initAudio() {
                 }
             }
             if (a.volume < 1 && (a.classList[0] !== 'playing')) {
-                a.classList.add("playing");
                 addVolume(a);
             }
         }
 
-        if (!(rayCasting(point, polyCoord)) && !(a.paused)) {
+        if (!(rayCasting(point, polyCoord))) {
             setTimeout(function () {
                 var newXY = [];
                 newXY.push(nowXbis);
                 newXY.push(nowYbis);
                 if (!(rayCasting(newXY, polyCoord))) {
+                    newXY = [];
                     if ((!(a.paused)) && (a.classList[0] == 'playing')) {
                         a.classList.remove("playing");
-                        playing.innerHTML = n + " pause audio " + " from " + a.id;
                         decVolume(a);
                         if (a.parentElement.parentElement.hasAttribute("group")) {
                             var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
