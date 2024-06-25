@@ -425,7 +425,7 @@ function playCircle(x, y, r, a, n) {
             if (a.parentElement.parentElement.hasAttribute('group')) {
                 var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
                 for (var i = 0; i < groupAudio; i++) {
-                    if (!(groupAudio[i].parentElementparentElement.hasAttribute('rewind'))) {
+                    if (!(groupAudio[i].parentElement.parentElement.hasAttribute('rewind'))) {
                         playAudio(groupAudio[i]);
                     }
                 }
