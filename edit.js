@@ -1,9 +1,9 @@
 
 
-const textXY = document.getElementById("demo");
-const dothings = document.getElementById("dothings");
-const playing = document.getElementById("playing");
-const mainTitle = document.getElementById("mainTitle");
+const textXY = document.getElementById('demo');
+const dothings = document.getElementById('dothings');
+const playing = document.getElementById('playing');
+const mainTitle = document.getElementById('mainTitle');
 
 var decP = 9; //decimal precision
 
@@ -19,13 +19,13 @@ var markerXY;
 var marker = 0;
 var map = 0;
 
-var circles = $(".circle");
-var polygons = $(".polygon");
+var circles = $('.circle');
+var polygons = $('.polygon');
 
 var snapTime = 3000;
 var alphaDir = 0;
 
-var audioObjs = $("audio");
+var audioObjs = document.getElementsByTagName('audio');
 const options = {
     enableHighAccuracy: true,
     timeout: 10000,
@@ -33,48 +33,52 @@ const options = {
 
 var source = [];
 
-window.onload = function(){
-    for (var i = 0; i < audioObjs.length ; i++) {
+window.onload = function () {
+    for (var i = 0; i < audioObjs.length; i++) {
         var copyurl = audioObjs[source.length].children[0].src;
-                source.push(copyurl);
-                audioObjs[i].children[0].src = "Suoni/system-silence.mp3";
-                audioObjs[i].id = "audio" + (i);
-                audioObjs[i].parentElement.id = "Shape" + (i);
-                audioObjs[i].setAttribute("style", "position:absolute;");
-                audioObjs[i].volume = 0;
-        }
-
-    }; 
+        source.push(copyurl);
+        audioObjs[i].children[0].src = 'Suoni/system-silence.mp3';
+        audioObjs[i].id = 'audio' + (i);
+        audioObjs[i].parentElement.id = 'Shape' + (i);
+        audioObjs[i].setAttribute('style', 'position:absolute;');
+        audioObjs[i].volume = 0;
+    }
+};
 
 
 function initAudio() {
-    var countA = 0;
-    for ( countA = 0; countA < audioObjs.length; countA++) {
-            audioObjs[countA].play();
-            setTimeout(function(countA) {
-                for (var j = 0; j < audioObjs.length - 1; j++); {
-                 audioObjs[j].pause();
-                if (countA == audioObjs.length - 1) {
-                            document.querySelectorAll("audio")[j].currentTime = 0;
-                            audioObjs[j].children[0].src = source[j];
-                        document.getElementsByTagName("body")[0].classList.add("ready");
-                    }
-                }
-            }, 50);
+    for (var countA = 0; countA < audioObjs.length; countA++) {
+        initAudioStop(countA);
+
+        document.getElementsByTagName('body')[0].classList.add('ready');
     }
 }
 
-function initAudioDo(i) {
+function initAudioStop(countA) {
+    var playPromise = audioObjs[countA].play();
 
+    if (playPromise !== undefined) {
+        playPromise.then(_ => {
+            // Automatic playback started!
+            // Show playing UI.
+            // We can now safely pause video...
+            audioObjs[countA].pause();
+            document.querySelectorAll('audio')[countA].currentTime = 0;
+        })
+            .catch(error => {
+                // Auto-play was prevented
+                // Show paused UI.
+            });
 
+        audioObjs[countA].children[0].src = source[countA];
+    }
 }
-
 
 var shapes = [];
 
 /*DOMContentLoaded*/
 
-async function startGetLocation() {
+function startGetLocation() {
     initAudio();
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
@@ -107,10 +111,10 @@ async function startGetLocation() {
                 if (error.code == error.PERMISSION_DENIED) {
                     if (ixy == 0) {
 
-                        document.querySelector("body").classList.add("edit");
-                        if (document.querySelector("#mainTitle").hasAttribute("coord")) {
-                            initX = document.querySelector("#mainTitle").getAttribute("coord").split(",")[0];
-                            initY = document.querySelector("#mainTitle").getAttribute("coord").split(",")[1];
+                        document.getElementsByTagName('body')[0].classList.add('edit');
+                        if (document.getElementById('mainTitle').hasAttribute('coord')) {
+                            initX = document.getElementById('mainTitle').getAttribute('coord').split(',')[0];
+                            initY = document.getElementById('mainTitle').getAttribute('coord').split(',')[1];
                         }
                         else {
                             initX = 44.483132;
@@ -129,7 +133,7 @@ async function startGetLocation() {
                         ixy = ixy + 1;
                     }
 
-                    dothings.innerHTML = "Now Walk Around And Listen";
+                    dothings.innerHTML = 'Now Walk Around And Listen';
 
 
                     map.on('mousemove', function (ev) {
@@ -143,7 +147,7 @@ async function startGetLocation() {
 
                     map.on('click', function (ev) {
                         // Get the text field
-                        var copyText = ev.latlng.lat.toFixed(decP) + ", " + ev.latlng.lng.toFixed(decP);
+                        var copyText = ev.latlng.lat.toFixed(decP) + ', ' + ev.latlng.lng.toFixed(decP);
 
                         // Copy the text inside the text field
                         navigator.clipboard.writeText(copyText);
@@ -151,18 +155,18 @@ async function startGetLocation() {
                         // Alert the copied text
                         dothings.innerHTML = copyText;
                     });
-                    textXY.innerHTML = "you denied me :-(";
+                    textXY.innerHTML = 'you denied me :-(';
                 }
             },
             options
         );
     } else {
-        textXY.innerHTML = "Geolocation is not supported by this browser.";
+        textXY.innerHTML = 'Geolocation is not supported by this browser.';
     }
 
 }
 
-async function startGetLocationNoMap() {
+function startGetLocationNoMap() {
     initAudio();
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
@@ -173,7 +177,7 @@ async function startGetLocationNoMap() {
                 // map = L.map('map').setView([initX, initY], 18);
                 // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 //     maxZoom: 19,
-                //     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                //     attribution: '&copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>'
                 // }).addTo(map);
 
                 // marker = L.marker([initX, initY]).addTo(map);
@@ -195,27 +199,27 @@ async function startGetLocationNoMap() {
                 if (error.code == error.PERMISSION_DENIED) {
                     if (ixy == 0) {
 
-                        document.querySelector("body").classList.add("edit");
-                        if (document.querySelector("#mainTitle").hasAttribute("coord")) {
-                            initX = document.querySelector("#mainTitle").getAttribute("coord").split(",")[0];
-                            initY = document.querySelector("#mainTitle").getAttribute("coord").split(",")[1];
+                        document.querySelector('body').classList.add('edit');
+                        if (document.getElementById('mainTitle').hasAttribute('coord')) {
+                            initX = document.getElementById('mainTitle').getAttribute('coord').split(',')[0];
+                            initY = document.getElementById('mainTitle').getAttribute('coord').split(',')[1];
                         }
                         else {
                             alert('ERRORE')
                         }
                     }
-                    textXY.innerHTML = "you denied me :-(";
+                    textXY.innerHTML = 'you denied me :-(';
                 }
             },
             options
         );
     } else {
-        textXY.innerHTML = "Geolocation is not supported by this browser.";
+        textXY.innerHTML = 'Geolocation is not supported by this browser.';
     }
 
 }
 
-async function startGetLocationNoShapes() {
+function startGetLocationNoShapes() {
     initAudio();
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
@@ -248,10 +252,10 @@ async function startGetLocationNoShapes() {
                 if (error.code == error.PERMISSION_DENIED) {
                     if (ixy == 0) {
 
-                        document.querySelector("body").classList.add("edit");
-                        if (document.querySelector("#mainTitle").hasAttribute("coord")) {
-                            initX = document.querySelector("#mainTitle").getAttribute("coord").split(",")[0];
-                            initY = document.querySelector("#mainTitle").getAttribute("coord").split(",")[1];
+                        document.querySelector('body').classList.add('edit');
+                        if (document.getElementById('mainTitle').hasAttribute('coord')) {
+                            initX = document.getElementById('mainTitle').getAttribute('coord').split(',')[0];
+                            initY = document.getElementById('mainTitle').getAttribute('coord').split(',')[1];
                         }
                         else {
                             initX = 44.483132;
@@ -279,7 +283,7 @@ async function startGetLocationNoShapes() {
 
                     map.on('click', function (ev) {
                         // Get the text field
-                        var copyText = ev.latlng.lat.toFixed(decP) + ", " + ev.latlng.lng.toFixed(decP);
+                        var copyText = ev.latlng.lat.toFixed(decP) + ', ' + ev.latlng.lng.toFixed(decP);
 
                         // Copy the text inside the text field
                         navigator.clipboard.writeText(copyText);
@@ -287,13 +291,13 @@ async function startGetLocationNoShapes() {
                         // Alert the copied text
                         dothings.innerHTML = copyText;
                     });
-                    textXY.innerHTML = "you denied me :-(";
+                    textXY.innerHTML = 'you denied me :-(';
                 }
             },
             options
         );
     } else {
-        textXY.innerHTML = "Geolocation is not supported by this browser.";
+        textXY.innerHTML = 'Geolocation is not supported by this browser.';
     }
 
 }
@@ -304,24 +308,24 @@ function doAudioThings(nowX, nowY) {
         marker.setLatLng(markerXY);
         // console.log(nowX);
         // console.log(nowY);
-        textXY.innerHTML = "ACTUAL POSITION: " + nowX + " , " + nowY +
-            "<br>STARTING POINT: " + initX + " , " + initY +
-            "<br>distance from STARTING POINT: " + measure(initX, initY, nowX, nowY) + "m";
+        textXY.innerHTML = 'ACTUAL POSITION: ' + nowX + ' , ' + nowY +
+            '<br>STARTING POINT: ' + initX + ' , ' + initY +
+            '<br>distance from STARTING POINT: ' + measure(initX, initY, nowX, nowY) + 'm';
     }
 
     circles.each(function () {
-        var x = $(this).attr("coord").split(",")[0];
-        var y = $(this).attr("coord").split(",")[1];
-        var r = $(this).attr("size");
-        var a = $(this).children("audio")[0];
-        var n = $(this).attr("id");
+        var x = $(this).attr('coord').split(',')[0];
+        var y = $(this).attr('coord').split(',')[1];
+        var r = $(this).attr('size');
+        var a = $(this).children('audio')[0];
+        var n = $(this).attr('id');
         playCircle(x, y, r, a, n)
     });
 
     polygons.each(function () {
-        var polyCoord = $(this).attr("coord");
-        var a = $(this).children("audio")[0];
-        var n = $(this).attr("id");
+        var polyCoord = $(this).attr('coord');
+        var a = $(this).children('audio')[0];
+        var n = $(this).attr('id');
         playPolygon(polyCoord, a, n);
     });
 
@@ -331,7 +335,7 @@ function doAudioThings(nowX, nowY) {
 function decVolume(a) {
     var maxvol;
     var roundVol;
-    if (a.parentElement.hasAttribute("volume")) {
+    if (a.parentElement.hasAttribute('volume')) {
         maxvol = Number(a.parentElement.attributes.volume.value) / 100;
     } else {
         maxvol = 1;
@@ -339,16 +343,16 @@ function decVolume(a) {
     if (a.volume.toFixed(4) > 0) {
         if (a.classList[0] !== 'playing') {
             var t = 0;
-            if (a.parentElement.hasAttribute("fadeout")) {
+            if (a.parentElement.hasAttribute('fadeout')) {
                 t = Number(a.parentElement.attributes.fadeout.value);
                 var decT = t * maxvol / 50;
-                a.volume = (a.volume - 0.02*maxvol).toFixed(4);
+                a.volume = (a.volume - 0.02 * maxvol).toFixed(4);
                 setTimeout(function () {
                     if (a.volume.toFixed(4) > (0.02 * maxvol).toFixed(4)) {
                         decVolume(a);
                     } else {
                         a.volume = 0;
-                        if (!(a.parentElement.parentElement.hasAttribute("group"))) {
+                        if (!(a.parentElement.parentElement.hasAttribute('group'))) {
                             a.pause();
                         }
                         else {
@@ -356,7 +360,7 @@ function decVolume(a) {
                                 a.pause();
                             }
                         }
-                        if ((a.duration.toFixed(2) < 10) || a.parentElement.hasAttribute("rewind") || a.duration.toFixed(2) == a.currentTime.toFixed(2)) {
+                        if ((a.duration.toFixed(2) < 10) || a.parentElement.hasAttribute('rewind') || a.duration.toFixed(2) == a.currentTime.toFixed(2)) {
                             a.currentTime = 0;
                         }
                     }
@@ -364,7 +368,7 @@ function decVolume(a) {
             }
             else {
                 a.volume = 0;
-                if (!(a.parentElement.parentElement.hasAttribute("group"))) {
+                if (!(a.parentElement.parentElement.hasAttribute('group'))) {
                     a.pause();
                 }
                 else {
@@ -372,7 +376,7 @@ function decVolume(a) {
                         a.pause();
                     }
                 }
-                if ((a.duration < 10) || a.parentElement.hasAttribute("rewind") || a.duration.toFixed(2) == a.currentTime.toFixed(2)) {
+                if ((a.duration < 10) || a.parentElement.hasAttribute('rewind') || a.duration.toFixed(2) == a.currentTime.toFixed(2)) {
                     a.currentTime = 0;
                 }
             }
@@ -383,16 +387,16 @@ function decVolume(a) {
 function addVolume(a) {
     var maxvol = 1;
     var roundVol;
-    if (a.parentElement.hasAttribute("volume")) {
+    if (a.parentElement.hasAttribute('volume')) {
         maxvol = Number(a.parentElement.attributes.volume.value) / 100;
     }
     if (a.volume.toFixed(4) < maxvol) {
         if (a.classList[0] == 'playing') {
             var t = 0;
-            if (a.parentElement.hasAttribute("fadein")) {
+            if (a.parentElement.hasAttribute('fadein')) {
                 t = Number(a.parentElement.attributes.fadein.value);
                 var addT = t * maxvol / 50;
-                a.volume = (a.volume + 0.02*maxvol).toFixed(4);
+                a.volume = (a.volume + 0.02 * maxvol).toFixed(4);
                 setTimeout(function () {
                     if (a.volume.toFixed(4) < maxvol) {
                         addVolume(a);
@@ -418,28 +422,28 @@ function playCircle(x, y, r, a, n) {
     var maxvol = 1;
     var roundVol;
     var idist;
-    if (a.parentElement.hasAttribute("volume")) {
+    if (a.parentElement.hasAttribute('volume')) {
         maxvol = Number(a.parentElement.attributes.volume.value) / 100;
     }
     var distance = Number(measure(nowX, nowY, x, y));
     if (distance <= r) {
-        if (!(a.hasAttribute("controls"))) {
-            a.setAttribute("controls", "")
+        if (!(a.hasAttribute('controls'))) {
+            a.setAttribute('controls', '')
         }
         if ((a.paused)) {
-            if (a.parentElement.parentElement.hasAttribute("group")) {
-                var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
-                for (var i = 0; i < groupAudio; i++) {
-                    if (!(groupAudio[i].parentElementparentElement.hasAttribute('rewind'))) {
-                    playAudio(groupAudio[i]);
+            if (a.parentElement.parentElement.hasAttribute('group')) {
+                var groupAudio = a.parentElement.parentElement.querySelectorAll('audio');
+                for (var i = 0; i < groupAudio.length; i++) {
+                    if (!(groupAudio[i].parentElement.parentElement.hasAttribute('rewind'))) {
+                        playAudio(groupAudio[i]);
                     }
                 }
             }
-            else if ((!(a.duration.toFixed(2) == a.currentTime.toFixed(2)) && !(a.parentElement.hasAttribute('rewind'))) || (a.hasAttribute("loop"))) {
+            if ((!(a.duration.toFixed(2) == a.currentTime.toFixed(2))) || (a.hasAttribute('loop'))) {
                 a.play();
             }
         }
-        if (a.parentElement.hasAttribute("fade")) {
+        if (a.parentElement.hasAttribute('fade')) {
             if (distance < r) {
                 idist = Math.cos(distance / r * 90 * Math.PI / 180);
                 if (maxvol == 1) {
@@ -454,33 +458,31 @@ function playCircle(x, y, r, a, n) {
                     }
                 }
                 //console.log(a.volume);
-                a.classList.add("playing");
+                a.classList.add('playing');
             }
         }
-        else if (a.volume < 1 && (a.classList[0] !== 'playing')) {
-            a.classList.add("playing");
+        if (a.volume < 1 && (a.classList[0] !== 'playing')) {
+            a.classList.add('playing');
             addVolume(a);
         }
     }
 
     else if (distance > r && (!(a.paused) || (a.ended))) {
-        if ($(a).parents(".circle").attr("fade") == "center") {
+        if ($(a).parents('.circle').attr('fade') == 'center') {
             a.volume = 0.0;
-            a.classList.remove("playing");
-            if ((a.duration.toFixed(2) == a.currentTime.toFixed(2)) && !(a.hasAttribute("loop")) || a.parentElement.hasAttribute('rewind')) {
+            a.classList.remove('playing');
+            if ((a.duration.toFixed(2) == a.currentTime.toFixed(2)) && !(a.hasAttribute('loop')) || a.parentElement.hasAttribute('rewind')) {
                 a.currentTime = 0;
             }
-            if (!(a.parentElement.parentElement.hasAttribute("group"))) {
+            if (!(a.parentElement.parentElement.hasAttribute('group'))) {
                 a.pause();
-                a.removeAttribute("controls");
+                a.removeAttribute('controls');
             }
             else {
-                var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
                 var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
-
                 if (groupPlayingAudio == 0) {
                     a.pause();
-                    a.removeAttribute("controls");
+                    a.removeAttribute('controls');
                 }
             }
         }
@@ -489,22 +491,22 @@ function playCircle(x, y, r, a, n) {
                 distance = Number(measure(nowX, nowY, x, y));
                 if (distance > r) {
                     if ((!(a.paused)) && (a.classList[0] == 'playing')) {
-                        a.classList.remove("playing");
+                        a.classList.remove('playing');
                         decVolume(a);
                         // Only fade if past the fade out point or not at zero already  
-                        if (a.parentElement.parentElement.hasAttribute("group")) {
-                            var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
+                        if (a.parentElement.parentElement.hasAttribute('group')) {
+                            var groupAudio = a.parentElement.parentElement.querySelectorAll('audio');
                             var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
                             if (groupPlayingAudio == 0) {
-                                for (var i = 0; i < groupAudio; i++) {
+                                for (var i = 0; i < groupAudio.length; i++) {
                                     decVolume(a.parentElement.parentElement.querySelectorAll('audio')[i]);
-                                    a.parentElement.parentElement.querySelectorAll('audio')[i].removeAttribute("controls")
+                                    a.parentElement.parentElement.querySelectorAll('audio')[i].removeAttribute('controls')
 
                                 }
                             }
                         }
                     }
-                    a.removeAttribute("controls")
+                    a.removeAttribute('controls')
                 }
             }, snapTime);
         }
@@ -520,19 +522,19 @@ function playPolygon(pointList, a, n) {
     //  console.log(rayCasting(point, polyCoord));
     if (rayCasting(point, polyCoord)) {
         if ((a.paused)) {
-            a.setAttribute("controls", "");
-            if (a.parentElement.parentElement.hasAttribute("group")) {
-                var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
-                for (var i = 0; i < groupAudio; i++) {
+            a.setAttribute('controls', '');
+            if (a.parentElement.parentElement.hasAttribute('group')) {
+                var groupAudio = a.parentElement.parentElement.querySelectorAll('audio');
+                for (var i = 0; i < groupAudio.length; i++) {
                     playAudio(a.parentElement.parentElement.querySelectorAll('audio')[i]);
                 }
             }
-            else if ((!(a.duration == a.currentTime)) || (a.duration == a.currentTime && a.hasAttribute("loop"))) {
+            if ((!(a.duration == a.currentTime)) || (a.duration == a.currentTime && a.hasAttribute('loop'))) {
                 a.play();
             }
         }
         if (a.volume < 1 && (a.classList[0] !== 'playing')) {
-            a.classList.add("playing");
+            a.classList.add('playing');
             addVolume(a);
         }
     }
@@ -545,20 +547,20 @@ function playPolygon(pointList, a, n) {
             if (!(rayCasting(newXY, polyCoord))) {
                 newXY = [];
                 if ((!(a.paused)) && (a.classList[0] == 'playing')) {
-                    a.classList.remove("playing");
+                    a.classList.remove('playing');
                     decVolume(a);
-                    if (a.parentElement.parentElement.hasAttribute("group")) {
-                        var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
+                    if (a.parentElement.parentElement.hasAttribute('group')) {
+                        var groupAudio = a.parentElement.parentElement.querySelectorAll('audio');
                         var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
                         if (groupPlayingAudio == 0) {
-                            for (var i = 0; i < groupAudio; i++) {
+                            for (var i = 0; i < groupAudio.length; i++) {
                                 decVolume(a.parentElement.parentElement.querySelectorAll('audio')[i]);
-                                a.parentElement.parentElement.querySelectorAll('audio')[i].removeAttribute("controls")
+                                a.parentElement.parentElement.querySelectorAll('audio')[i].removeAttribute('controls')
 
                             }
                         }
                     }
-                    a.removeAttribute("controls")
+                    a.removeAttribute('controls')
                     // Only fade if past the fade out point or not at zero already            
                 }
 
@@ -608,12 +610,12 @@ function rayCasting(point, polygon) {
 function doCircleMap() {
     var cShapes = [];
     circles.each(function () {
-        var x = $(this).attr("coord").split(",")[0];
-        var y = $(this).attr("coord").split(",")[1];
-        var r = $(this).attr("size");
-        var a = $(this).children("audio")[0];
-        var name = $(this).attr("id");
-        var c = $(this).parents(".zone").attr("color");
+        var x = $(this).attr('coord').split(',')[0];
+        var y = $(this).attr('coord').split(',')[1];
+        var r = $(this).attr('size');
+        var a = $(this).children('audio')[0];
+        var name = $(this).attr('id');
+        var c = $(this).parents('.zone').attr('color');
         const n = circles.length;
         for (var i = 0; i < n; ++i) {
             cShapes[i] = L.circle([x, y], {
@@ -627,11 +629,11 @@ function doCircleMap() {
 function doPolygonMap() {
     var pShapes = [];
     polygons.each(function () {
-        var pointList = $(this).attr("coord");
-        var a = $(this).children("audio")[0];
-        var name = $(this).attr("id");
+        var pointList = $(this).attr('coord');
+        var a = $(this).children('audio')[0];
+        var name = $(this).attr('id');
         const n = polygons.length;
-        var c = $(this).parents(".zone").attr("color");
+        var c = $(this).parents('.zone').attr('color');
         for (var i = 0; i < n; ++i) {
             var polyCoord = JSON.parse(pointList);
             pShapes[i] = L.polygon([polyCoord], {
