@@ -133,29 +133,38 @@
     
     
     function initAudio() {
-        setTimeout(function () {
-            var countA = 0;
-            for (countA = 0; countA < audioObjs.length; countA++) {
-                audioObjs[countA].play();
-                initAudioStop(countA);
-            }
+        for (var countA = 0; countA < audioObjs.length; countA++) {
+            initAudioStop(countA);
+    
             document.getElementsByTagName('body')[0].classList.add('ready');
-        }, 25);
+        }
     }
     
     function initAudioStop(countA) {
-        setTimeout(function () {
-            audioObjs[countA].pause();
-            document.querySelectorAll('audio')[countA].currentTime = 0;
+        var playPromise = audioObjs[countA].play();
+    
+        if (playPromise !== undefined) {
+            playPromise.then(_ => {
+                // Automatic playback started!
+                // Show playing UI.
+                // We can now safely pause video...
+                audioObjs[countA].pause();
+                document.querySelectorAll('audio')[countA].currentTime = 0;
+            })
+                .catch(error => {
+                    // Auto-play was prevented
+                    // Show paused UI.
+                });
+    
             audioObjs[countA].children[0].src = source[countA];
-        }, 50);
+        }
     }
     
     var shapes = [];
     
     /*DOMContentLoaded*/
     
-    async function startGetLocation() {
+    function startGetLocation() {
         initAudio();
         if (navigator.geolocation) {
             navigator.geolocation.watchPosition(function getPosition(position) {
@@ -243,7 +252,7 @@
     
     }
     
-    async function startGetLocationNoMap() {
+    function startGetLocationNoMap() {
         initAudio();
         if (navigator.geolocation) {
             navigator.geolocation.watchPosition(function getPosition(position) {
@@ -296,7 +305,7 @@
     
     }
     
-    async function startGetLocationNoShapes() {
+    function startGetLocationNoShapes() {
         initAudio();
         if (navigator.geolocation) {
             navigator.geolocation.watchPosition(function getPosition(position) {
@@ -509,14 +518,14 @@
             }
             if ((a.paused)) {
                 if (a.parentElement.parentElement.hasAttribute('group')) {
-                    var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
-                    for (var i = 0; i < groupAudio; i++) {
-                        if (!(groupAudio[i].parentElementparentElement.hasAttribute('rewind'))) {
+                    var groupAudio = a.parentElement.parentElement.querySelectorAll('audio');
+                    for (var i = 0; i < groupAudio.length; i++) {
+                        if (!(groupAudio[i].parentElement.parentElement.hasAttribute('rewind'))) {
                             playAudio(groupAudio[i]);
                         }
                     }
                 }
-                else if ((!(a.duration.toFixed(2) == a.currentTime.toFixed(2)) && !(a.parentElement.hasAttribute('rewind'))) || (a.hasAttribute('loop'))) {
+                if ((!(a.duration.toFixed(2) == a.currentTime.toFixed(2))) || (a.hasAttribute('loop'))) {
                     a.play();
                 }
             }
@@ -538,7 +547,7 @@
                     a.classList.add('playing');
                 }
             }
-            else if (a.volume < 1 && (a.classList[0] !== 'playing')) {
+            if (a.volume < 1 && (a.classList[0] !== 'playing')) {
                 a.classList.add('playing');
                 addVolume(a);
             }
@@ -556,9 +565,7 @@
                     a.removeAttribute('controls');
                 }
                 else {
-                    var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
                     var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
-    
                     if (groupPlayingAudio == 0) {
                         a.pause();
                         a.removeAttribute('controls');
@@ -574,10 +581,10 @@
                             decVolume(a);
                             // Only fade if past the fade out point or not at zero already  
                             if (a.parentElement.parentElement.hasAttribute('group')) {
-                                var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
+                                var groupAudio = a.parentElement.parentElement.querySelectorAll('audio');
                                 var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
                                 if (groupPlayingAudio == 0) {
-                                    for (var i = 0; i < groupAudio; i++) {
+                                    for (var i = 0; i < groupAudio.length; i++) {
                                         decVolume(a.parentElement.parentElement.querySelectorAll('audio')[i]);
                                         a.parentElement.parentElement.querySelectorAll('audio')[i].removeAttribute('controls')
     
@@ -603,12 +610,12 @@
             if ((a.paused)) {
                 a.setAttribute('controls', '');
                 if (a.parentElement.parentElement.hasAttribute('group')) {
-                    var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
-                    for (var i = 0; i < groupAudio; i++) {
+                    var groupAudio = a.parentElement.parentElement.querySelectorAll('audio');
+                    for (var i = 0; i < groupAudio.length; i++) {
                         playAudio(a.parentElement.parentElement.querySelectorAll('audio')[i]);
                     }
                 }
-                else if ((!(a.duration == a.currentTime)) || (a.duration == a.currentTime && a.hasAttribute('loop'))) {
+                if ((!(a.duration == a.currentTime)) || (a.duration == a.currentTime && a.hasAttribute('loop'))) {
                     a.play();
                 }
             }
@@ -629,10 +636,10 @@
                         a.classList.remove('playing');
                         decVolume(a);
                         if (a.parentElement.parentElement.hasAttribute('group')) {
-                            var groupAudio = a.parentElement.parentElement.querySelectorAll('audio').length;
+                            var groupAudio = a.parentElement.parentElement.querySelectorAll('audio');
                             var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
                             if (groupPlayingAudio == 0) {
-                                for (var i = 0; i < groupAudio; i++) {
+                                for (var i = 0; i < groupAudio.length; i++) {
                                     decVolume(a.parentElement.parentElement.querySelectorAll('audio')[i]);
                                     a.parentElement.parentElement.querySelectorAll('audio')[i].removeAttribute('controls')
     

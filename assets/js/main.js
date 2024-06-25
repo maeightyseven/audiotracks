@@ -47,29 +47,38 @@ window.onload = function () {
 
 
 function initAudio() {
-    setTimeout(function () {
-        var countA = 0;
-        for (countA = 0; countA < audioObjs.length; countA++) {
-            audioObjs[countA].play();
-            initAudioStop(countA);
-        }
+    for (var countA = 0; countA < audioObjs.length; countA++) {
+        initAudioStop(countA);
+
         document.getElementsByTagName('body')[0].classList.add('ready');
-    }, 25);
+    }
 }
 
 function initAudioStop(countA) {
-    setTimeout(function () {
-        audioObjs[countA].pause();
-        document.querySelectorAll('audio')[countA].currentTime = 0;
+    var playPromise = audioObjs[countA].play();
+
+    if (playPromise !== undefined) {
+        playPromise.then(_ => {
+            // Automatic playback started!
+            // Show playing UI.
+            // We can now safely pause video...
+            audioObjs[countA].pause();
+            document.querySelectorAll('audio')[countA].currentTime = 0;
+        })
+            .catch(error => {
+                // Auto-play was prevented
+                // Show paused UI.
+            });
+
         audioObjs[countA].children[0].src = source[countA];
-    }, 50);
+    }
 }
 
 var shapes = [];
 
 /*DOMContentLoaded*/
 
-async function startGetLocation() {
+function startGetLocation() {
     initAudio();
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
@@ -157,7 +166,7 @@ async function startGetLocation() {
 
 }
 
-async function startGetLocationNoMap() {
+function startGetLocationNoMap() {
     initAudio();
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
@@ -210,7 +219,7 @@ async function startGetLocationNoMap() {
 
 }
 
-async function startGetLocationNoShapes() {
+function startGetLocationNoShapes() {
     initAudio();
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
@@ -430,7 +439,7 @@ function playCircle(x, y, r, a, n) {
                     }
                 }
             }
-             if ((!(a.duration.toFixed(2) == a.currentTime.toFixed(2))) || (a.hasAttribute('loop'))) {
+            if ((!(a.duration.toFixed(2) == a.currentTime.toFixed(2))) || (a.hasAttribute('loop'))) {
                 a.play();
             }
         }
@@ -520,7 +529,7 @@ function playPolygon(pointList, a, n) {
                     playAudio(a.parentElement.parentElement.querySelectorAll('audio')[i]);
                 }
             }
-             if ((!(a.duration == a.currentTime)) || (a.duration == a.currentTime && a.hasAttribute('loop'))) {
+            if ((!(a.duration == a.currentTime)) || (a.duration == a.currentTime && a.hasAttribute('loop'))) {
                 a.play();
             }
         }
