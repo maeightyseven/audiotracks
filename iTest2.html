@@ -92,8 +92,8 @@
     <footer>
     </footer>
 </body>
-<script>
-    
+<script> 
+
 
 const textXY = document.getElementById('demo');
 const dothings = document.getElementById('dothings');
@@ -130,8 +130,7 @@ var source = [];
 
 window.onload = function () {
     for (var i = 0; i < audioObjs.length; i++) {
-        var copyurl = audioObjs[source.length].children[0].src;
-        source.push(copyurl);
+       
         audioObjs[i].children[0].src = 'Suoni/system-silence.mp3';
         audioObjs[i].id = 'audio' + (i);
         audioObjs[i].parentElement.id = 'Shape' + (i);
@@ -142,11 +141,19 @@ window.onload = function () {
 
 
 function initAudio() {
-    for (var countA = 0; countA < audioObjs.length; countA++) {
-        initAudioStop(countA);
-
-        document.getElementsByTagName('body')[0].classList.add('ready');
-    }
+    cycleAudio();
+    document.getElementsByTagName('body')[0].classList.add('ready');
+}
+function cycleAudio() {
+    var copyurl = audioObjs[source.length].children[0].src;
+    source.push(copyurl);
+    setTimeout(function() {
+        var counter = source.length - 1;
+            initAudioStop(counter);
+            if (counter != audioObjs.length - 1) {
+                cycleAudio()
+            }
+        }, 10);
 }
 
 function initAudioStop(countA) {
@@ -161,6 +168,7 @@ function initAudioStop(countA) {
             document.querySelectorAll('audio')[countA].currentTime = 0;
         })
             .catch(error => {
+                console.log("Auto-play was prevented")
                 // Auto-play was prevented
                 // Show paused UI.
             });
