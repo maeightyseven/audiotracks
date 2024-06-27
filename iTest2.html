@@ -270,6 +270,7 @@
     
     function startGetLocationNoMap() {
         initAudio();
+        document.getElementsByTagName('body')[0].classList.add('live');
         if (navigator.geolocation) {
             navigator.geolocation.watchPosition(function getPosition(position) {
     
@@ -410,9 +411,6 @@
             marker.setLatLng(markerXY);
             // console.log(nowX);
             // console.log(nowY);
-            textXY.innerHTML = 'ACTUAL POSITION: ' + nowX + ' , ' + nowY +
-                '<br>STARTING POINT: ' + initX + ' , ' + initY +
-                '<br>distance from STARTING POINT: ' + measure(initX, initY, nowX, nowY) + 'm';
         }
     
         circles.each(function () {

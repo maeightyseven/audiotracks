@@ -176,6 +176,7 @@ function startGetLocation() {
 
 function startGetLocationNoMap() {
     initAudio();
+    document.getElementsByTagName('body')[0].classList.add('live');
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
 
@@ -228,6 +229,7 @@ function startGetLocationNoMap() {
 }
 
 function startGetLocationNoShapes() {
+    document.getElementsByTagName('body')[0].classList.add('live');
     initAudio();
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {

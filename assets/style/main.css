@@ -58,18 +58,10 @@ button {
 .edit #map.leaflet-container {
     position:fixed !important;
     top: 0;
-    right:0;
+    /* right:0; */
+    z-index: 99;
     width: 30vw;
     height: 30vh
-}
-
-.live #map.leaflet-container  {
-    position: absolute;
-    width: 100vw;
-    height: 80vh;
-    bottom: 0;
-    left: 0;
-    z-index: 0;
 }
 
 .edit audio {
@@ -131,6 +123,22 @@ body:not(.ready) div.text img {
 
   div:has(.leaflet-container) .imgGiardini {
     display: none;
+}
+
+.live .imgHome {
+    display: block;
+}
+
+body.live {
+    background-image: url('../img/img1.png')
+}
+
+body.live #mainTitle, body.live #demo,body.live #mainTitle + h2, body.live .w3-col > table {
+    display: none ;
+}
+
+body.live audio {
+    visibility: hidden !important;
 }
 
 body.ready button {
