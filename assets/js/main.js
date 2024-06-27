@@ -34,10 +34,7 @@ const options = {
 var source = [];
 
 window.onload = function () {
-    for (var i = 0; i < audioObjs.length; i++) {
-        var copyurl = audioObjs[source.length].children[0].src;
-        source.push(copyurl);
-        audioObjs[i].children[0].src = 'Suoni/system-silence.mp3';
+    for (var i = 0; i < audioObjs.length; i++) {      
         audioObjs[i].id = 'audio' + (i);
         audioObjs[i].parentElement.id = 'Shape' + (i);
         audioObjs[i].setAttribute('style', 'position:absolute;');
@@ -47,11 +44,21 @@ window.onload = function () {
 
 
 function initAudio() {
-    for (var countA = 0; countA < audioObjs.length; countA++) {
-        initAudioStop(countA);
+    cycleAudio();
+    document.getElementsByTagName('body')[0].classList.add('ready');
+}
 
-        document.getElementsByTagName('body')[0].classList.add('ready');
-    }
+function cycleAudio() {
+    var copyurl = audioObjs[source.length].children[0].src;
+    source.push(copyurl);
+    setTimeout(function() {
+        var counter = source.length - 1;
+        audioObjs[counter].children[0].src = 'Suoni/system-silence.mp3';
+            initAudioStop(counter);
+            if (counter != audioObjs.length - 1) {
+                cycleAudio();
+            }
+        }, 10);
 }
 
 function initAudioStop(countA) {
@@ -63,14 +70,15 @@ function initAudioStop(countA) {
             // Show playing UI.
             // We can now safely pause video...
             audioObjs[countA].pause();
-            document.querySelectorAll('audio')[countA].currentTime = 0;
+            audioObjs[countA].currentTime = 0;
         })
             .catch(error => {
+                console.log("Auto-play was prevented")
                 // Auto-play was prevented
                 // Show paused UI.
             });
 
-        audioObjs[countA].children[0].src = source[countA];
+            audioObjs[countA].children[0].src = source[countA];
     }
 }
 
@@ -334,21 +342,24 @@ function doAudioThings(nowX, nowY) {
 
 function decVolume(a) {
     var maxvol;
-    var roundVol;
+    var roundVol = 0;
     if (a.parentElement.hasAttribute('volume')) {
         maxvol = Number(a.parentElement.attributes.volume.value) / 100;
     } else {
         maxvol = 1;
     }
-    if (a.volume.toFixed(4) > 0) {
+    if (a.volume.toFixed(3) > 0) {
         if (a.classList[0] !== 'playing') {
             var t = 0;
             if (a.parentElement.hasAttribute('fadeout')) {
                 t = Number(a.parentElement.attributes.fadeout.value);
                 var decT = t * maxvol / 50;
-                a.volume = (a.volume - 0.02 * maxvol).toFixed(4);
+                var isin = Math.sin((1) * 90 * Math.PI / 180).toFixed(3);
+                a.volume = (a.volume - 0.02*maxvol*isin).toFixed(3);
+                roundVol = roundVol + 1;
+                isin = Math.sin((1) * 90 * Math.PI / 180).toFixed(3);
                 setTimeout(function () {
-                    if (a.volume.toFixed(4) > (0.02 * maxvol).toFixed(4)) {
+                    if (((a.volume - 0.02 * maxvol*isin).toFixed(3) > 0.002)) {
                         decVolume(a);
                     } else {
                         a.volume = 0;
@@ -356,7 +367,7 @@ function decVolume(a) {
                             a.pause();
                         }
                         else {
-                            if (a.parentElement.parentElement.querySelectorAll('.playing').length = 0) {
+                            if (a.parentElement.parentElement.getElementsByClassName('playing').length == 0) {
                                 a.pause();
                             }
                         }
@@ -372,7 +383,7 @@ function decVolume(a) {
                     a.pause();
                 }
                 else {
-                    if (a.parentElement.parentElement.querySelectorAll('.playing').length = 0) {
+                    if (a.parentElement.parentElement.getElementsByClassName('playing').length == 0) {
                         a.pause();
                     }
                 }
@@ -386,20 +397,26 @@ function decVolume(a) {
 // When volume at zero stop all the intervalling
 function addVolume(a) {
     var maxvol = 1;
-    var roundVol;
+    var roundVol = 1;
     if (a.parentElement.hasAttribute('volume')) {
         maxvol = Number(a.parentElement.attributes.volume.value) / 100;
     }
-    if (a.volume.toFixed(4) < maxvol) {
+    if (a.volume.toFixed(3) < maxvol) {
         if (a.classList[0] == 'playing') {
             var t = 0;
             if (a.parentElement.hasAttribute('fadein')) {
                 t = Number(a.parentElement.attributes.fadein.value);
                 var addT = t * maxvol / 50;
-                a.volume = (a.volume + 0.02 * maxvol).toFixed(4);
+                var isin = Math.sin((1) * 90 * Math.PI / 180).toFixed(3);
+                a.volume = (a.volume + 0.02 * maxvol*isin).toFixed(3);
+                roundVol = roundVol +1;
+                isin = Math.sin((1) * 90 * Math.PI / 180).toFixed(3);
                 setTimeout(function () {
-                    if (a.volume.toFixed(4) < maxvol) {
+                    if ((a.volume + 0.02 * maxvol*isin).toFixed(3) < maxvol) {
                         addVolume(a);
+                    }
+                    else {
+                        a.volume = maxvol;
                     }
                 }, addT);
             }
@@ -447,14 +464,14 @@ function playCircle(x, y, r, a, n) {
             if (distance < r) {
                 idist = Math.cos(distance / r * 90 * Math.PI / 180);
                 if (maxvol == 1) {
-                    roundVol = (1 - distance / r).toFixed(4) * idist.toFixed(2);
-                    a.volume = roundVol.toFixed(4);
+                    roundVol = (1 - distance / r).toFixed(3) * idist.toFixed(2);
+                    a.volume = roundVol.toFixed(3);
                 }
                 else {
-                    roundVol = (1 - distance / r).toFixed(4) * idist.toFixed(2) * maxvol;
-                    a.volume = roundVol.toFixed(4);
-                    if (roundVol.toFixed(2) <= maxvol) {
-                        a.volume = roundVol.toFixed(2);
+                    roundVol = (1 - distance / r).toFixed(3) * idist.toFixed(2) * maxvol;
+                    a.volume = roundVol.toFixed(3);
+                    if (roundVol.toFixed(3) <= maxvol) {
+                        a.volume = roundVol.toFixed(3);
                     }
                 }
                 //console.log(a.volume);
@@ -479,7 +496,7 @@ function playCircle(x, y, r, a, n) {
                 a.removeAttribute('controls');
             }
             else {
-                var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
+                var groupPlayingAudio = a.parentElement.parentElement.getElementsByClassName('playing').length;
                 if (groupPlayingAudio == 0) {
                     a.pause();
                     a.removeAttribute('controls');
@@ -496,7 +513,7 @@ function playCircle(x, y, r, a, n) {
                         // Only fade if past the fade out point or not at zero already  
                         if (a.parentElement.parentElement.hasAttribute('group')) {
                             var groupAudio = a.parentElement.parentElement.querySelectorAll('audio');
-                            var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
+                            var groupPlayingAudio = a.parentElement.parentElement.getElementsByClassName('playing').length;
                             if (groupPlayingAudio == 0) {
                                 for (var i = 0; i < groupAudio.length; i++) {
                                     decVolume(a.parentElement.parentElement.querySelectorAll('audio')[i]);
@@ -551,7 +568,7 @@ function playPolygon(pointList, a, n) {
                     decVolume(a);
                     if (a.parentElement.parentElement.hasAttribute('group')) {
                         var groupAudio = a.parentElement.parentElement.querySelectorAll('audio');
-                        var groupPlayingAudio = a.parentElement.parentElement.querySelectorAll('.playing').length;
+                        var groupPlayingAudio = a.parentElement.parentElement.getElementsByClassName('playing').length;
                         if (groupPlayingAudio == 0) {
                             for (var i = 0; i < groupAudio.length; i++) {
                                 decVolume(a.parentElement.parentElement.querySelectorAll('audio')[i]);
@@ -642,3 +659,4 @@ function doPolygonMap() {
         }
     });
 }
+ 
