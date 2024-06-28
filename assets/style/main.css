@@ -32,7 +32,7 @@ img {
 }
 
 audio {
-    display: block !important;
+    display: block;
 }
 
 button {
@@ -85,8 +85,6 @@ body:not(.ready) div.text img {
 .zone:not(:has(.playing)) + div.text {
     display: none;
     opacity: 0;
-    transition: opacity 2s;
-    transition-delay: 1s;
     -webkit-animation: fade-out 5s ease ; /* Safari */
     animation: fade-out 5s ease;
 }
@@ -97,18 +95,18 @@ body:not(.ready) div.text img {
   }
 
   .zone + div.text {
-    background: white;
-    display: block;
+    display: none;
     position: absolute;
     height: auto;
     top: 0;
     left: 0;
     z-index: 9;
     overflow-y: auto;
-    transition-duration: opacity 3s;
+    padding: 2vw;
 }
 
   .zone:has(.playing) + div.text {
+    display: block;
      -webkit-animation: fade-in 5s ease ; /* Safari */
        animation: fade-in 5s ease;
   }
@@ -116,9 +114,10 @@ body:not(.ready) div.text img {
   .zone + div.text img {
     left: 0;
     position: relative;
-    width: 100vw;
+    width: 94vw;
     display: block;
-    max-width: 100vw;
+    max-width:94vw;
+
   }
 
   .imgGiardini {
@@ -141,7 +140,7 @@ body.live #mainTitle, body.live #demo,body.live #mainTitle + h2, body.live .w3-c
     display: none ;
 }
 
-body.live audio {
+body audio {
     visibility: hidden !important;
     z-index: -9;
 }
@@ -188,6 +187,7 @@ body.ready button {
  /* Safari */
   @-webkit-keyframes fade-in {
     0% { -webkit-opacity: 0%;  display: block;}
+
     100% { -webkit-opacity: 100%; display: block;}
   }
   

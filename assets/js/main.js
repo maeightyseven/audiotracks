@@ -318,9 +318,9 @@ function doAudioThings(nowX, nowY) {
         marker.setLatLng(markerXY);
         // console.log(nowX);
         // console.log(nowY);
-        textXY.innerHTML = 'ACTUAL POSITION: ' + nowX + ' , ' + nowY +
-            '<br>STARTING POINT: ' + initX + ' , ' + initY +
-            '<br>distance from STARTING POINT: ' + measure(initX, initY, nowX, nowY) + 'm';
+        // textXY.innerHTML = 'ACTUAL POSITION: ' + nowX + ' , ' + nowY +
+        //     '<br>STARTING POINT: ' + initX + ' , ' + initY +
+        //     '<br>distance from STARTING POINT: ' + measure(initX, initY, nowX, nowY) + 'm';
     }
 
     circles.each(function () {
