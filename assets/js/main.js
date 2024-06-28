@@ -39,6 +39,9 @@ window.onload = function () {
         audioObjs[i].parentElement.id = 'Shape' + (i);
         audioObjs[i].setAttribute('style', 'position:absolute;');
         audioObjs[i].volume = 0;
+        var copyurl = audioObjs[source.length].children[0].src;
+        source.push(copyurl);
+        audioObjs[i].children[0].src = 'Suoni/system-silence.mp3';
     }
 };
 
@@ -49,16 +52,11 @@ function initAudio() {
 }
 
 function cycleAudio() {
-    var copyurl = audioObjs[source.length].children[0].src;
-    source.push(copyurl);
     setTimeout(function() {
-        var counter = source.length - 1;
-        audioObjs[counter].children[0].src = 'Suoni/system-silence.mp3';
-            initAudioStop(counter);
-            if (counter != audioObjs.length - 1) {
-                cycleAudio();
-            }
-        }, 5);
+        for (var i = 0; i < audioObjs.length; i++) { 
+            initAudioStop(i);
+        }
+     }, 5);
 }
 
 function initAudioStop(countA) {
@@ -73,7 +71,7 @@ function initAudioStop(countA) {
             audioObjs[countA].currentTime = 0;
         })
             .catch(error => {
-                console.log("Auto-play was prevented")
+                // console.log("Auto-play was prevented")
                 // Auto-play was prevented
                 // Show paused UI.
             });
