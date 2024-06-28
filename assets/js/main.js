@@ -342,18 +342,15 @@ function decVolume(a) {
     } else {
         maxvol = 1;
     }
-    if (a.volume.toFixed(3) > 0) {
+    if (a.volume.toFixed(4) > 0) {
         if (a.classList[0] !== 'playing') {
             var t = 0;
             if (a.parentElement.hasAttribute('fadeout')) {
                 t = Number(a.parentElement.attributes.fadeout.value);
                 var decT = t * maxvol / 50;
-                var isin = Math.sin((1) * 90 * Math.PI / 180).toFixed(3);
-                a.volume = (a.volume - 0.02*maxvol*isin).toFixed(3);
-                roundVol = roundVol + 1;
-                isin = Math.sin((1) * 90 * Math.PI / 180).toFixed(3);
+                a.volume = (a.volume - 0.02*maxvol).toFixed(4);
                 setTimeout(function () {
-                    if (((a.volume - 0.02 * maxvol*isin).toFixed(3) > 0.002)) {
+                    if (((a.volume - 0.02 * maxvol).toFixed(4) > 0)) {
                         decVolume(a);
                     } else {
                         a.volume = 0;
@@ -391,22 +388,18 @@ function decVolume(a) {
 // When volume at zero stop all the intervalling
 function addVolume(a) {
     var maxvol = 1;
-    var roundVol = 1;
     if (a.parentElement.hasAttribute('volume')) {
         maxvol = Number(a.parentElement.attributes.volume.value) / 100;
     }
-    if (a.volume.toFixed(3) < maxvol) {
+    if (a.volume.toFixed(4) < maxvol) {
         if (a.classList[0] == 'playing') {
             var t = 0;
             if (a.parentElement.hasAttribute('fadein')) {
                 t = Number(a.parentElement.attributes.fadein.value);
                 var addT = t * maxvol / 50;
-                var isin = Math.sin((1) * 90 * Math.PI / 180).toFixed(3);
-                a.volume = (a.volume + 0.02 * maxvol*isin).toFixed(3);
-                roundVol = roundVol +1;
-                isin = Math.sin((1) * 90 * Math.PI / 180).toFixed(3);
+                a.volume = (a.volume + 0.02 * maxvol).toFixed(4);
                 setTimeout(function () {
-                    if ((a.volume + 0.02 * maxvol*isin).toFixed(3) < maxvol) {
+                    if ((a.volume + 0.02 * maxvol).toFixed(4) < maxvol) {
                         addVolume(a);
                     }
                     else {
@@ -458,14 +451,14 @@ function playCircle(x, y, r, a, n) {
             if (distance < r) {
                 idist = Math.cos(distance / r * 90 * Math.PI / 180);
                 if (maxvol == 1) {
-                    roundVol = (1 - distance / r).toFixed(3) * idist.toFixed(2);
-                    a.volume = roundVol.toFixed(3);
+                    roundVol = (1 - distance / r).toFixed(4) * idist.toFixed(2);
+                    a.volume = roundVol.toFixed(4);
                 }
                 else {
-                    roundVol = (1 - distance / r).toFixed(3) * idist.toFixed(2) * maxvol;
-                    a.volume = roundVol.toFixed(3);
-                    if (roundVol.toFixed(3) <= maxvol) {
-                        a.volume = roundVol.toFixed(3);
+                    roundVol = (1 - distance / r).toFixed(4) * idist.toFixed(2) * maxvol;
+                    a.volume = roundVol.toFixed(4);
+                    if (roundVol.toFixed(4) <= maxvol) {
+                        a.volume = roundVol.toFixed(4);
                     }
                 }
                 //console.log(a.volume);

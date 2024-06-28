@@ -111,7 +111,8 @@
     var snapTime = 3000;
     var alphaDir = 0;
     
-    var audioObjs = [];
+    var audioObjs = $('audio');
+    ;
     const options = {
         enableHighAccuracy: true,
         timeout: 10000,
@@ -120,15 +121,11 @@
     var source = [];
     
     document.onload = function () {
-        audioObjs = document.getElementsByTagName('audio');
-    
         for (var i = 0; i < audioObjs.length; i++) {      
             audioObjs[i].id = 'audio' + (i);
             audioObjs[i].parentElement.id = 'Shape' + (i);
             audioObjs[i].setAttribute('style', 'position:absolute;');
-            audioObjs[i].volume = 0;
-            var copyurl = audioObjs[source.length].children[0].src;
-            source.push(copyurl);
+            
         }
     };
     
@@ -139,21 +136,28 @@
     }
     
     function cycleAudio() {
-            for (var i = 0; i < audioObjs.length; i++) { 
-                document.querySelectorAll('audio')[i].children[0].src = 'Suoni/system-silence.mp3';
-                document.querySelectorAll('audio')[i].play();
-            }
-            initAudioStop();
+            var i = source.length;
+            document.getElementsByTagName('audio')[i].volume = 0;
+            var copyurl = document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src;
+            source.push(copyurl);
+            document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src = 'Suoni/system-silence.mp3';
+            document.getElementsByTagName('audio')[i].play();
+            if (source.length < document.getElementsByTagName('audio').length) {
+                cycleAudio();
+            } 
+            else {
+                initAudioStop();
+            };
     }
     
     function initAudioStop() {
         setTimeout(function() {
-            for (var i = 0; i < audioObjs.length; i++) { 
-                document.querySelectorAll('audio')[i].pause();
-                document.querySelectorAll('audio')[i].currentTime = 0;
-                document.querySelectorAll('audio')[i].children[0].src = source[i];
+            for (var i = 0; i < document.getElementsByTagName('audio').length; i++) {
+                document.getElementsByTagName('audio')[i].pause();
+                document.getElementsByTagName('audio')[i].currentTime = 0;
+                document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src = source[i];
             }
-         }, 100);
+         }, 3000);
     }
     
     var shapes = [];
@@ -424,18 +428,15 @@
         } else {
             maxvol = 1;
         }
-        if (a.volume.toFixed(3) > 0) {
+        if (a.volume.toFixed(4) > 0) {
             if (a.classList[0] !== 'playing') {
                 var t = 0;
                 if (a.parentElement.hasAttribute('fadeout')) {
                     t = Number(a.parentElement.attributes.fadeout.value);
                     var decT = t * maxvol / 50;
-                    var isin = Math.sin((1) * 90 * Math.PI / 180).toFixed(3);
-                    a.volume = (a.volume - 0.02*maxvol*isin).toFixed(3);
-                    roundVol = roundVol + 1;
-                    isin = Math.sin((1) * 90 * Math.PI / 180).toFixed(3);
+                    a.volume = (a.volume - 0.02*maxvol).toFixed(4);
                     setTimeout(function () {
-                        if (((a.volume - 0.02 * maxvol*isin).toFixed(3) > 0.002)) {
+                        if (((a.volume - 0.02 * maxvol).toFixed(4) > 0)) {
                             decVolume(a);
                         } else {
                             a.volume = 0;
@@ -473,22 +474,18 @@
     // When volume at zero stop all the intervalling
     function addVolume(a) {
         var maxvol = 1;
-        var roundVol = 1;
         if (a.parentElement.hasAttribute('volume')) {
             maxvol = Number(a.parentElement.attributes.volume.value) / 100;
         }
-        if (a.volume.toFixed(3) < maxvol) {
+        if (a.volume.toFixed(4) < maxvol) {
             if (a.classList[0] == 'playing') {
                 var t = 0;
                 if (a.parentElement.hasAttribute('fadein')) {
                     t = Number(a.parentElement.attributes.fadein.value);
                     var addT = t * maxvol / 50;
-                    var isin = Math.sin((1) * 90 * Math.PI / 180).toFixed(3);
-                    a.volume = (a.volume + 0.02 * maxvol*isin).toFixed(3);
-                    roundVol = roundVol +1;
-                    isin = Math.sin((1) * 90 * Math.PI / 180).toFixed(3);
+                    a.volume = (a.volume + 0.02 * maxvol).toFixed(4);
                     setTimeout(function () {
-                        if ((a.volume + 0.02 * maxvol*isin).toFixed(3) < maxvol) {
+                        if ((a.volume + 0.02 * maxvol).toFixed(4) < maxvol) {
                             addVolume(a);
                         }
                         else {
@@ -540,14 +537,14 @@
                 if (distance < r) {
                     idist = Math.cos(distance / r * 90 * Math.PI / 180);
                     if (maxvol == 1) {
-                        roundVol = (1 - distance / r).toFixed(3) * idist.toFixed(2);
-                        a.volume = roundVol.toFixed(3);
+                        roundVol = (1 - distance / r).toFixed(4) * idist.toFixed(2);
+                        a.volume = roundVol.toFixed(4);
                     }
                     else {
-                        roundVol = (1 - distance / r).toFixed(3) * idist.toFixed(2) * maxvol;
-                        a.volume = roundVol.toFixed(3);
-                        if (roundVol.toFixed(3) <= maxvol) {
-                            a.volume = roundVol.toFixed(3);
+                        roundVol = (1 - distance / r).toFixed(4) * idist.toFixed(2) * maxvol;
+                        a.volume = roundVol.toFixed(4);
+                        if (roundVol.toFixed(4) <= maxvol) {
+                            a.volume = roundVol.toFixed(4);
                         }
                     }
                     //console.log(a.volume);
