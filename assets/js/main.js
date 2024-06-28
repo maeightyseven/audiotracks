@@ -71,7 +71,7 @@ function initAudioStop() {
             document.getElementsByTagName('audio')[i].currentTime = 0;
             document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src = source[i];
         }
-     }, 2000);
+     }, 3000);
 }
 
 var shapes = [];
