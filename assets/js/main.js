@@ -25,7 +25,7 @@ var polygons = $('.polygon');
 var snapTime = 3000;
 var alphaDir = 0;
 
-var audioObjs = document.getElementsByTagName('audio');
+var audioObjs = [];
 const options = {
     enableHighAccuracy: true,
     timeout: 10000,
@@ -33,7 +33,9 @@ const options = {
 
 var source = [];
 
-window.onload = function () {
+document.onload = function () {
+    audioObjs = document.getElementsByTagName('audio');
+
     for (var i = 0; i < audioObjs.length; i++) {      
         audioObjs[i].id = 'audio' + (i);
         audioObjs[i].parentElement.id = 'Shape' + (i);
@@ -41,7 +43,6 @@ window.onload = function () {
         audioObjs[i].volume = 0;
         var copyurl = audioObjs[source.length].children[0].src;
         source.push(copyurl);
-        audioObjs[i].children[0].src = 'Suoni/system-silence.mp3';
     }
 };
 
@@ -54,30 +55,23 @@ function initAudio() {
 function cycleAudio() {
     setTimeout(function() {
         for (var i = 0; i < audioObjs.length; i++) { 
-            initAudioStop(i);
+            document.querySelectorAll('audio')[i].children[0].src = 'Suoni/system-silence.mp3';
+            document.querySelectorAll('audio')[i].play();
+            if (i = audioObjs.length - 1) {
+                initAudioStop();
+            }
         }
-     }, 5);
+     }, 50);
 }
 
-function initAudioStop(countA) {
-    var playPromise = audioObjs[countA].play();
-
-    if (playPromise !== undefined) {
-        playPromise.then(_ => {
-            // Automatic playback started!
-            // Show playing UI.
-            // We can now safely pause video...
-            audioObjs[countA].pause();
-            audioObjs[countA].currentTime = 0;
-        })
-            .catch(error => {
-                // console.log("Auto-play was prevented")
-                // Auto-play was prevented
-                // Show paused UI.
-            });
-
-            audioObjs[countA].children[0].src = source[countA];
-    }
+function initAudioStop() {
+    setTimeout(function() {
+        for (var i = 0; i < audioObjs.length; i++) { 
+            document.querySelectorAll('audio')[i].pause();
+            document.querySelectorAll('audio')[i].currentTime = 0;
+            document.querySelectorAll('audio')[i].children[0].src = source[i];
+        }
+     }, 50);
 }
 
 var shapes = [];
