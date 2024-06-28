@@ -71,6 +71,8 @@ var shapes = [];
 
 function startGetLocation() {
     initAudio();
+    setTimeout(function() {
+
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
 
@@ -157,12 +159,14 @@ function startGetLocation() {
     } else {
         textXY.innerHTML = 'Geolocation is not supported by this browser.';
     }
+}, 2000);
 
 }
 
 function startGetLocationNoMap() {
     initAudio();
     document.getElementsByTagName('body')[0].classList.add('live');
+    setTimeout(function() {
     if (navigator.geolocation) {
         initAudioStop(0);
         navigator.geolocation.watchPosition(function getPosition(position) {
@@ -215,12 +219,15 @@ function startGetLocationNoMap() {
     } else {
         textXY.innerHTML = 'Geolocation is not supported by this browser.';
     }
+},2000);
 
 }
 
 function startGetLocationNoShapes() {
     document.getElementsByTagName('body')[0].classList.add('live');
     initAudio();
+    setTimeout(function() {
+
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
 
@@ -302,6 +309,7 @@ function startGetLocationNoShapes() {
     } else {
         textXY.innerHTML = 'Geolocation is not supported by this browser.';
     }
+},2000);
 
 }
 

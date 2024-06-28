@@ -42,7 +42,7 @@
         <table style="margin: auto;">
           <tr>
             <td>
-              <button onclick="startGetLocation()">Try It</button>
+              <button onclick="startGetLocationNoMap()">Try It</button>
             </td>
           </tr>
         </table>
@@ -79,7 +79,7 @@
   </div>
 
   <footer>
-    <script >
+    <script>
 
       const textXY = document.getElementById('demo');
       const dothings = document.getElementById('dothings');
@@ -244,6 +244,7 @@
       function startGetLocationNoMap() {
           initAudio();
           document.getElementsByTagName('body')[0].classList.add('live');
+          setTimeout(function() {
           if (navigator.geolocation) {
               initAudioStop(0);
               navigator.geolocation.watchPosition(function getPosition(position) {
@@ -296,6 +297,7 @@
           } else {
               textXY.innerHTML = 'Geolocation is not supported by this browser.';
           }
+      },3000);
       
       }
       
@@ -726,7 +728,7 @@
               }
           });
       }
-       </script>
+      </script>
   </footer>
 </body>
 
