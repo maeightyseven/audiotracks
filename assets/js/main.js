@@ -45,6 +45,7 @@ function cycleAudio() {
     // document.getElementsByTagName('audio')[i].parentElement.id = 'Shape' + (i);
     var copyurl = document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src;
     document.getElementsByTagName('audio')[i].volume = 0;
+    document.getElementsByTagName('audio')[i].src = 'Suoni/system-silence.mp3';
     document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src = 'Suoni/system-silence.mp3';
     source.push(copyurl);
     document.querySelectorAll('audio')[i].play();
@@ -56,8 +57,11 @@ function cycleAudio() {
 function initAudioStop(i) {
             document.getElementsByTagName('audio')[i].currentTime = 0;
             if (i < document.getElementsByTagName('audio').length - 1) {
+                document.getElementsByTagName('audio')[i].pause();
+                document.getElementsByTagName('audio')[i].src = source[i];
+                document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src = source[i];
                 i = i + 1;
-                initAudioStop(i)
+                initAudioStop(i);
             }
         }
 
@@ -68,7 +72,6 @@ var shapes = [];
 function startGetLocation() {
     initAudio();
     if (navigator.geolocation) {
-        initAudioStop(0);
         navigator.geolocation.watchPosition(function getPosition(position) {
 
             if (ixy == 0) {
@@ -83,6 +86,7 @@ function startGetLocation() {
                 marker = L.marker([initX, initY]).addTo(map);
                 doCircleMap();
                 doPolygonMap();
+                initAudioStop(0);
 
                 ixy = ixy + 1;
             }
@@ -119,6 +123,8 @@ function startGetLocation() {
                         doCircleMap();
                         doPolygonMap();
                         ixy = ixy + 1;
+                        initAudioStop(0);
+
                     }
 
                     dothings.innerHTML = 'Now Walk Around And Listen';
@@ -175,6 +181,7 @@ function startGetLocationNoMap() {
                 // doPolygonMap();
 
                 ixy = ixy + 1;
+                initAudioStop(0);
             }
 
             nowX = position.coords.latitude.toFixed(decP);
@@ -197,6 +204,8 @@ function startGetLocationNoMap() {
                         else {
                             alert('ERRORE')
                         }
+                        initAudioStop(0);
+
                     }
                     textXY.innerHTML = 'you denied me :-(';
                 }
@@ -213,7 +222,6 @@ function startGetLocationNoShapes() {
     document.getElementsByTagName('body')[0].classList.add('live');
     initAudio();
     if (navigator.geolocation) {
-        initAudioStop(0);
         navigator.geolocation.watchPosition(function getPosition(position) {
 
             if (ixy == 0) {
@@ -230,6 +238,7 @@ function startGetLocationNoShapes() {
                 // doPolygonMap();
 
                 ixy = ixy + 1;
+                initAudioStop(0);
             }
 
             nowX = position.coords.latitude.toFixed(decP);
@@ -262,6 +271,8 @@ function startGetLocationNoShapes() {
 
                         marker = L.marker([initX, initY]).addTo(map);
                         ixy = ixy + 1;
+                        initAudioStop(0);
+
                     }
 
                     map.on('mousemove', function (ev) {
