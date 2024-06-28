@@ -41,48 +41,25 @@ function initAudio() {
 
 function cycleAudio() {
     var i = source.length;
-    document.getElementsByTagName('audio')[i].id = 'audio' + (i);
-    document.getElementsByTagName('audio')[i].parentElement.id = 'Shape' + (i);
-    document.getElementsByTagName('audio')[i].setAttribute('style', 'position:absolute;');
+    // document.getElementsByTagName('audio')[i].id = 'audio' + (i);
+    // document.getElementsByTagName('audio')[i].parentElement.id = 'Shape' + (i);
     var copyurl = document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src;
     document.getElementsByTagName('audio')[i].volume = 0;
     document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src = 'Suoni/system-silence.mp3';
     source.push(copyurl);
-    var playPromise = document.querySelectorAll('audio')[i].play();
-    if (playPromise !== undefined) {
-        playPromise.then(_ => {
-            // Automatic playback started!
-            // Show playing UI.
-            // We can now safely pause video...
-            document.getElementsByTagName('audio')[i].pause();
-            document.querySelectorAll('audio')[i].currentTime = 0;
-            document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src = source[i];
-        })
-            .catch(error => {
-                // Auto-play was prevented
-                // Show paused UI.
-            });
-
-        // if (source.length < document.getElementsByTagName('audio').length) {
-        //     cycleAudio();
-        // } 
-        // else {
-        //     initAudioStop();
-        // };
-    } 
+    document.querySelectorAll('audio')[i].play();
     if (source.length < document.getElementsByTagName('audio').length) {
         cycleAudio();
     }
 }
 
-function initAudioStop() {
-    setTimeout(function () {
-        for (var i = 0; i < document.getElementsByTagName('audio').length; i++) {
-            document.getElementsByTagName('audio')[i].pause();
+function initAudioStop(i) {
             document.getElementsByTagName('audio')[i].currentTime = 0;
+            if (i < document.getElementsByTagName('audio').length - 1) {
+                i = i + 1;
+                initAudioStop(i)
+            }
         }
-    }, 3000);
-}
 
 var shapes = [];
 
@@ -91,6 +68,7 @@ var shapes = [];
 function startGetLocation() {
     initAudio();
     if (navigator.geolocation) {
+        initAudioStop(0);
         navigator.geolocation.watchPosition(function getPosition(position) {
 
             if (ixy == 0) {
@@ -180,6 +158,7 @@ function startGetLocationNoMap() {
     initAudio();
     document.getElementsByTagName('body')[0].classList.add('live');
     if (navigator.geolocation) {
+        initAudioStop(0);
         navigator.geolocation.watchPosition(function getPosition(position) {
 
             if (ixy == 0) {
@@ -234,6 +213,7 @@ function startGetLocationNoShapes() {
     document.getElementsByTagName('body')[0].classList.add('live');
     initAudio();
     if (navigator.geolocation) {
+        initAudioStop(0);
         navigator.geolocation.watchPosition(function getPosition(position) {
 
             if (ixy == 0) {
