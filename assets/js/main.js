@@ -25,7 +25,8 @@ var polygons = $('.polygon');
 var snapTime = 3000;
 var alphaDir = 0;
 
-var audioObjs = [];
+var audioObjs = $('audio');
+;
 const options = {
     enableHighAccuracy: true,
     timeout: 10000,
@@ -34,15 +35,11 @@ const options = {
 var source = [];
 
 document.onload = function () {
-    audioObjs = document.getElementsByTagName('audio');
-
     for (var i = 0; i < audioObjs.length; i++) {      
         audioObjs[i].id = 'audio' + (i);
         audioObjs[i].parentElement.id = 'Shape' + (i);
         audioObjs[i].setAttribute('style', 'position:absolute;');
-        audioObjs[i].volume = 0;
-        var copyurl = audioObjs[source.length].children[0].src;
-        source.push(copyurl);
+        
     }
 };
 
@@ -53,21 +50,28 @@ function initAudio() {
 }
 
 function cycleAudio() {
-        for (var i = 0; i < audioObjs.length; i++) { 
-            document.querySelectorAll('audio')[i].children[0].src = 'Suoni/system-silence.mp3';
-            document.querySelectorAll('audio')[i].play();
-        }
-        initAudioStop();
+        var i = source.length;
+        document.getElementsByTagName('audio')[i].volume = 0;
+        var copyurl = document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src;
+        source.push(copyurl);
+        document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src = 'Suoni/system-silence.mp3';
+        document.getElementsByTagName('audio')[i].play();
+        if (source.length < document.getElementsByTagName('audio').length) {
+            cycleAudio();
+        } 
+        else {
+            initAudioStop();
+        };
 }
 
 function initAudioStop() {
     setTimeout(function() {
-        for (var i = 0; i < audioObjs.length; i++) { 
-            document.querySelectorAll('audio')[i].pause();
-            document.querySelectorAll('audio')[i].currentTime = 0;
-            document.querySelectorAll('audio')[i].children[0].src = source[i];
+        for (var i = 0; i < document.getElementsByTagName('audio').length; i++) {
+            document.getElementsByTagName('audio')[i].pause();
+            document.getElementsByTagName('audio')[i].currentTime = 0;
+            document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src = source[i];
         }
-     }, 100);
+     }, 3000);
 }
 
 var shapes = [];
