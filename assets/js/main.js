@@ -58,7 +58,7 @@ function cycleAudio() {
             if (counter != audioObjs.length - 1) {
                 cycleAudio();
             }
-        }, 10);
+        }, 5);
 }
 
 function initAudioStop(countA) {
