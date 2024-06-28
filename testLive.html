@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title> Geolocation reactive Audio </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/maeightyseven/audiotracks@main/assets/style/main.css">-->
+  <link rel="stylesheet" href="assets/style/main.css"> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+</head>
+
+<body class="w3-content w3-black" style="max-width:1500px;">
+
+  <!-- The App Section -->
+  <div class="w3-padding-64 w3-white">
+    <div class="w3-row-padding">
+      <audio preload="none" loop>
+        <source src="Suoni/system-silence.mp3" type="audio/mpeg">
+      </audio>
+       <h1 id="mainTitle" coord="44.48370, 11.35366"> Titolo </h1>
+      <h2> <b id="dothings">Click the button to get your coordinates.</b><b id="wdots"></b> </h2>
+
+      <div class="w3-col l4 m6">
+        <!--   <img src="https://www.w3schools.com/w3images/img_app.jpg" class="w3-image w3-right w3-hide-small"
+                      width="335" height="471">
+                  <div class="w3-center w3-hide-large w3-hide-medium">
+                      <img src="https://www.w3schools.com/w3images/img_app.jpg" class="w3-image w3-margin-top" width="335"
+                          height="471">
+                  </div>-->
+        <!-- <img src="assets/img/imgGiardini" alt=" " class="imgGiardini"> -->
+        <div id="map"></div>
+      </div>
+
+      <div class="w3-col l8 m6" style="text-align: center;">
+        <table style="margin: auto;">
+          <tr>
+            <td>
+              <button onclick="startGetLocation()">Try It</button>
+            </td>
+          </tr>
+        </table>
+        <p id="demo"></p>
+        <div id="playing"></div>
+
+        <div class="mainContainer">
+
+
+          <!-- inizio zona -->
+          <div class="zone" name="MMant" color="yellow">
+            <!-- inizio forme -->
+            <div class="circle" id="BarPonteR" coord="44.485801805, 11.366851384" size="20" fadein="3000" fadeout="10000">
+              <audio preload="none">
+                <source src="https://cdn.freesound.org/previews/739/739722_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+            <div class="circle" id="Pontesud" coord="44.485774074, 11.366991853" size="25" fadein="3000" fadeout="10000">
+              <audio preload="none">
+                <source src="https://cdn.freesound.org/previews/739/739737_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+          </div>
+          <!-- fine zona -->
+          <div class="text">            
+            <img src="assets/img/Matteo Mantelli.png" alt=" " />
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <script src="assets/js/main.js"> </script>
+  </footer>
+</body>
+
+</html>
