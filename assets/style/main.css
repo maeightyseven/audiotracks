@@ -71,6 +71,7 @@ button {
     position: absolute;
     left: 0;
     bottom: 0;
+    z-index: 10;
 }
 
 .leaflet-overlay-pane svg g path {
@@ -140,7 +141,7 @@ body.live #mainTitle, body.live #demo,body.live #mainTitle + h2, body.live .w3-c
     display: none ;
 }
 
-body audio {
+body.live audio {
     visibility: hidden !important;
     z-index: -9;
 }
