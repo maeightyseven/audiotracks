@@ -53,15 +53,11 @@ function initAudio() {
 }
 
 function cycleAudio() {
-    setTimeout(function() {
         for (var i = 0; i < audioObjs.length; i++) { 
             document.querySelectorAll('audio')[i].children[0].src = 'Suoni/system-silence.mp3';
             document.querySelectorAll('audio')[i].play();
-            if (i = audioObjs.length - 1) {
-                initAudioStop();
-            }
         }
-     }, 50);
+        initAudioStop();
 }
 
 function initAudioStop() {
@@ -71,7 +67,7 @@ function initAudioStop() {
             document.querySelectorAll('audio')[i].currentTime = 0;
             document.querySelectorAll('audio')[i].children[0].src = source[i];
         }
-     }, 50);
+     }, 100);
 }
 
 var shapes = [];
