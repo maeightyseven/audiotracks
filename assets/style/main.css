@@ -28,8 +28,7 @@ body {
 }
 
 img {
-  margin-bottom: -8px;
-}
+ }
 
 .mySlides {
   display: none;
@@ -83,22 +82,22 @@ button {
   stroke-width: 2;
 }
 
-body:not(.ready) div.text img {
-  display: none;
-}
+ 
 
 .zone:not(:has(.playing)) + div.text {
- -webkit-animation: fade-out 5s ease ; /* Safari */
+  opacity: 0;
+   -webkit-animation: fade-out 5s ease ; /* Safari */
   animation: fade-out 5s ease;
 }
 
 body:has(.playing) .zone:not(:has(.playing)) + div.text {
-  opacity: 0;
+
   /*! display: none; */
 }
 
-body:not(:has(.playing)) div.text{
-  visibility: hidden;
+body:has(.ready)) div.text {
+  -webkit-animation: showDelay 10s ease ; /* Safari */
+   animation: showDelay 10s ease;
 }
 
 .mainContainer {
@@ -118,21 +117,35 @@ body:not(:has(.playing)) div.text{
   opacity: 0;
 }
 
+button {
+  cursor: pointer;
+}
+
+body.live div.text {
+     -webkit-animation: showDelay 10s ease ; /* Safari */
+     animation: showDelay 10s ease;
+}
 
 .zone:has(.playing) + div.text {
   display: block;
   opacity: 1;
    -webkit-animation: fade-in 5s ease ; /* Safari */
-     animation: fade-in 5s ease;
+  animation: fade-in 5s ease;
 }
 
 .zone + div.text img {
   left: 0;
   position: relative;
-  width: 100%;
+  width: 100vw;
   display: block;
   max-width: 100%;
 }
+
+body.ready .zone + div.text img{
+     -webkit-animation: showDelay 10s ease ; /* Safari */
+     animation: showDelay 10s ease;
+}
+
 
 .imgGiardini {
   width: 100%;
@@ -174,20 +187,20 @@ body.ready button {
   display: none;
 }
 
-.imgLoLoader {
+.imgLoader {
   display: none;
   position: fixed;
   width: 100vW;
-  z-index: 10;
+  z-index: 99;
 }
 
-.imgLoLoader img {
+.imgLoader img {
   width: 100vW;
 }
 
-.body.ready .imgLoader {
-  -webkit-animation: front 4s linear ; /* Safari */
-  animation: front 3s linear;
+
+body:not(.ready) div.text {
+  display: none;
 }
 
 /* Safari */
@@ -235,5 +248,18 @@ body.ready button {
 
 @keyframes fade-in {
   0% { opacity: 0%; display: block;}
+  100% { opacity: 100%; display: block; }
+}
+
+/* Safari */
+@-webkit-keyframes showDelay {
+  0% { -webkit-opacity: 0%;  display: none;}
+  99% { -webkit-opacity: 0%;  display: none;}
+  100% { -webkit-opacity: 100%; display: block;}
+}
+
+@keyframes showDelay {
+  0% { opacity: 0%; display: none;}
+  99% { opacity: 0%; display: none;}
   100% { opacity: 100%; display: block; }
 }
