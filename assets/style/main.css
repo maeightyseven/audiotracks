@@ -15,6 +15,10 @@ h5 {
   font-family: "Poppins", sans-serif
 }
 
+h2 {
+  text-align: center;
+}
+
 button {
   z-index: 5;
 }
@@ -84,10 +88,17 @@ body:not(.ready) div.text img {
 }
 
 .zone:not(:has(.playing)) + div.text {
-  display: none;
-  opacity: 0;
-  -webkit-animation: fade-out 5s ease ; /* Safari */
+ -webkit-animation: fade-out 5s ease ; /* Safari */
   animation: fade-out 5s ease;
+}
+
+body:has(.playing) .zone:not(:has(.playing)) + div.text {
+  opacity: 0;
+  /*! display: none; */
+}
+
+body:not(:has(.playing)) div.text{
+  visibility: hidden;
 }
 
 .mainContainer {
@@ -103,9 +114,10 @@ body:not(.ready) div.text img {
   z-index: 9;
   overflow-y: auto;
   padding: 0;
-  width: 100%;
+  width: 100vw;
   opacity: 0;
 }
+
 
 .zone:has(.playing) + div.text {
   display: block;
@@ -160,6 +172,35 @@ body.ready button {
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
   display: none;
+}
+
+.imgLoLoader {
+  display: none;
+  position: fixed;
+  width: 100vW;
+  z-index: 10;
+}
+
+.imgLoLoader img {
+  width: 100vW;
+}
+
+.body.ready .imgLoader {
+  -webkit-animation: front 4s linear ; /* Safari */
+  animation: front 3s linear;
+}
+
+/* Safari */
+@-webkit-keyframes front {
+  0% { -webkit-opacity: 100%; display: block;}
+  99% { -webkit-opacity: 0%; display: block;}
+  100% { -webkit-opacity: 0%; display: none;}
+}
+
+@keyframes front {
+   0% { opacity: 100%; display: block;}
+  99% { opacity: 0%; display: block;}
+  100% { opacity: 0%; display: none;}
 }
 
 /* Safari */
