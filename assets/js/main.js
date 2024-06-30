@@ -501,7 +501,7 @@ function playCircle(x, y, r, a, n) {
             setTimeout(function () {
                 distance = Number(measure(nowX, nowY, x, y));
                 if (distance > r) {
-                    if ((!(a.paused)) && (a.classList[0] == 'playing')) {
+                    if ((!(a.paused) || (a.ended)) && (a.classList[0] == 'playing')) {
                         a.classList.remove('playing');
                         decVolume(a);
                         // Only fade if past the fade out point or not at zero already  
@@ -557,7 +557,7 @@ function playPolygon(pointList, a, n) {
             newXY.push(nowYbis);
             if (!(rayCasting(newXY, polyCoord))) {
                 newXY = [];
-                if ((!(a.paused)) && (a.classList[0] == 'playing')) {
+                if ((!(a.paused) || (a.ended)) && (a.classList[0] == 'playing')) {
                     a.classList.remove('playing');
                     decVolume(a);
                     if (a.parentElement.parentElement.hasAttribute('group')) {
