@@ -151,7 +151,7 @@ function startGetLocation() {
                         // Alert the copied text
                         dothings.innerHTML = copyText;
                     });
-                    textXY.innerHTML = 'you denied me :-(';
+                    // textXY.innerHTML = 'you denied me :-(';
                 }
             },
             options
@@ -211,7 +211,7 @@ function startGetLocationNoMap() {
                         initAudioStop(0);
 
                     }
-                    textXY.innerHTML = 'you denied me :-(';
+                    // textXY.innerHTML = 'you denied me :-(';
                 }
             },
             options
@@ -301,7 +301,7 @@ function startGetLocationNoShapes() {
                         // Alert the copied text
                         dothings.innerHTML = copyText;
                     });
-                    textXY.innerHTML = 'you denied me :-(';
+                    // textXY.innerHTML = 'you denied me :-(';
                 }
             },
             options
