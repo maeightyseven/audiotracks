@@ -99,14 +99,15 @@ function cycleAudio() {
     });
     tracks.push(track);
     const gainNode = new GainNode(audioCtx);
-    gainNode.gain.value = 0;
+    gainNode.gain.value = 1;
     track.connect(gainNode).connect(audioCtx.destination);
     // document.getElementsByTagName('audio')[i].id = 'audio' + (i);
     // document.getElementsByTagName('audio')[i].parentElement.id = 'Shape' + (i);
     var copyurl = document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src;
+    document.getElementsByTagName('audio')[i].crossOrigin = "anonymous";
     document.getElementsByTagName('audio')[i].volume = 0;
-    document.getElementsByTagName('audio')[i].src = 'Suoni/system-silence.mp3';
-    document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src = 'Suoni/system-silence.mp3';
+    document.getElementsByTagName('audio')[i].src = 'https://maeightyseven.github.io/audiotracks/Suoni/system-silence.mp3';
+    document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src = 'https://maeightyseven.github.io/audiotracks/Suoni/system-silence.mp3';
     source.push(copyurl);
     document.querySelectorAll('audio')[i].play();
     if (source.length < document.getElementsByTagName('audio').length) {
