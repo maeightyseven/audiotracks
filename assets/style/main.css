@@ -88,7 +88,7 @@ button {
   opacity: 0;
   -webkit-animation: fade-out 5s ease ; /* Safari */
   animation: fade-out 5s ease;
-  background-color: transparent;
+  background-color: #00a44f;
   transition:  background-color 3s ease;
   height: 100vh
 
@@ -121,7 +121,7 @@ body:has(.ready) div.text {
   opacity: 0;
   min-height: 100vh;
   background-color: #00a44f;
-    transition:  background-color 3s ease;
+   transition:  background-color 3s ease;
 }
 
 button {
@@ -129,8 +129,8 @@ button {
 }
 
 body.live div.text {
-     -webkit-animation: showDelay 10s ease ; /* Safari */
-     animation: showDelay 10s ease;
+     -webkit-animation: showDelay 6s ease ; /* Safari */
+     animation: showDelay 6s ease;
 }
 
 .zone:has(.playing) + div.text {
@@ -152,8 +152,8 @@ body.live div.text {
 }
 
 body.ready .zone + div.text img{
-  -webkit-animation: showDelay 10s ease ; /* Safari */
-  animation: showDelay 10s ease;
+  -webkit-animation: showDelay 6s ease ; /* Safari */
+  animation: showDelay 6s ease;
 }
 
 
