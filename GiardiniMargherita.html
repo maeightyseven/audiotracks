@@ -44,11 +44,8 @@
       <div class="w3-col l8 m6" style="text-align: center;">
         <table style="margin: auto;">
           <tr>
-            <td>
-              <button onclick="startGetLocation()">Try It</button>
-            </td>
-            <td><button onclick="startGetLocationNoShapes()">Senza Forme</button></td>
-            <td><button onclick="startGetLocationNoMap()">Senza Mappa</button>
+           
+            <td><button onclick="startGetLocationNoMap()" id="btnGoLive">Start</button>
             </td>
           </tr>
         </table>
@@ -2013,6 +2010,11 @@
   </div>
 
   <footer>
+    <table width="100%">
+      <tr>
+        <td> <button onclick="startGetLocation()" id="btnMap"> Con Forme</button></td>
+    <td><button onclick="startGetLocationNoShapes()" id="btnNoShapes">Senza Forme</button></td>
+      </tr>
     <script src="assets/js/main.js"> </script>
   </footer>
 </body>
