@@ -56,18 +56,47 @@ button {
 }
 
 #map.leaflet-container  {
-  width: 6000px;
+  width: 600px;
   height: 400px;
   max-width: 100vw;
 }
 
 .live #map.leaflet-container {
+  
+}
+
+.edit #map.leaflet-container {
   position:fixed !important;
   top: 0;
   /* right:0; */
   z-index: 99;
-  width: 30vw;
-  height: 30vh
+  width: 100vw;
+  height: 50vh;
+  z-index: 99;
+  left: 0;
+}
+
+.edit div.text {
+  /*! position:relative !important; */
+  /*! bottom: 0 !important; */
+  top: 50% !important;
+  /* right:0; */
+  /*! z-index: 9; */
+  /*! width: 100vw; */
+  /*! height: 50vh !important; */
+  /*! z-index: 9; */
+  /*! overflow-y: auto !important; */
+  /*! overflow: hidden !important; */
+  /*! min-height: 50vh !important; */
+  /*! max-height: 50vh !important; */
+}
+
+
+.edit .zone + div.text img { 
+  z-index: 9;
+  width: 64vw !important;
+  display: block;
+  margin: auto !important;
 }
 
 .edit audio {
@@ -176,6 +205,7 @@ body {
   background-position: center;
   background-color: #287376;
   min-height: 100vh;
+  height: auto;
 }
 
 body.live #mainTitle, body.live #demo,body.live #mainTitle + h2, body.live .w3-col > table, .live footer >table {
@@ -213,6 +243,14 @@ body.ready button {
 
 .imgLoader img {
   width: 100vW;
+}
+
+.edit .mainContainer {
+  position: fixed;
+  top: 50vh;
+  width: 100vw;
+  left: 0;
+  height: 50vh;
 }
 
 body:has(.playing) {

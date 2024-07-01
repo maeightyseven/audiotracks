@@ -72,6 +72,8 @@ var shapes = [];
 function startGetLocation() {
     initAudio();
     setTimeout(function() {
+        document.getElementsByTagName('body')[0].classList.add('live');
+        document.getElementsByTagName('body')[0].classList.add('edit');
 
     if (navigator.geolocation) {
         navigator.geolocation.watchPosition(function getPosition(position) {
@@ -225,7 +227,8 @@ function startGetLocationNoMap() {
 
 function startGetLocationNoShapes() {
     document.getElementsByTagName('body')[0].classList.add('live');
-    initAudio();
+        document.getElementsByTagName('body')[0].classList.add('edit');
+            initAudio();
     setTimeout(function() {
 
     if (navigator.geolocation) {
