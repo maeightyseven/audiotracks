@@ -97,6 +97,7 @@ button {
   width: 60vw !important;
   display: block;
   margin: auto !important;
+  height: 50vh;
 }
 
 .edit audio {
@@ -111,7 +112,6 @@ button {
   stroke-width: 2;
 }
 
- 
 
 .zone:not(:has(.playing)) + div.text {
   opacity: 0;
@@ -206,6 +206,15 @@ body {
   background-color: #287376;
   min-height: 100vh;
   height: auto;
+}
+
+body.edit.live {
+  background-size: 50vw;
+  background-position-y: 45vh;
+}
+
+body.edit:not(.live) {
+  background: none !important;
 }
 
 body.live #mainTitle, body.live #demo,body.live #mainTitle + h2, body.live .w3-col > table, .live footer >table {
