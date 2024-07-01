@@ -24,7 +24,7 @@
   <!-- The App Section -->
   <div class="w3-padding-64 w3-white">
     <div class="w3-row-padding">
-      <audio preload="none" loop>
+      <audio preload="none" loop id="system-silence-loop">
         <source src="Suoni/system-silence.mp3" type="audio/mpeg">
       </audio>
        <h1 id="mainTitle" coord="44.48370, 11.35366">   </h1>
@@ -1639,7 +1639,6 @@
               </audio>
             </div>
   
-  
           <div class="circle" id="PragueAirportSUD" coord="44.482825421, 11.355013847" size="7" fade = "center" volume = "75">
             <audio preload="none" loop>
               <source src="https://cdn.freesound.org/previews/742/742409_6263599-lq.mp3" type="audio/mpeg">
@@ -1951,28 +1950,28 @@
               </audio>
             </div>
 
-            <div class="circle" id="Viamiaterzaparte" coord="44.480879198 , 11.351945400" size="20" fadeIn="3000"
+            <div class="circle" id="Viamiaterzaparte" coord="44.480879198,11.351945400" size="20" fadeIn="3000"
               fadeOut="5000">
                <audio preload="none" loop>
                 <source src="https://cdn.freesound.org/previews/742/742426_10869001-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
 
-            <div class="circle" id="Viamiaquartaparte" coord="44.480955746 , 11.352202892" size="10" fadeIn="3000"
+            <div class="circle" id="Viamiaquartaparte" coord="44.480955746,11.352202892" size="10" fadeIn="3000"
               fadeOut="5000">
                <audio preload="none" loop>
                 <source src="https://cdn.freesound.org/previews/742/742428_10869001-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
 
-            <div class="circle" id="Viamiaquintaparte" coord="44.480963401 , 11.352320910" size="10" fadeIn="3000"
+            <div class="circle" id="Viamiaquintaparte" coord="44.480963401,11.352320910" size="10" fadeIn="3000"
               fadeOut="5000">
                <audio preload="none" loop>
                 <source src="https://cdn.freesound.org/previews/742/742429_10869001-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
 
-            <div class="circle" id="Viamiasestaparte" coord="44.480928954 , 11.352374554" size="10" fadeIn="3000"
+            <div class="circle" id="Viamiasestaparte" coord="44.480928954,11.352374554" size="10" fadeIn="3000"
               fadeOut="5000">
                <audio preload="none" loop>
                 <source src="https://cdn.freesound.org/previews/742/742430_10869001-lq.mp3" type="audio/mpeg">
@@ -1980,12 +1979,12 @@
             </div>
 
 
-            <div class="polygon" id="Viamiatutta" coord="[[44.481901112 , 11.354772449],
-            [44.481652333 , 11.354960203],
-            [44.481116498 , 11.353721023],
-            [44.480894507 , 11.352299452],
-            [44.481066741 , 11.352342367],
-            [44.481258112 , 11.353490353]]">
+            <div class="polygon" id="Viamiatutta" coord="[[44.481901112,11.354772449],
+            [44.481652333,11.354960203],
+            [44.481116498,11.353721023],
+            [44.480894507,11.352299452],
+            [44.481066741,11.352342367],
+            [44.481258112,11.353490353]]">
                <audio preload="none" loop>
                 <source src="https://cdn.freesound.org/previews/742/742431_10869001-lq.mp3" type="audio/mpeg">
               </audio>
@@ -2008,7 +2007,9 @@
 
     </div>
   </div>
-
+  <audio preload="none" loop>
+    <source src="Suoni/system-silence.mp3" type="audio/mpeg">
+  </audio>
   <footer>
     <table width="100%">
       <tr>
