@@ -32,6 +32,11 @@ const options = {
     timeout: 10000,
 };
 
+// const context = /** @type {AudioContext} */ (new(window.AudioContext || window.webkitAudioContext)())
+// const gainNode = context.createGain()
+// gainNode.connect(context.destination)
+// gainNode.gain.value = 0
+
 var source = [];
 
 function initAudio() {
@@ -55,9 +60,9 @@ function cycleAudio() {
 }
 
 function initAudioStop(i) {
-            document.getElementsByTagName('audio')[i].currentTime = 0;
-            if (i < document.getElementsByTagName('audio').length - 1) {
+            if (i < document.getElementsByTagName('audio').length ) {
                 document.getElementsByTagName('audio')[i].pause();
+                document.getElementsByTagName('audio')[i].currentTime = 0;
                 document.getElementsByTagName('audio')[i].src = source[i];
                 document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src = source[i];
                 i = i + 1;
