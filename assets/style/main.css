@@ -94,7 +94,7 @@ button {
 
 .edit .zone + div.text img { 
   z-index: 9;
-  width: 64vw !important;
+  width: 60vw !important;
   display: block;
   margin: auto !important;
 }
