@@ -86,8 +86,9 @@ button {
 
 .zone:not(:has(.playing)) + div.text {
   opacity: 0;
-   -webkit-animation: fade-out 5s ease ; /* Safari */
+  -webkit-animation: fade-out 5s ease ; /* Safari */
   animation: fade-out 5s ease;
+
 }
 
 body:has(.playing) .zone:not(:has(.playing)) + div.text {
@@ -115,6 +116,8 @@ body:has(.ready)) div.text {
   padding: 0;
   width: 100vw;
   opacity: 0;
+   min-height: 100vh;
+  background-color: #00a44f;
 }
 
 button {
@@ -129,7 +132,7 @@ body.live div.text {
 .zone:has(.playing) + div.text {
   display: block;
   opacity: 1;
-   -webkit-animation: fade-in 5s ease ; /* Safari */
+  -webkit-animation: fade-in 5s ease ; /* Safari */
   animation: fade-in 5s ease;
 }
 
@@ -160,7 +163,12 @@ div:has(.leaflet-container) .imgGiardini {
 }
 
 body {
-  background-image: url('../img/img1.png')
+  background-image: url('../img/oltresuono.jpg');
+  background-repeat: no-repeat;
+  background-size: 100vw;
+  background-position: center;
+  background-color: #287376;
+  min-height: 100vh;
 }
 
 body.live #mainTitle, body.live #demo,body.live #mainTitle + h2, body.live .w3-col > table {
@@ -192,12 +200,18 @@ body.ready button {
   position: fixed;
   width: 100vW;
   z-index: 99;
+  top: 0;
+  left: 0;
 }
 
 .imgLoader img {
   width: 100vW;
 }
 
+body:has(.playing) {
+  background-color: #00a44f;
+  transition: background-color 3s ease;
+}
 
 body:not(.ready) div.text {
   display: none;
