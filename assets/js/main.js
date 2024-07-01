@@ -161,7 +161,7 @@ function startGetLocation() {
     } else {
         textXY.innerHTML = 'Geolocation is not supported by this browser.';
     }
-}, 3000);
+}, 5000);
 
 }
 
@@ -221,7 +221,7 @@ function startGetLocationNoMap() {
     } else {
         textXY.innerHTML = 'Geolocation is not supported by this browser.';
     }
-},3000);
+},5000);
 
 }
 
@@ -312,7 +312,7 @@ function startGetLocationNoShapes() {
     } else {
         textXY.innerHTML = 'Geolocation is not supported by this browser.';
     }
-},3000);
+},5000);
 
 }
 
