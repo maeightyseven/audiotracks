@@ -17,6 +17,10 @@ h5 {
 
 h2 {
   text-align: center;
+  font-size: 1.2rem;
+  font-weight: lighter;
+  color: #d2e6dd;
+font-family: serif;
 }
 
 button {
@@ -53,6 +57,18 @@ button {
   visibility: hidden;
   height: 0;
   width: 0;
+}
+
+
+#btnGoLive {
+  bottom: 20vh;
+  margin: auto;
+  padding: 15px 40px;
+  font-family: serif;
+  border: none;
+  color: #d2e6dd;
+  text-decoration: underline;
+  font-size: 18px;
 }
 
 #map.leaflet-container  {
