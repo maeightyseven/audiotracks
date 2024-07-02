@@ -134,8 +134,8 @@ button {
   -webkit-animation: fade-out 5s ease ; /* Safari */
   animation: fade-out 5s ease;
   background-color: #00a44f;
-  transition:  background-color 3s ease;
-  height: 100vh
+  transition:  all 3s ease;
+  height: 100vh;
 
 }
 
@@ -144,10 +144,6 @@ body:has(.playing) .zone:not(:has(.playing)) + div.text {
   /*! display: none; */
 }
 
-body:has(.ready) div.text {
-  -webkit-animation: showDelay 10s ease ; /* Safari */
-   animation: showDelay 10s ease;
-}
 
 .mainContainer {
   position: relative;
@@ -173,17 +169,13 @@ button {
   cursor: pointer;
 }
 
-body.live div.text {
-     -webkit-animation: showDelay 6s ease ; /* Safari */
-     animation: showDelay 6s ease;
-}
 
 .zone:has(.playing) + div.text {
   display: block;
   opacity: 1;
   -webkit-animation: fade-in 5s ease ; /* Safari */
   animation: fade-in 5s ease;
-  transition:  background-color 3s ease;
+  transition:  all 3s ease;
   background-color: #00a44f;
 
 }
@@ -196,7 +188,7 @@ body.live div.text {
   max-width: 100%;
 }
 
-body.ready .zone + div.text img{
+body.ready .zone + div.text{
   -webkit-animation: showDelay 6s ease ; /* Safari */
   animation: showDelay 6s ease;
 }
@@ -299,6 +291,7 @@ footer button {
   padding: 1rem;
   color: #333333;
 }
+
 /* Safari */
 @-webkit-keyframes front {
   0% { -webkit-opacity: 100%; display: block;}
@@ -349,13 +342,13 @@ footer button {
 
 /* Safari */
 @-webkit-keyframes showDelay {
-  0% { -webkit-opacity: 0%;  display: none;}
-  99% { -webkit-opacity: 0%;  display: none;}
-  100% { -webkit-opacity: 100%; display: block;}
+  0% { -webkit-opacity: 0%;  display: none; visibility: hidden; background: none}
+  99% { -webkit-opacity: 0%;  display: none; visibility: hidden; background: none}
+  100% { -webkit-opacity: 100%; display: block; visibility:visible}
 }
 
 @keyframes showDelay {
-  0% { opacity: 0%; display: none;}
-  99% { opacity: 0%; display: none;}
-  100% { opacity: 100%; display: block; }
+  0% { opacity: 0%; display: none;visibility: hidden; background: none}
+  99% { opacity: 0%; display: none;visibility: hidden; background: none}
+  100% { opacity: 100%; display: block;visibility: visible;   }
 }
