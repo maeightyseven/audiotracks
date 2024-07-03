@@ -292,6 +292,16 @@ footer button {
   color: #333333;
 }
 
+#video-pixel {
+  height: 1px;
+  width: 1px;
+  position: fixed;
+  bottom: 0;
+  opacity: 0;
+  left: 0;
+  z-index: -1;
+}
+
 /* Safari */
 @-webkit-keyframes front {
   0% { -webkit-opacity: 100%; display: block;}

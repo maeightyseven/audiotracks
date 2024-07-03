@@ -26,7 +26,10 @@ var snapTime = 3000;
 var alphaDir = 0;
 
 var audioObjs = $('audio');
-;
+
+var videoPixel = document.getElementById('video-pixel');
+var backgroundSilence = document.getElementsByClassName('background-silence')[0];
+
 const options = {
     enableHighAccuracy: true,
     timeout: 10000,
@@ -56,6 +59,9 @@ function cycleAudio() {
     document.querySelectorAll('audio')[i].play();
     if (source.length < document.getElementsByTagName('audio').length) {
         cycleAudio();
+    } else {
+            videoPixel.play();
+            backgroundSilence.play();
     }
 }
 
@@ -67,6 +73,9 @@ function initAudioStop(i) {
                 document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src = source[i];
                 i = i + 1;
                 initAudioStop(i);
+            } else {
+                videoPixel.play();
+                backgroundSilence.play();
             }
         }
 
@@ -175,7 +184,6 @@ function startGetLocationNoMap() {
     document.getElementsByTagName('body')[0].classList.add('live');
     setTimeout(function() {
     if (navigator.geolocation) {
-        initAudioStop(0);
         navigator.geolocation.watchPosition(function getPosition(position) {
 
             if (ixy == 0) {
