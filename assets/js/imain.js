@@ -26,6 +26,9 @@ var alphaDir = 0;
 
 var audioObjs = document.querySelectorAll('audio');
 
+var videoPixel = document.getElementById('video-pixel');
+var backgroundSilence = document.getElementsByClassName('background-silence')[0];
+
 const options = {
     enableHighAccuracy: true,
     timeout: 10000,
@@ -38,9 +41,11 @@ var source = [];
 // load some sound
 var tracks = [];
 
-var gains = []
+var gains = [];
 
-var gainsCreate = []
+var panners = [];
+
+var gainsCreate = [];
 
 
 //   function init() {
@@ -77,7 +82,12 @@ var gainsCreate = []
 //     track.connect(gainsCreate[index]).connect(panner).connect(audioCtx.destination);
 //   }
    var  audioCtx;
+   var orientationX;
+   window.addEventListener("deviceorientation", handleOrientation, true);
    
+   function handleOrientation(event) {
+    orientationX = event.beta; // In degree in the range [-180,180)
+   }
  
 for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
         var input = document.createElement("input");
@@ -106,9 +116,11 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
                 mediaElement: document.getElementsByTagName('audio')[i],
             }));
             gainsCreate[i] = audioCtx.createGain();
-            gainsCreate[i].gain.setValueAtTime(0, audioCtx.currentTime);
+            gainsCreate[i].gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
             tracks[i].connect(gainsCreate[i]);
             gainsCreate[i].connect(audioCtx.destination);
+             tracks[i].connect(gainsCreate[i]).connect(audioCtx.destination);
+
      }
      
         cycleAudio();
@@ -129,6 +141,9 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
         document.querySelectorAll('audio')[i].play();
         if (source.length < document.getElementsByTagName('audio').length) {
             cycleAudio();
+        } else {
+            videoPixel.play();
+            backgroundSilence.play();
         }
     }
 
@@ -138,9 +153,13 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
             document.getElementsByTagName('audio')[i].currentTime = 0;
             document.getElementsByTagName('audio')[i].src = source[i];
             document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src = source[i];
+            gainsCreate[i].gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
             i = i + 1;
             initAudioStop(i);
-        }
+        } else {
+                videoPixel.play();
+                backgroundSilence.play();
+            }
     }
 
     var shapes = [];
@@ -248,7 +267,6 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
         document.getElementsByTagName('body')[0].classList.add('live');
         setTimeout(function () {
             if (navigator.geolocation) {
-                initAudioStop(0);
                 navigator.geolocation.watchPosition(function getPosition(position) {
 
                     if (ixy == 0) {
@@ -424,6 +442,7 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
     }
 
     function decVolume(a) {
+        
         var index = a.id.substring(10);
         var maxvol;
         if (a.parentElement.hasAttribute('volume')) {
@@ -431,62 +450,69 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
         } else {
             maxvol = 1;
         }
-
-         if (a.classList[0] !== 'playing') {
-                var t;
-                if (a.parentElement.hasAttribute('fadeout')) {
-                    t = Number(a.parentElement.attributes.fadeout.value);
-                    gainsCreate[index].gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + t/1000);
-                    tracks[index].connect(gainsCreate[index]).connect(audioCtx.destination);
-
-                    setTimeout(function() {
-                        a.pause();
-                    }, t)
-                }
-                else {
-                    gainsCreate[index].gain.setValueAtTime(0, audioCtx.currentTime);
-                    tracks[index].connect(gainsCreate[index]).connect(audioCtx.destination);
-
-                    a.parentElement.querySelector("input").value = 0;
-                    if (!(a.parentElement.parentElement.hasAttribute('group'))) {
-                        a.pause();
-                    }
-                    else {
-                        if (a.parentElement.parentElement.getElementsByClassName('playing').length == 0) {
-                            a.pause();
-                        }
-                    }
-                    if ((a.duration < 10) || a.parentElement.hasAttribute('rewind') || a.duration.toFixed(2) == a.currentTime.toFixed(2)) {
-                        a.currentTime = 0;
-                    }
+        var roundVol = gainsCreate[index].gain.value;
+        var decT;
+        if (a.classList[0] !== 'playing') {
+            var t;
+            if (a.parentElement.hasAttribute('fadeout')) {
+                t = Number(a.parentElement.attributes.fadeout.value);
+                decT = t/20;
+                roundVol = roundVol - 0.05*maxvol;
+                gainsCreate[index].gain.setValueAtTime(roundVol, audioCtx.currentTime + 0.05);
+                if (roundVol > 0) {
+                    setTimeout(() => {
+                        decVolume(a);
+                }  , decT);
+            } else
+                {
+                    a.pause();
                 }
             }
+            else {
+                gainsCreate[index].gain.setValueAtTime(0, audioCtx.currentTime + 0.1);
+
+                a.parentElement.querySelector("input").value = 0;
+                if (!(a.parentElement.parentElement.hasAttribute('group'))) {
+                    a.pause();
+                }
+                else {
+                    if (a.parentElement.parentElement.getElementsByClassName('playing').length == 0) {
+                        a.pause();
+                    }
+                }
+                if ((a.duration < 10) || a.parentElement.hasAttribute('rewind') || a.duration.toFixed(2) == a.currentTime.toFixed(2)) {
+                    a.currentTime = 0;
+                }
+            }
+        }
         
     }
     // When volume at zero stop all the intervalling
     function addVolume(a) {
         var index = a.id.substring(10);
         var maxvol = 1;
-         
-
+        var roundVol = gainsCreate[index].gain.value;
+        var addT;
         if (a.parentElement.hasAttribute('volume')) {
             maxvol = Number(a.parentElement.attributes.volume.value) / 100;
         }
-
 
             if (a.classList[0] == 'playing') {
                 var t;
                 if (a.parentElement.hasAttribute('fadein')) {
                     t = Number(a.parentElement.attributes.fadein.value);
-                    gainsCreate[index].gain.exponentialRampToValueAtTime(maxvol, audioCtx.currentTime + t/1000);
+                    addT = t/20;
+                    roundVol = roundVol + 0.05*maxvol;
+                    gainsCreate[index].gain.setValueAtTime(roundVol, audioCtx.currentTime + 0.05);
+                    if (roundVol < maxvol) {
+                        setTimeout(() => {
+                            addVolume(a);
+                    }, addT);
+                }  
                     //gainsCreate[index].gain.setTargetAtTime(maxvol, audioCtx.currentTime, );
-                    tracks[index].connect(gainsCreate[index]).connect(audioCtx.destination);
-
                  }
                 else {
-                    gainsCreate[index].gain.setValueAtTime(maxvol, audioCtx.currentTime);
-                    tracks[index].connect(gainsCreate[index]).connect(audioCtx.destination);
-
+                    gainsCreate[index].gain.exponentialRampToValueAtTime(maxvol, audioCtx.currentTime + 0.1);
                     a.parentElement.querySelector("input").value = maxvol;
                 }
             }
@@ -516,6 +542,9 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
             if (!(a.hasAttribute('controls'))) {
                 a.setAttribute('controls', '')
             }
+            if ((a.parentElement.hasAttribute('spatial'))) {
+                
+            }
             if ((a.paused)) {
                 if (a.parentElement.parentElement.hasAttribute('group')) {
                     var groupAudio = a.parentElement.parentElement.querySelectorAll('audio');
@@ -535,7 +564,6 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
                     if (maxvol == 1) {
                         roundVol = (1 - distance / r).toFixed(3) * idist.toFixed(2);
                         gainsCreate[index].gain.setValueAtTime(roundVol.toFixed(3), audioCtx.currentTime);
-
                         tracks[index].connect(gainsCreate[index]).connect(audioCtx.destination);
                         a.parentElement.querySelector("input").value = roundVol.toFixed(3);
                     }
@@ -615,8 +643,10 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
         var polyCoord = JSON.parse(pointList);
         point.push(nowX);
         point.push(nowY);
+
         //  console.log(rayCasting(point, polyCoord));
         if (rayCasting(point, polyCoord)) {
+    
             if ((a.paused)) {
                 a.setAttribute('controls', '');
                 if (a.parentElement.parentElement.hasAttribute('group')) {

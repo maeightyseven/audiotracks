@@ -6,11 +6,11 @@
   <title> Oltresuono - Geolocation reactive Audio </title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" >
-<meta http-equiv="Pragma" content="no-cache" >
-<meta http-equiv="Expires" content="0" >
- <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/maeightyseven/audiotracks@main/assets/style/main.css">-->
-  <link rel="stylesheet" href="assets/style/main.css"> 
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/maeightyseven/audiotracks@main/assets/style/main.css">-->
+  <link rel="stylesheet" href="assets/style/main.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -24,10 +24,10 @@
   <!-- The App Section -->
   <div class="w3-padding-64 w3-white">
     <div class="w3-row-padding">
-      <audio preload="none" crossorigin="anonymous"   loop id="system-silence-loop">
+      <audio preload="none" loop id="system-silence-loop">
         <source src="Suoni/system-silence.mp3" type="audio/mpeg">
       </audio>
-       <h1 id="mainTitle" coord="44.48370, 11.35366">   </h1>
+      <h1 id="mainTitle" coord="44.48370, 11.35366"> </h1>
       <h2> <b id="dothings">Click the button to get your coordinates.</b><b id="wdots"></b> </h2>
 
       <div class="w3-col l4 m6">
@@ -44,7 +44,7 @@
       <div class="w3-col l8 m6" style="text-align: center;">
         <table style="margin: auto;">
           <tr>
-           
+
             <td><button onclick="startGetLocationNoMap()" id="btnGoLive">Start</button>
             </td>
           </tr>
@@ -913,132 +913,131 @@
 
           <!-- inizio zona -->
           <div class="zone" name="Gille" color="blue">
-            <!--          inizio forme - Serre -->
-            <div class="polygon" id="Serre_Noise"
-              coord="[[44.483561, 11.348670],
-                          [44.484077, 11.348890],
-                          [44.483901, 11.349695],
-                          [44.483499, 11.349531], [44.483337, 11.350248],[44.482876, 11.349620], [44.482964, 11.348853]]" fadein="1000" fadeout="1000"
-              volume="30">
+            <!-- inizio forme - Serre -->
+            <div class="polygon" id="Serre_Noise" coord="[[44.483561, 11.348670],
+                  [44.484077, 11.348890],
+                  [44.483901, 11.349695],
+                  [44.483499, 11.349531], [44.483337, 11.350248],[44.482876, 11.349620], [44.482964, 11.348853]]"
+              fadein="1000" fadeout="1000" volume="50">
               <audio preload="none" loop>
                 <source src="https://cdn.freesound.org/previews/743/743407_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_A3" coord="44.483065037, 11.349008381" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_A3" coord="44.483065037, 11.349008381" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743396_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_C6" coord="44.483038246, 11.349335611" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_C6" coord="44.483038246, 11.349335611" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743405_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_O2" coord="44.482961700, 11.349531412" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_O2" coord="44.482961700, 11.349531412" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743409_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_A7" coord="44.483099483, 11.349644065" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_A7" coord="44.483099483, 11.349644065" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743399_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_C3" coord="44.483065037, 11.349504590" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_C3" coord="44.483065037, 11.349504590" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743402_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_O5" coord="44.483153065, 11.349298060" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_O5" coord="44.483153065, 11.349298060" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743412_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_A1" coord="44.483202819, 11.349094212" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_A1" coord="44.483202819, 11.349094212" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743394_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_C7" coord="44.483241092, 11.348842084" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_C7" coord="44.483241092, 11.348842084" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743405_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_O4" coord="44.483357824, 11.349003017" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_O4" coord="44.483357824, 11.349003017" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743411_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_A5" coord="44.483332946, 11.349169314" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_A5" coord="44.483332946, 11.349169314" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743398_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_C1" coord="44.483300415, 11.349330246" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_C1" coord="44.483300415, 11.349330246" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743400_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_O6" coord="44.483187510, 11.349397302" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_O6" coord="44.483187510, 11.349397302" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743413_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_A4" coord="44.483308069, 11.349426806" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_A4" coord="44.483308069, 11.349426806" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743397_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_C5" coord="44.483367392, 11.349539459" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_C5" coord="44.483367392, 11.349539459" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743404_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_O1" coord="44.483353996, 11.349660158" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_O1" coord="44.483353996, 11.349660158" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743408_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_A6" coord="44.483327205, 11.349818408" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_A6" coord="44.483327205, 11.349818408" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743399_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_C4" coord="44.483216215, 11.349534094" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_C4" coord="44.483216215, 11.349534094" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743403_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_O3" coord="44.483185596, 11.349762082" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_O3" coord="44.483185596, 11.349762082" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743410_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_A2" coord="44.483329119, 11.349947155" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_A2" coord="44.483329119, 11.349947155" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743395_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Serre_C2" coord="44.483233437, 11.349684298" size="4" fadein="1000" fadeout="1000"
+            <div class="circle" id="Serre_C2" coord="44.483233437, 11.349684298" size="5" fadein="1000" fadeout="1000"
               rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743401_4037248-lq.mp3" type="audio/mpeg">
@@ -1048,15 +1047,15 @@
             <!-- fine forme -->
             <!-- inizio forme - Viale -->
             <div class="polygon" id="Viale_Noise" coord="[[44.483493773, 11.349511936],
-                          [44.484310886, 11.349616542],
-                          [44.484073599, 11.350906685],
-                          [44.483264137, 11.350493625]]" fadein="10000" fadeout="10000">
+                  [44.484310886, 11.349616542],
+                  [44.484073599, 11.350906685],
+                  [44.483264137, 11.350493625]]" fadein="10000" fadeout="10000">
               <audio preload="none" loop>
                 <source src="https://cdn.freesound.org/previews/743/743426_4037248-lq.mp3" type="audio/mpeg"
                   volume="20">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici1" coord="44.483438196, 11.350075901" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici1" coord="44.483438196, 11.350075901" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743414_4037248-lq.mp3" type="audio/mpeg">
               </audio>
@@ -1073,7 +1072,7 @@
                 <source src="https://cdn.freesound.org/previews/743/743419_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici2" coord="44.483589373, 11.350110769" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici2" coord="44.483589373, 11.350110769" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743415_4037248-lq.mp3" type="audio/mpeg">
               </audio>
@@ -1090,7 +1089,7 @@
                 <source src="https://cdn.freesound.org/previews/743/743420_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici3qqc" coord="44.483859193, 11.350022256" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici3qqc" coord="44.483859193, 11.350022256" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743416_4037248-lq.mp3" type="audio/mpeg">
               </audio>
@@ -1107,7 +1106,7 @@
                 <source src="https://cdn.freesound.org/previews/743/743419_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici4advfwe" coord="44.483988427, 11.350069066" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici4advfwe" coord="44.483988427, 11.350069066" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743417_4037248-lq.mp3" type="audio/mpeg">
               </audio>
@@ -1118,7 +1117,7 @@
                 <source src="https://cdn.freesound.org/previews/743/743420_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici5" coord="44.484151084, 11.349851807" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici5" coord="44.484151084, 11.349851807" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743418_4037248-lq.mp3" type="audio/mpeg">
               </audio>
@@ -1129,7 +1128,7 @@
                 <source src="https://cdn.freesound.org/previews/743/743419_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici13ve" coord="44.483371219, 11.350223422" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici13ve" coord="44.483371219, 11.350223422" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743414_4037248-lq.mp3" type="audio/mpeg">
               </audio>
@@ -1140,7 +1139,7 @@
                 <source src="https://cdn.freesound.org/previews/743/743420_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici222" coord="44.483849625, 11.350419223" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici222" coord="44.483849625, 11.350419223" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743415_4037248-lq.mp3" type="audio/mpeg">
               </audio>
@@ -1151,7 +1150,7 @@
                 <source src="https://cdn.freesound.org/previews/743/743419_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici3" coord="44.483751139, 11.349701604" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici3" coord="44.483751139, 11.349701604" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743416_4037248-lq.mp3" type="audio/mpeg">
               </audio>
@@ -1162,7 +1161,7 @@
                 <source src="https://cdn.freesound.org/previews/743/743420_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici4" coord="44.483773207, 11.349856488" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici4" coord="44.483773207, 11.349856488" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743417_4037248-lq.mp3" type="audio/mpeg">
               </audio>
@@ -1179,7 +1178,7 @@
                 <source src="https://cdn.freesound.org/previews/743/743420_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici1nd0" coord="44.483678421, 11.350219270" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici1nd0" coord="44.483678421, 11.350219270" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743414_4037248-lq.mp3" type="audio/mpeg">
               </audio>
@@ -1191,53 +1190,53 @@
               </audio>
             </div>
             <!-- Neue Bici-Zeilen mit angepassten GPS-Koordinaten -->
-            <div class="circle" id="Viale_Bici6" coord="44.483550, 11.349750" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici6" coord="44.483550, 11.349750" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743414_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici7" coord="44.484050, 11.350350" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici7" coord="44.484050, 11.350350" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743415_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici8" coord="44.483300, 11.350000" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici8" coord="44.483300, 11.350000" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743416_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici9" coord="44.483900, 11.349600" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici9" coord="44.483900, 11.349600" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743417_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici10" coord="44.483600, 11.350400" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici10" coord="44.483600, 11.350400" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743418_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
             <!-- Zusätzliche 5 neue Bici-Zeilen -->
-            <div class="circle" id="Viale_Bici11" coord="44.483750, 11.349900" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici11" coord="44.483750, 11.349900" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743414_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici12" coord="44.483400, 11.350300" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici12" coord="44.483400, 11.350300" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743415_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici13" coord="44.484000, 11.349800" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici13" coord="44.484000, 11.349800" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743416_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici14" coord="44.483500, 11.350150" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici14" coord="44.483500, 11.350150" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743417_4037248-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="Viale_Bici15" coord="44.483850, 11.350250" size="2" volume="60" rewind>
+            <div class="circle" id="Viale_Bici15" coord="44.483850, 11.350250" size="4" volume="60" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/743/743418_4037248-lq.mp3" type="audio/mpeg">
               </audio>
@@ -1245,16 +1244,17 @@
             <!-- fine forme -->
             <!-- inizio forme - Garden-->
             <div class="polygon" id="Garden_Noise" coord="[[44.484280187, 11.349625289],
-                          [44.485070500, 11.350049078],
-                          [44.484901686, 11.351135373],
-                          [44.484017605, 11.350888610]]" fadein="10000" fadeout="10000" volume="50">
+                  [44.485070500, 11.350049078],
+                  [44.484901686, 11.351135373],
+                  [44.484017605, 11.350888610]]" fadein="10000" fadeout="10000">
               <audio preload="none" loop>
-                <source src="https://cdn.freesound.org/previews/743/743633_4037248-lq.mp3" type="audio/mpeg">
+                <source src="https://cdn.freesound.org/previews/743/743633_4037248-lq.mp3" type="audio/mpeg"
+                  volume="50">
               </audio>
             </div>
             <div class="circle" id="JG_Garden_O" coord="44.484341, 11.350234" size="14" fadein="1000" fadeout="1000">
               <audio preload="none" loop>
-                <source src="https://cdn.freesound.org/previews/743/743393_4037248-lq.mp3" type="audio/mpeg">
+                <source src="https://cdn.freesound.org/previews/743/743393_4037248-lq.mp3" type="audio/mpeg">"
               </audio>
             </div>
             <div class="circle" id="JG_Garden_Cqdw" coord="44.484496424, 11.350695491" size="14" fadein="1000"
@@ -1277,12 +1277,12 @@
             </div>
             <!--inizio forme - Entrata-->
             <div class="polygon" id="JG_Entrata_C_Retune" coord="[[44.485242721, 11.348517537],
-                          [44.485152784, 11.349319518],
-                          [44.485064759, 11.350100040],
-                          [44.484555745, 11.349802315], [44.484731796, 11.349043250]]" fadein="10000" fadeout="10000">
+                  [44.485152784, 11.349319518],
+                  [44.485064759, 11.350100040],
+                  [44.484555745, 11.349802315], [44.484731796, 11.349043250]]" fadein="10000" fadeout="10000">
               <audio preload="none" loop>
                 <source src="https://cdn.freesound.org/previews/743/743383_4037248-lq.mp3" type="audio/mpeg"
-                  volume="20">
+                  volume="30">
               </audio>
             </div>
             <div class="circle" id="JG_Entrata_A1" coord="44.484818884, 11.349847913" size="4" fadein="1000"
@@ -1673,8 +1673,7 @@
               </audio>
             </div>
 
-            <div class="circle" id="mm-strada-L2T" coord="44.482908, 11.353260" size="20" fadein="9000" fadeout="6000"
-              volume="75">
+            <div class="circle" id="mm-strada-L2T" coord="44.482908, 11.353260" size="20" fade="center" volume="75">
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/739/739745_16065630-lq.mp3" type="audio/mpeg">
               </audio>
@@ -1687,7 +1686,7 @@
             </div>
 
             <div class="circle" id="mm-strada-LFI-pad1" coord="44.482911535, 11.353200674" size="50" fadein="8000"
-              fadeout="8000">
+              fadeout="11000">
               <audio preload="none" loop>
                 <source src="https://cdn.freesound.org/previews/739/739725_16065630-lq.mp3" type="audio/mpeg">
               </audio>
@@ -1697,7 +1696,7 @@
                 <source src="https://cdn.freesound.org/previews/739/739729_16065630-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="mm-strada-R3-thundermid" coord="44.482755, 11.354413" size="15" fadein="10000"
+            <div class="circle" id="mm-strada-R3-thundermid" coord="44.482755, 11.354413" size="15" fadein="13000"
               fadeout="8000">
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/739/739740_16065630-lq.mp3" type="audio/mpeg">
@@ -2095,24 +2094,67 @@
           <div class="text">
             <img src="assets/img/Fulvio Daviddi.png" alt=" " />
           </div>
+
+          <div class="zone" name="iTestZone1" color="orange">
+
+            <!-- inizio forme -->
+
+            <div class="circle" id="iTest1" coord="44.4877076, 11.3255525" size="10" fade="center">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/742/742424_10869001-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="circle" id="iTest2" coord="44.487680274, 11.325316429" size="10" fadeIn="3000" fadeOut="5000">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/742/742425_10869001-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+          </div>
+           <!-- fine zona -->
+           <div class="text">
+            <img src="assets/img/Francesco Interlandi.png" alt=" " />
+          </div>
+
+          <div class="zone" name="iTestZone2" color="yellow">
+
+            <!-- inizio forme -->
+
+            <div class="circle" id="iTest3" coord="44.487543109, 11.325681210" size="15" fadein="4000" fadeout="10000">
+              <audio preload="none">
+                <source src="https://cdn.freesound.org/previews/739/739722_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+           <!-- fine forme -->
+          </div>
+          <div class="text">
+            <img src="assets/img/Matteo Mantelli.png" alt=" " />
+          </div>
+
+          <!-- fine zona -->
+
         </div>
-        <div class="imgLoader">            
+
+        <div class="imgLoader">
           <img src="assets/img/oltresuono.jpg" alt=" " />
         </div>
       </div>
 
     </div>
   </div>
-  <audio preload="none" crossorigin="anonymous"   loop>
+  <audio preload="none" loop class="background-silence">
     <source src="Suoni/system-silence.mp3" type="audio/mpeg">
   </audio>
+  <video preload="none" id="video-pixel" loop width="1" height="1">
+    <source src="assets/pixel.mp4" type="video/mp4">
+  </video>
   <footer>
     <table width="100%">
       <tr>
         <td> <button onclick="startGetLocation()" id="btnMap"> Con Forme</button></td>
-    <td><button onclick="startGetLocationNoShapes()" id="btnNoShapes">Senza Forme</button></td>
+        <td><button onclick="startGetLocationNoShapes()" id="btnNoShapes">Senza Forme</button></td>
       </tr>
-    <script src="assets/js/imain.js"> </script>
+      <script src="assets/js/main.js"> </script>
   </footer>
 </body>
 
