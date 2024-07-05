@@ -53,9 +53,9 @@ var gainsCreate = [];
    
    window.addEventListener("deviceorientation", handleOrientation, true);
    
-//    function handleOrientation(event) {
-//     orientationX = event.beta; // In degree in the range [-180,180)
-//   }
+   function handleOrientation(event) {
+    orientationX = event.beta; // In degree in the range [-180,180)
+  }
  
 for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
         var input = document.createElement("input");
