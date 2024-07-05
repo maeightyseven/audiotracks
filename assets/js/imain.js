@@ -44,50 +44,19 @@ var tracks = [];
 var gains = [];
 
 var panners = [];
+var panning = [];
 
 var gainsCreate = [];
 
-
-//   function init() {
-//     audioCtx = new AudioContext();
-//     track = new MediaElementAudioSourceNode(audioCtx, {
-//       mediaElement: audioElement,
-//     });
-
-//    // Create the node that controls the volume.
-//     const gainNode = new gainNode(audioCtx);
-
-//     const volumeControl = document.querySelector('[data-action="volume"]');
-//     volumeControl.addEventListener(
-//       "input",
-//       () => {
-//         gainNode.gain.value = volumeControl.value;
-//       },
-//       false
-//     );
-
-//     // Create the node that controls the panning
-//     const panner = new StereoPannerNode(audioCtx, { pan: 0 });
-
-//     const pannerControl = document.querySelector('[data-action="panner"]');
-//     pannerControl.addEventListener(
-//       "input",
-//       () => {
-//         panner.pan.value = pannerControl.value;
-//       },
-//       false
-//     );
-
-//     // connect our graph
-//     track.connect(gainsCreate[index]).connect(panner).connect(audioCtx.destination);
-//   }
    var  audioCtx;
-   var orientationX;
+   var orientationX = 0;
+   
    window.addEventListener("deviceorientation", handleOrientation, true);
    
    function handleOrientation(event) {
     orientationX = event.beta; // In degree in the range [-180,180)
-   }
+  
+    }
  
 for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
         var input = document.createElement("input");
@@ -117,9 +86,9 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
             }));
             gainsCreate[i] = audioCtx.createGain();
             gainsCreate[i].gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-            tracks[i].connect(gainsCreate[i]);
-            gainsCreate[i].connect(audioCtx.destination);
-             tracks[i].connect(gainsCreate[i]).connect(audioCtx.destination);
+            panning[i] = { pan: 0 };
+            panners[i] = new StereoPannerNode(audioCtx, panning[i]);
+            tracks[i].connect(gainsCreate[i]).connect(panners[i]).connect(audioCtx.destination);
 
      }
      
@@ -322,11 +291,11 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
     }
 
     function startGetLocationNoShapes() {
-        document.getElementsByTagName('body')[0].classList.add('live');
-        document.getElementsByTagName('body')[0].classList.add('edit');
         initAudio();
         setTimeout(function () {
-
+            document.getElementsByTagName('body')[0].classList.add('live');
+            document.getElementsByTagName('body')[0].classList.add('edit');
+            
             if (navigator.geolocation) {
                 navigator.geolocation.watchPosition(function getPosition(position) {
 
@@ -528,13 +497,18 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
 
     function playCircle(x, y, r, a, n) {
         var index = a.id.substring(10);
-        
-
+        var withAngle = 0;
         var maxvol = 1;
         var roundVol;
         var idist;
         if (a.parentElement.hasAttribute('volume')) {
             maxvol = Number(a.parentElement.attributes.volume.value) / 100;
+        }
+
+        if (a.parentElement.hasAttribute('spatial') || document.body.classList.contains('spatial')) {
+        withAngle = angle( nowX, nowY, x, y) - orientationX;
+        panners[index].pan.value = withAngle/270 ;
+         // max pan di 0.75
         }
 
         var distance = Number(measure(nowX, nowY, x, y));
@@ -564,17 +538,14 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
                     if (maxvol == 1) {
                         roundVol = (1 - distance / r).toFixed(3) * idist.toFixed(2);
                         gainsCreate[index].gain.setValueAtTime(roundVol.toFixed(3), audioCtx.currentTime);
-                        tracks[index].connect(gainsCreate[index]).connect(audioCtx.destination);
                         a.parentElement.querySelector("input").value = roundVol.toFixed(3);
                     }
                     else {
                         roundVol = (1 - distance / r).toFixed(3) * idist.toFixed(2) * maxvol;
                         gainsCreate[index].gain.setValueAtTime(roundVol.toFixed(3), audioCtx.currentTime);
-                        tracks[index].connect(gainsCreate[index]).connect(audioCtx.destination);
                         a.parentElement.querySelector("input").value = roundVol.toFixed(3);
                         if (roundVol.toFixed(3) <= maxvol) {
                             gainsCreate[index].gain.setValueAtTime(roundVol.toFixed(3), audioCtx.currentTime);
-                             tracks[index].connect(gainsCreate[index]).connect(audioCtx.destination);
                             a.parentElement.querySelector("input").value = roundVol.toFixed(3);
                         }
                     }
@@ -591,7 +562,6 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
         else if (distance > r && (!(a.paused) || (a.ended))) {
             if ($(a).parents('.circle').attr('fade') == 'center') {
                 gainsCreate[index].gain.setValueAtTime(0, audioCtx.currentTime);
-                tracks[index].connect(gainsCreate[index]).connect(audioCtx.destination);
                 a.parentElement.querySelector("input").value = 0;
                 a.classList.remove('playing');
                 if ((a.duration.toFixed(2) == a.currentTime.toFixed(2)) && !(a.hasAttribute('loop')) || a.parentElement.hasAttribute('rewind')) {
@@ -732,6 +702,15 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
 
         return isIn;
     }
+
+    function angle(cx, cy, ex, ey) {
+        var dy = ey - cy;
+        var dx = ex - cx;
+        var theta = Math.atan2(dy, dx); // range (-PI, PI]
+        theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
+        //if (theta < 0) theta = 360 + theta; // range [0, 360)
+        return theta;
+      }
 
     function doCircleMap() {
         var cShapes = [];
