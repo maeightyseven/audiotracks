@@ -3,7 +3,7 @@
 
 <head>
 
-  <title> Oltresuono - Geolocation reactive Audio </title>
+  <title> Oltresuono - Geolocation reactive sound </title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -24,7 +24,7 @@
   <!-- The App Section -->
   <div class="w3-padding-64 w3-white">
     <div class="w3-row-padding">
-      <audio preload="none" loop id="system-silence-loop">
+      <audio  id="system-silence">
         <source src="Suoni/system-silence.mp3" type="audio/mpeg">
       </audio>
       <h1 id="mainTitle" coord="44.48370, 11.35366"> </h1>
@@ -48,11 +48,11 @@
             <td><button onclick="startGetLocationNoMap()" id="btnGoLive">Start</button>
             </td>
           </tr>
-        </table>
+        </table>         
         <p id="demo"></p>
         <div id="playing"></div>
 
-  
+
         <div class="mainContainer">
 
           <!-- inizio zona -->
@@ -1628,12 +1628,12 @@
             </div>
 
             <div class="circle" id="Pontesudstrada" coord="44.482985, 11.353759" size="25" fade="center">
-              <audio preload="none">
+              <audio preload="none" loop>
                 <source src="https://cdn.freesound.org/previews/739/739724_16065630-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
             <div class="circle" id="PontesudstradaThunderLow" coord="44.482985, 11.353759" size="15" fadein="3000"
-              fadeout="10000">
+              fadeout="10000" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/739/739739_16065630-lq.mp3" type="audio/mpeg">
               </audio>
@@ -1646,39 +1646,40 @@
             </div>
 
             <div class="circle" id="incrociosudsentiero-gran1" coord="44.482736, 11.353946" size="25" fadein="4000"
-              fadeout="10000">
+              fadeout="10000" rewind>
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/739/739721_16065630-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
             <div class="circle" id="mm-sentiero1" coord="44.482487, 11.353737" size="25" fade="center">
-              <audio preload="none">
+              <audio preload="none" loop>
                 <source src="https://cdn.freesound.org/previews/739/739715_16065630-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
             <div class="circle" id="mm-sentiero-rainsub" coord="44.482452, 11.353705" size="45" fade="center">
-              <audio preload="none">
+              <audio preload="none" loop>
                 <source src="https://cdn.freesound.org/previews/739/739733_16065630-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
 
             <div class="circle" id="mm-sentiero2" coord="44.482261, 11.353405" size="25" fade="center">
-              <audio preload="none">
+              <audio preload="none" loop>
                 <source src="https://cdn.freesound.org/previews/739/739716_16065630-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
             <div class="circle" id="mm-sentiero-centro" coord="44.482178, 11.353147" size="25" fadein="5000"
               fadeout="6000">
-              <audio preload="none">
+              <audio preload="none" loop>
                 <source src="https://cdn.freesound.org/previews/739/739717_16065630-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
 
-            <div class="circle" id="mm-strada-L2T" coord="44.482908, 11.353260" size="20" fade="center" volume="75">
+             <div class="circle" id="mm-strada-L2T" coord="44.482908, 11.353260" size="35" fadein="16000" fadeout="8000" volume="20">
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/739/739745_16065630-lq.mp3" type="audio/mpeg">
               </audio>
-            </div>
+            </div> 
+
             <div class="circle" id="mm-strada-L1-rainmid" coord="44.482977, 11.353045" size="15" fadein="9000"
               fadeout="9000">
               <audio preload="none" loop>
@@ -1699,12 +1700,12 @@
             </div>
             <div class="circle" id="mm-strada-R3-thundermid" coord="44.482755, 11.354413" size="15" fadein="13000"
               fadeout="8000">
-              <audio preload="none">
+              <audio preload="none" loop>
                 <source src="https://cdn.freesound.org/previews/739/739740_16065630-lq.mp3" type="audio/mpeg">
               </audio>
             </div>
-            <div class="circle" id="mm-strada-RT" coord="44.482755, 11.354413" size="10" fadein="15000" fadeout="8000"
-              volume="75">
+            <div class="circle" id="mm-strada-RT" coord="44.482755, 11.354413" size="20" fadein="10000" fadeout="8000"
+              volume="50">
               <audio preload="none">
                 <source src="https://cdn.freesound.org/previews/739/739746_16065630-lq.mp3" type="audio/mpeg">
               </audio>
@@ -2105,17 +2106,19 @@
     </div>
   </div>
   <audio preload="none" loop class="background-silence">
-    <source src="Suoni/system-silence.mp3" type="audio/mpeg">
+    <source src="https://cdn.freesound.org/previews/643/643615_14158272-lq.mp3" type="audio/mpeg">
   </audio>
   <video preload="none" id="video-pixel" loop width="1" height="1" style="visibility: hidden;">
     <source src="assets/pixel.mp4" type="video/mp4">
   </video>
-  <footer>
+  <div class="loader"></div> 
+    <footer>
     <table width="100%">
       <tr>
         <td> <button onclick="startGetLocation()" id="btnMap"> Con Forme</button></td>
         <td><button onclick="startGetLocationNoShapes()" id="btnNoShapes">Senza Forme</button></td>
       </tr>
+      </table> 
       <script src="assets/js/imain.js"> </script>
   </footer>
 </body>
