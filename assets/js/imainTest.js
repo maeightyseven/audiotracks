@@ -102,6 +102,8 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
     document.getElementsByTagName('audio')[i].crossOrigin = "anonymous";
     document.getElementsByTagName('audio')[i].src = 'Suoni/system-silence.mp3';
     document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].remove();
+    var copyurl = document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src;
+
     source.push(copyurl);
     document.getElementsByTagName('audio')[i].setAttribute('autoplay', '');
 }
@@ -120,7 +122,6 @@ function initAudio() {
         tracks.push(new MediaElementAudioSourceNode(audioCtx, {
             mediaElement: document.getElementsByTagName('audio')[i],
         }));
-        var copyurl = document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src;
 
         // document.getElementsByTagName('audio')[i].play();
         gainsCreate[i] = audioCtx.createGain();
