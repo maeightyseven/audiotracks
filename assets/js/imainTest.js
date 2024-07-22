@@ -78,7 +78,33 @@ if (spatialAudio == true) {
 
 for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
 
+    var maxvol = 1;
+    if (document.querySelectorAll('audio')[i].parentElement.hasAttribute('data-volume')) {
+        maxvol = Number(document.querySelectorAll('audio')[i].parentElement.getAttribute('data-volume')/100);
     }
+    maxVolumes.push(maxvol);
+
+    if (document.querySelectorAll('audio')[i].hasAttribute('loop')) {
+        loops.push(true);
+    } else {
+        loops.push(false);
+    }
+  
+    if (document.querySelectorAll('audio')[i].hasAttribute('loop')) {
+        document.querySelectorAll('audio')[i].removeAttribute('loop');
+    }
+    document.getElementsByTagName('audio')[i].id = "inputAudio" + i;
+    document.getElementsByTagName('audio')[i].removeAttribute('loop');
+    var i = source.length;
+
+    document.getElementsByTagName('audio')[i].id = 'audio' + (i);
+    // document.getElementsByTagName('audio')[i].parentElement.id = 'Shape' + (i);
+    document.getElementsByTagName('audio')[i].crossOrigin = "anonymous";
+    document.getElementsByTagName('audio')[i].src = 'Suoni/system-silence.mp3';
+    document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].remove();
+    source.push(copyurl);
+    document.getElementsByTagName('audio')[i].setAttribute('autoplay', '');
+}
 
 
 function initAudio() {
@@ -91,29 +117,6 @@ function initAudio() {
     }
 
     for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
-        document.getElementsByTagName('audio')[i].id = "inputAudio" + i;
-        var maxvol = 1;
-        if (document.querySelectorAll('audio')[i].parentElement.hasAttribute('data-volume')) {
-            maxvol = Number(document.querySelectorAll('audio')[i].parentElement.getAttribute('data-volume')/100);
-        }
-        maxVolumes.push(maxvol);
-    
-        // if (document.querySelectorAll('audio')[i].hasAttribute('loop')) {
-        //     loops.push(true);
-        // } else {
-        //     loops.push(false);
-        // }
-      
-        // if (document.querySelectorAll('audio')[i].hasAttribute('loop')) {
-        //     document.querySelectorAll('audio')[i].removeAttribute('loop');
-        // }
-         document.getElementsByTagName('audio')[i].crossOrigin = "anonymous";
-        // document.getElementsByTagName('audio')[i].removeAttribute('loop');
-        // var i = source.length;
-    
-        // document.getElementsByTagName('audio')[i].id = 'audio' + (i);
-        // document.getElementsByTagName('audio')[i].parentElement.id = 'Shape' + (i);
-       
         tracks.push(new MediaElementAudioSourceNode(audioCtx, {
             mediaElement: document.getElementsByTagName('audio')[i],
         }));
