@@ -96,15 +96,14 @@ for (var i = 0; i < document.getElementsByTagName('audio').length; ++i) {
     document.getElementsByTagName('audio')[i].id = "inputAudio" + i;
     document.getElementsByTagName('audio')[i].removeAttribute('loop');
     var i = source.length;
-
-    document.getElementsByTagName('audio')[i].id = 'audio' + (i);
+    var copyurl = document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src;
+    source.push(copyurl);
     // document.getElementsByTagName('audio')[i].parentElement.id = 'Shape' + (i);
     document.getElementsByTagName('audio')[i].crossOrigin = "anonymous";
     document.getElementsByTagName('audio')[i].src = 'Suoni/system-silence.mp3';
+    
     document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].remove();
-    var copyurl = document.getElementsByTagName('audio')[i].getElementsByTagName('source')[0].src;
-
-    source.push(copyurl);
+   
     document.getElementsByTagName('audio')[i].setAttribute('autoplay', '');
 }
 
@@ -141,19 +140,19 @@ function initAudio() {
 
 
  function initAudioStop(i) {
-    // if (i < document.getElementsByTagName('audio').length) {
-    //     document.getElementsByTagName('audio')[i].pause();
-    //     document.getElementsByTagName('audio')[i].currentTime = 0;
-    //     document.getElementsByTagName('audio')[i].src = source[i];
-    //     if (loops[i] == true) {
-    //         document.getElementsByTagName('audio')[i].setAttribute('loop','');
-    //     }
-    //     i = i + 1;
-    //     initAudioStop(i);
-    // } else {
-    //     videoPixel.play();
-    //     backgroundSilence.play();
-    // }
+    if (i < document.getElementsByTagName('audio').length) {
+        document.getElementsByTagName('audio')[i].pause();
+        document.getElementsByTagName('audio')[i].currentTime = 0;
+        document.getElementsByTagName('audio')[i].src = source[i];
+        if (loops[i] == true) {
+            document.getElementsByTagName('audio')[i].setAttribute('loop','');
+        }
+        i = i + 1;
+        initAudioStop(i);
+    } else {
+        videoPixel.play();
+        backgroundSilence.play();
+    }
 }
 
 var shapes = [];
