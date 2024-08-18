@@ -1,6 +1,6 @@
 {
-    "name": "My app",
-    "start_url": "/",
+    "name": "Oltresuono",
+    "start_url": "iTest2.html",
     "icons": [
       {
         "src": "icon.webp",
