@@ -8,6 +8,6 @@
         "type": "image/webp"
       }
     ],
-    "display": "standalone"
+    "display": "minimal-ui"
   }
   
