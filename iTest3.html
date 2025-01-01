@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <title> Oltresuono - Geolocation reactive sound </title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <!--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/maeightyseven/audiotracks@main/assets/style/main.css">-->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="assets/style/main.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+</head>
+
+<body class="w3-content w3-black" style="max-width:1500px;">
+
+  <!-- The App Section -->
+  <div class="w3-padding-64 w3-white">
+    <div class="w3-row-padding">
+      <audio  id="system-silence">
+        <source src="Suoni/system-silence.mp3" type="audio/mpeg">
+      </audio>
+      <h1 id="mainTitle" coord="40.691479371, 14.524574876"> </h1>
+      <h2> <b id="dothings">Click the button to get your coordinates.</b><b id="wdots"></b> </h2>
+
+      <div class="w3-col l4 m6">
+        <!--   <img src="https://www.w3schools.com/w3images/img_app.jpg" class="w3-image w3-right w3-hide-small"
+                      width="335" height="471">
+                  <div class="w3-center w3-hide-large w3-hide-medium">
+                      <img src="https://www.w3schools.com/w3images/img_app.jpg" class="w3-image w3-margin-top" width="335"
+                          height="471">
+                  </div>-->
+        <!-- <img src="assets/img/imgGiardini" alt=" " class="imgGiardini"> -->
+        <div id="map"></div>
+      </div>
+
+      <div class="w3-col l8 m6" style="text-align: center;">
+        <table style="margin: auto;">
+          <tr>
+
+            <td><button onclick="startGetLocationNoMap()" id="btnGoLive">Start</button>
+            </td>
+          </tr>
+        </table>         
+        <p id="demo"></p>
+        <div id="playing"></div>
+
+
+        <div class="mainContainer">
+
+          <!-- inizio zona -->
+          <div class="zone" name="Ciccio" color="orange">
+            <!-- inizio forme -->
+
+       
+            <div class="circle" id="Top_1" coord="40.691479371, 14.524574876" size="5">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739918_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Top_2" coord="40.691385869, 14.524628520" size="5">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739922_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Top_3" coord="40.691483436, 14.524751902" size="5">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739923_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Top_4" coord="44.482862, 11.350599" size="5">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739924_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Top_5" coord="44.482693, 11.350706" size="5">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739925_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Top_6" coord="44.482502, 11.350824" size="5">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739926_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Top_inner_circle" coord="44.482984, 11.350513" size="15" fade="center">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739972_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Bottom_circle" coord="44.481511, 11.351500" size="36" fade="center">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739971_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Bot_1" coord="44.481794, 11.351302" size="5">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739947_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Bot_2" coord="44.481511, 11.351489" size="5">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739948_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Bot_3" coord="44.481231, 11.351752" size="5">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739949_16065630-lq.ogg" type="audio/ogg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Bot_4" coord="44.481308, 11.351736" size="5">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739919_16065630-lq.ogg" type="audio/ogg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Bot_5" coord="44.481656, 11.351409" size="5">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739920_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Bot_6" coord="44.481361, 11.351618" size="5">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739921_16065630-lq.ogg" type="audio/ogg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Bot_inner_circle" coord="44.481414, 11.351911" size="30" fade="center">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739973_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Center_circle" coord="44.482177, 11.351044" size="45" fade="center">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739952_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="circle" id="Center_inner_circle" coord="44.482288, 11.350974" size="25" fade="center">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739974_16065630-lq.ogg" type="audio/ogg">
+              </audio>
+            </div>
+
+            <div class="polygon" id="Poly_big1" coord="[[44.483476058, 11.350400448],
+        [44.483483713, 11.350518465],
+        [44.483248336, 11.350539923],
+        [44.483007217, 11.350615025],
+        [44.481970013, 11.351167560],
+        [44.482834989, 11.350518465],
+        [44.483267472, 11.350352168],
+        [44.483463, 11.350400]]" fadein="10000" fadeout="10000">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739969_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="polygon" id="Poly_big2" coord="[[44.483007217, 11.350615025],
+        [44.481970013, 11.351167560],
+        [44.481763335, 11.351231933],
+        [44.481430353, 11.351457238],
+        [44.480994029, 11.351934671],
+        [44.480990201, 11.352251172],
+        [44.481342323, 11.351709366]]" fadein="10000" fadeout="10000">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739970_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+
+
+            <div class="polygon" id="Poly_mid" coord="[[44.483245, 11.350443],
+        [44.482885, 11.350642],
+        [44.481446, 11.351463],
+        [44.481139, 11.351833],
+        [44.481526, 11.351570],
+        [44.482992, 11.350443]]" fadein="5000" fadeout="5000">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739971_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="polygon" id="Poly_street_left" coord="[[44.482080, 11.349775],
+        [44.482141, 11.350435],
+        [44.482040, 11.351165],
+        [44.481975, 11.351213],
+        [44.482024, 11.350446],
+        [44.482000, 11.349950]]" fadein="10000" fadeout="10000">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739969_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+            <div class="polygon" id="Poly_street_right" coord="[[44.481346, 11.351709],
+      [44.481434, 11.351956],
+      [44.481430, 11.352063],
+      [44.481453, 11.352101],
+      [44.481515, 11.352192],
+      [44.481668, 11.352230],
+      [44.481794, 11.352326],
+      [44.482184, 11.353050],
+      [44.482112, 11.353147],
+      [44.481763, 11.352407],
+      [44.481652, 11.352310],
+      [44.481518, 11.352283],
+      [44.481457, 11.352198],
+      [44.481392, 11.352144],
+      [44.481381, 11.351988],
+      [44.481285, 11.351763]]" fadein="10000" fadeout="10000">
+              <audio preload="none" loop>
+                <source src="https://cdn.freesound.org/previews/739/739970_16065630-lq.mp3" type="audio/mpeg">
+              </audio>
+            </div>
+
+
+
+
+            <!-- fine forme -->
+
+          </div>
+
+          <!-- fine zona -->
+          <div class="text">
+            <img src="assets/img/Francesco Interlandi.png" alt=" " />
+          </div>
+
+        <div class="imgLoader">
+          <img src="assets/img/oltresuono.jpg" alt=" " />
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <audio preload="none" loop class="background-silence">
+    <source src="https://cdn.freesound.org/previews/643/643615_14158272-lq.mp3" type="audio/mpeg">
+  </audio>
+  <video preload="none" id="video-pixel" loop width="1" height="1" style="visibility: hidden;">
+    <source src="assets/pixel.mp4" type="video/mp4">
+  </video>
+  <div class="loader"></div> 
+    <footer>
+    <table width="100%">
+      <tr>
+        <td> <button onclick="startGetLocation()" id="btnMap"> Con Forme</button></td>
+        <td><button onclick="startGetLocationNoShapes()" id="btnNoShapes">Senza Forme</button></td>
+      </tr>
+      </table> 
+      <script src="assets/js/imain.js"> </script>
+  </footer>
+</body>
+
+</html>
